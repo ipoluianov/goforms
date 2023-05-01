@@ -7,7 +7,13 @@ import (
 )
 
 func main() {
-	ui.InitUISystem()
-	var mainForm forms.MainForm
-	uiforms.StartMainForm(&mainForm)
+	ui.InitUI()
+	{
+		var form forms.MainForm
+		uiforms.StartMainForm(&form)
+		Window := form.WindowToCreate
+		form.Dispose()
+
+		uiforms.StartMainForm(Window)
+	}
 }

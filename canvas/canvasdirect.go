@@ -54,8 +54,8 @@ var staticImageBuffer2 []uint8
 var currentBufferIndex int
 
 func init() {
-	staticImageBuffer1 = make([]uint8, 1024*1024*10)
-	staticImageBuffer2 = make([]uint8, 1024*1024*10)
+	staticImageBuffer1 = make([]uint8, 1024*1024*40)
+	staticImageBuffer2 = make([]uint8, 1024*1024*40)
 }
 
 func NewCanvas(width int, height int) *CanvasDirect {

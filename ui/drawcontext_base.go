@@ -23,6 +23,8 @@ type DrawContextBase struct {
 	StackClipSettings   stack.Stack
 	WindowWidth         int
 	WindowHeight        int
+	WindowWidthScale    float32
+	WindowHeightScale   float32
 
 	Window *glfw.Window
 }

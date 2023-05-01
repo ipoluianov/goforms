@@ -27,10 +27,13 @@ func NewDrawContextSW(window *glfw.Window) *DrawContextSW {
 	var c DrawContextSW
 	c.Window = window
 	c.WindowWidth, c.WindowHeight = window.GetSize()
+	kx, ky := window.GetContentScale()
+	c.WindowWidthScale = kx
+	c.WindowHeightScale = ky
 
 	c.DrawContextBase.InitBase()
 
-	c.cnv = canvas.NewCanvasWindow(c.WindowWidth, c.WindowHeight)
+	c.cnv = canvas.NewCanvasWindow(int(float32(c.WindowWidth)), int(float32(c.WindowHeight)))
 
 	c.setViewport()
 	return &c
@@ -68,7 +71,7 @@ func (c *DrawContextSW) GraphContextImage() *image.RGBA {
 }
 
 func (c *DrawContextSW) setViewport() {
-	gl.Viewport(int32(c.CurrentClipSettings.x), int32(c.WindowHeight-c.CurrentClipSettings.y-c.CurrentClipSettings.height), int32(c.CurrentClipSettings.width), int32(c.CurrentClipSettings.height))
+	gl.Viewport(int32(c.CurrentClipSettings.x), int32(c.WindowHeight-c.CurrentClipSettings.y-c.CurrentClipSettings.height), int32(c.CurrentClipSettings.width)*int32(c.WindowWidthScale), int32(c.CurrentClipSettings.height*int(c.WindowHeightScale)))
 }
 
 func (c *DrawContextSW) xyTo01(x, y int) (float32, float32) {
