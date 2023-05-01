@@ -26,8 +26,19 @@ var nextFormId int
 var windows []uiinterfaces.Window
 var windowByGLFWWindow map[*glfw.Window]uiinterfaces.Window
 
+const (
+	DefaultWindowWidth  = 480
+	DefaultWindowHeight = 320
+)
+
 func (c *Form) LoopUI() {
 	c.LoopUI_OpenGL()
+}
+
+func NewForm() *Form {
+	var form Form
+	form.Init()
+	return &form
 }
 
 func UnInitUI() {
@@ -44,6 +55,7 @@ type Form struct {
 	stats.Obj
 	id       int
 	disposed bool
+	inited   bool
 
 	window *glfw.Window
 
@@ -114,7 +126,11 @@ func init() {
 }
 
 func (c *Form) Init() {
-	c.ProcessWindowResize(1200, 600)
+	if c.inited {
+		return
+	}
+	c.inited = true
+	c.ProcessWindowResize(DefaultWindowWidth, DefaultWindowHeight)
 	c.drawTimesCount = 5
 	c.drawTimes = make([]time.Duration, c.drawTimesCount)
 
@@ -477,6 +493,8 @@ func (c *Form) Height() int {
 }
 
 func (c *Form) OnInit() {
+	//c.SetTitle("UI test application")
+	//c.Resize(640, 480)
 	//fmt.Println("Default OnInit")
 }
 
@@ -506,6 +524,7 @@ func (c *Form) SetPopup(popup bool) {
 func StartMainForm(window uiinterfaces.Window) {
 	window.SetIsMainWindow(true)
 	CreateForm(window)
+	window.SetTitle(window.Title())
 	window.LoopUI()
 }
 
@@ -653,6 +672,13 @@ func CreateForm(form uiinterfaces.Window) {
 	windowByGLFWWindow[window] = form
 
 	form.Init()
+
+	form.Resize(form.Width(), form.Height())
+
+	if len(form.Title()) == 0 {
+		form.SetTitle("Form")
+	}
+
 	form.OnInit()
 
 	monitor := glfw.GetPrimaryMonitor()
