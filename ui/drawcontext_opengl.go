@@ -359,8 +359,6 @@ func checkProgram() {
 			gl.GetProgramInfoLog(program, logLength, nil, gl.Str(log))
 
 			panic("Error while compiling shaders")
-
-			return
 		}
 
 		gl.DeleteShader(vertexShader)
