@@ -23,7 +23,7 @@ const (
 	StyleDarkBlue = 1
 )
 
-var CurrentStyle = StyleLight
+var CurrentStyle = StyleDarkBlue
 
 var DefaultBackColor color.Color
 
