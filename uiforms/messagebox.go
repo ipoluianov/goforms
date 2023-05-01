@@ -2,23 +2,21 @@ package uiforms
 
 import (
 	"github.com/ipoluianov/goforms/canvas"
-	"github.com/ipoluianov/goforms/uicontrols"
-	"github.com/ipoluianov/goforms/uievents"
-	"github.com/ipoluianov/goforms/uiinterfaces"
+	"github.com/ipoluianov/goforms/ui"
 )
 
 type MessageBox struct {
-	Form
+	ui.Form
 	text     string
-	txtBlock *uicontrols.TextBlock
-	btnOK    *uicontrols.Button
+	txtBlock *ui.TextBlock
+	btnOK    *ui.Button
 }
 
-func MessageBoxError(parent uiinterfaces.Widget, err error) {
+func MessageBoxError(parent ui.Widget, err error) {
 	ShowMessageBox(parent.Window(), "Error", err.Error())
 }
 
-func (f *MessageBox) onBtnOK(event *uievents.Event) {
+func (f *MessageBox) onBtnOK(event *ui.Event) {
 	f.Close()
 }
 
@@ -34,10 +32,10 @@ func (f *MessageBox) OnInit() {
 
 	f.adjustSizeToContent(f.text)
 
-	f.onSizeChanged = f.onFormSizeChanged
+	//f.onSizeChanged = f.onFormSizeChanged
 }
 
-func (f *MessageBox) onFormSizeChanged(event *uievents.FormSizeChangedEvent) {
+func (f *MessageBox) onFormSizeChanged(event *ui.FormSizeChangedEvent) {
 	f.btnOK.SetX(f.Width()/2 - f.btnOK.Width()/2)
 }
 
@@ -61,9 +59,9 @@ func (f *MessageBox) SetText(text string) {
 	}
 }
 
-func ShowMessageBox(parent uiinterfaces.Window, title string, text string) {
+func ShowMessageBox(parent ui.Window, title string, text string) {
 	var form MessageBox
 	form.SetTitle(title)
 	form.SetText(text)
-	StartModalForm(parent, &form)
+	ui.StartModalForm(parent, &form)
 }

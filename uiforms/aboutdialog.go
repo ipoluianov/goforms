@@ -2,19 +2,17 @@ package uiforms
 
 import (
 	"github.com/ipoluianov/goforms/canvas"
-	"github.com/ipoluianov/goforms/uicontrols"
-	"github.com/ipoluianov/goforms/uievents"
-	"github.com/ipoluianov/goforms/uiinterfaces"
+	"github.com/ipoluianov/goforms/ui"
 )
 
 type AboutDialog struct {
-	Form
+	ui.Form
 	text     string
-	txtBlock *uicontrols.TextBlock
-	btnOK    *uicontrols.Button
+	txtBlock *ui.TextBlock
+	btnOK    *ui.Button
 }
 
-func (f *AboutDialog) onBtnOK(event *uievents.Event) {
+func (f *AboutDialog) onBtnOK(event *ui.Event) {
 	f.Close()
 }
 
@@ -30,10 +28,10 @@ func (f *AboutDialog) OnInit() {
 
 	f.adjustSizeToContent(f.text)
 
-	f.onSizeChanged = f.onFormSizeChanged
+	//f.onSizeChanged = f.onFormSizeChanged
 }
 
-func (f *AboutDialog) onFormSizeChanged(event *uievents.FormSizeChangedEvent) {
+func (f *AboutDialog) onFormSizeChanged(event *ui.FormSizeChangedEvent) {
 	f.btnOK.SetX(f.Width()/2 - f.btnOK.Width()/2)
 }
 
@@ -57,9 +55,9 @@ func (f *AboutDialog) SetText(text string) {
 	}
 }
 
-func ShowAboutDialog(parent uiinterfaces.Window, title string, text string) {
+func ShowAboutDialog(parent ui.Window, title string, text string) {
 	var form AboutDialog
 	form.SetTitle(title)
 	form.SetText(text)
-	StartModalForm(parent, &form)
+	ui.StartModalForm(parent, &form)
 }

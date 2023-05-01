@@ -3,24 +3,24 @@ package uiforms
 import (
 	"image/color"
 
-	"github.com/ipoluianov/goforms/uicontrols"
+	"github.com/ipoluianov/goforms/ui"
 )
 
 type ColorPickerDialog struct {
-	Form
-	numR      *uicontrols.SpinBox
-	numG      *uicontrols.SpinBox
-	numB      *uicontrols.SpinBox
-	numA      *uicontrols.SpinBox
-	btnOK     *uicontrols.Button
-	btnCancel *uicontrols.Button
+	ui.Form
+	numR      *ui.SpinBox
+	numG      *ui.SpinBox
+	numB      *ui.SpinBox
+	numA      *ui.SpinBox
+	btnOK     *ui.Button
+	btnCancel *ui.Button
 
 	color color.Color
 
 	loading        bool
 	onColorChanged func(color color.Color)
 
-	ctrlSample *uicontrols.Panel
+	ctrlSample *ui.Panel
 }
 
 func (c *ColorPickerDialog) OnInit() {
@@ -72,7 +72,7 @@ func (c *ColorPickerDialog) OnInit() {
 	c.SetColor(c.color)
 }
 
-func (c *ColorPickerDialog) adjustColorSpinBox(spinBox *uicontrols.SpinBox) {
+func (c *ColorPickerDialog) adjustColorSpinBox(spinBox *ui.SpinBox) {
 	spinBox.OnValueChanged = c.numsChanged
 	//spinBox.SetMaxWidth(40)
 	spinBox.SetMinValue(0)
@@ -118,7 +118,7 @@ func (c *ColorPickerDialog) SetColor(color color.Color) {
 	c.loading = false
 }
 
-func (c *ColorPickerDialog) numsChanged(spinBox *uicontrols.SpinBox, value float64) {
+func (c *ColorPickerDialog) numsChanged(spinBox *ui.SpinBox, value float64) {
 	if c.loading {
 		return
 	}
