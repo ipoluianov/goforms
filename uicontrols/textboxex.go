@@ -1,8 +1,8 @@
 package uicontrols
 
 import (
-	"github.com/gazercloud/gazerui/uievents"
-	"github.com/gazercloud/gazerui/uiinterfaces"
+	"github.com/ipoluianov/goforms/uievents"
+	"github.com/ipoluianov/goforms/uiinterfaces"
 )
 
 type TextBoxExt struct {

@@ -2,13 +2,14 @@ package ui
 
 import (
 	"fmt"
-	"github.com/fogleman/gg"
-	"github.com/gazercloud/gazerui/canvas"
-	"github.com/go-gl/gl/v3.3-core/gl"
-	"github.com/go-gl/glfw/v3.3/glfw"
 	"image"
 	"math"
 	"strings"
+
+	"github.com/fogleman/gg"
+	"github.com/go-gl/gl/v3.3-core/gl"
+	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/ipoluianov/goforms/canvas"
 )
 
 func init() {
@@ -374,7 +375,7 @@ func checkProgram() {
 	}
 }
 
-//compileShader compiles the shader program
+// compileShader compiles the shader program
 func compileShader(source string, shaderType uint32) (uint32, error) {
 	shader := gl.CreateShader(shaderType)
 

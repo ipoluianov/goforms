@@ -1,15 +1,16 @@
 package uicontrols
 
 import (
-	"github.com/gazercloud/gazerui/canvas"
-	"github.com/gazercloud/gazerui/ui"
-	"github.com/gazercloud/gazerui/uievents"
-	"github.com/gazercloud/gazerui/uiinterfaces"
-	"github.com/gazercloud/gazerui/uiproperties"
 	"image"
 	"image/draw"
 	"math/rand"
 	"strconv"
+
+	"github.com/ipoluianov/goforms/canvas"
+	"github.com/ipoluianov/goforms/ui"
+	"github.com/ipoluianov/goforms/uievents"
+	"github.com/ipoluianov/goforms/uiinterfaces"
+	"github.com/ipoluianov/goforms/uiproperties"
 )
 
 type Table struct {

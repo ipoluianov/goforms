@@ -1,11 +1,12 @@
 package uicontrols
 
 import (
-	"github.com/gazercloud/gazerui/uievents"
-	"github.com/gazercloud/gazerui/uiinterfaces"
-	"github.com/gazercloud/gazerui/uistyles"
 	"image"
 	"time"
+
+	"github.com/ipoluianov/goforms/uievents"
+	"github.com/ipoluianov/goforms/uiinterfaces"
+	"github.com/ipoluianov/goforms/uistyles"
 )
 
 type DayOfMonthSelector struct {

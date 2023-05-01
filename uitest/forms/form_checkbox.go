@@ -1,9 +1,9 @@
 package forms
 
 import (
-	"github.com/gazercloud/gazerui/uicontrols"
-	"github.com/gazercloud/gazerui/uievents"
-	"github.com/gazercloud/gazerui/uiforms"
+	"github.com/ipoluianov/goforms/uicontrols"
+	"github.com/ipoluianov/goforms/uievents"
+	"github.com/ipoluianov/goforms/uiforms"
 )
 
 type FormCheckBox struct {

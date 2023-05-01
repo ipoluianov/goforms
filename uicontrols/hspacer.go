@@ -1,8 +1,8 @@
 package uicontrols
 
 import (
-	"github.com/gazercloud/gazerui/ui"
-	"github.com/gazercloud/gazerui/uiinterfaces"
+	"github.com/ipoluianov/goforms/ui"
+	"github.com/ipoluianov/goforms/uiinterfaces"
 	"golang.org/x/image/colornames"
 )
 

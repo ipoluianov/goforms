@@ -1,4 +1,4 @@
-module github.com/gazercloud/gazerui
+module github.com/ipoluianov/goforms
 
 go 1.17
 

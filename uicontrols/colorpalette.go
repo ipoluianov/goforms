@@ -2,11 +2,12 @@ package uicontrols
 
 import (
 	"fmt"
-	"github.com/gazercloud/gazerui/ui"
-	"github.com/gazercloud/gazerui/uievents"
-	"github.com/gazercloud/gazerui/uiinterfaces"
-	"golang.org/x/image/colornames"
 	"image/color"
+
+	"github.com/ipoluianov/goforms/ui"
+	"github.com/ipoluianov/goforms/uievents"
+	"github.com/ipoluianov/goforms/uiinterfaces"
+	"golang.org/x/image/colornames"
 )
 
 type ColorPalette struct {

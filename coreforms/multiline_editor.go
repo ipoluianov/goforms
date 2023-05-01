@@ -1,9 +1,9 @@
 package coreforms
 
 import (
-	"github.com/gazercloud/gazerui/uicontrols"
-	"github.com/gazercloud/gazerui/uievents"
-	"github.com/gazercloud/gazerui/uiinterfaces"
+	"github.com/ipoluianov/goforms/uicontrols"
+	"github.com/ipoluianov/goforms/uievents"
+	"github.com/ipoluianov/goforms/uiinterfaces"
 )
 
 type MultilineEditor struct {

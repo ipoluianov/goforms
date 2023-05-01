@@ -2,9 +2,10 @@ package ui
 
 import (
 	"fmt"
-	"github.com/gazercloud/gazerui/canvas"
-	"github.com/gazercloud/gazerui/grid/stats"
 	"runtime"
+
+	"github.com/ipoluianov/goforms/canvas"
+	"github.com/ipoluianov/goforms/grid/stats"
 )
 
 type ImageCache struct {

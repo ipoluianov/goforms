@@ -2,10 +2,11 @@ package uicontrols
 
 import (
 	"bytes"
-	"github.com/gazercloud/gazerui/ui"
-	"github.com/gazercloud/gazerui/uiinterfaces"
-	"github.com/nfnt/resize"
 	"image"
+
+	"github.com/ipoluianov/goforms/ui"
+	"github.com/ipoluianov/goforms/uiinterfaces"
+	"github.com/nfnt/resize"
 )
 
 type ImageBoxScale int

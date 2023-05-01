@@ -1,11 +1,12 @@
 package uicontrols
 
 import (
-	"github.com/gazercloud/gazerui/uievents"
-	"github.com/gazercloud/gazerui/uiinterfaces"
-	"github.com/gazercloud/gazerui/uiresources"
 	"image"
 	"image/color"
+
+	"github.com/ipoluianov/goforms/uievents"
+	"github.com/ipoluianov/goforms/uiinterfaces"
+	"github.com/ipoluianov/goforms/uiresources"
 )
 
 type TabControl struct {

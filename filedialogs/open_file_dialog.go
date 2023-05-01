@@ -1,16 +1,17 @@
 package filedialogs
 
 import (
-	"github.com/gazercloud/gazerui/paths"
-	"github.com/gazercloud/gazerui/uicontrols"
-	"github.com/gazercloud/gazerui/uievents"
-	"github.com/gazercloud/gazerui/uiinterfaces"
 	"io/ioutil"
 	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/ipoluianov/goforms/paths"
+	"github.com/ipoluianov/goforms/uicontrols"
+	"github.com/ipoluianov/goforms/uievents"
+	"github.com/ipoluianov/goforms/uiinterfaces"
 )
 
 type OpenFileDialog struct {

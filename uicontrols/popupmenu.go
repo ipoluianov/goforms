@@ -1,9 +1,10 @@
 package uicontrols
 
 import (
-	"github.com/gazercloud/gazerui/uievents"
-	"github.com/gazercloud/gazerui/uiinterfaces"
 	"image"
+
+	"github.com/ipoluianov/goforms/uievents"
+	"github.com/ipoluianov/goforms/uiinterfaces"
 )
 
 const PopupMenuItemHeight = 32

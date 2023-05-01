@@ -1,14 +1,15 @@
 package uicontrols
 
 import (
-	"github.com/gazercloud/gazerui/canvas"
-	"github.com/gazercloud/gazerui/ui"
-	"github.com/gazercloud/gazerui/uievents"
-	"github.com/gazercloud/gazerui/uiresources"
+	"github.com/ipoluianov/goforms/canvas"
+	"github.com/ipoluianov/goforms/ui"
+	"github.com/ipoluianov/goforms/uievents"
+	"github.com/ipoluianov/goforms/uiresources"
 
-	"github.com/nfnt/resize"
 	"image"
 	"time"
+
+	"github.com/nfnt/resize"
 )
 
 type PopupMenuItem struct {

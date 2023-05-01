@@ -2,11 +2,12 @@ package uicontrols
 
 import (
 	"fmt"
-	"github.com/gazercloud/gazerui/uievents"
-	"github.com/gazercloud/gazerui/uiinterfaces"
-	"github.com/gazercloud/gazerui/uiresources"
-	"github.com/go-gl/glfw/v3.3/glfw"
 	"strconv"
+
+	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/ipoluianov/goforms/uievents"
+	"github.com/ipoluianov/goforms/uiinterfaces"
+	"github.com/ipoluianov/goforms/uiresources"
 )
 
 type SpinBox struct {

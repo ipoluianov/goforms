@@ -1,17 +1,18 @@
 package uicontrols
 
 import (
-	"github.com/gazercloud/gazerui/canvas"
-	"github.com/gazercloud/gazerui/ui"
-	"github.com/gazercloud/gazerui/uievents"
-	"github.com/gazercloud/gazerui/uiinterfaces"
-	"github.com/gazercloud/gazerui/uiresources"
-	"github.com/go-gl/glfw/v3.3/glfw"
-	"github.com/nfnt/resize"
-	"golang.org/x/image/colornames"
 	"image"
 	"image/color"
 	"math"
+
+	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/ipoluianov/goforms/canvas"
+	"github.com/ipoluianov/goforms/ui"
+	"github.com/ipoluianov/goforms/uievents"
+	"github.com/ipoluianov/goforms/uiinterfaces"
+	"github.com/ipoluianov/goforms/uiresources"
+	"github.com/nfnt/resize"
+	"golang.org/x/image/colornames"
 )
 
 type TreeView struct {

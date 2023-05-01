@@ -1,11 +1,12 @@
 package ui
 
 import (
-	"github.com/gazercloud/gazerui/canvas"
+	"image/color"
+
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/golang-collections/collections/stack"
+	"github.com/ipoluianov/goforms/canvas"
 	"golang.org/x/image/colornames"
-	"image/color"
 )
 
 type DrawContextBase struct {

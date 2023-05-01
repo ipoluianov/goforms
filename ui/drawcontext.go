@@ -1,10 +1,11 @@
 package ui
 
 import (
-	"github.com/fogleman/gg"
-	"github.com/gazercloud/gazerui/canvas"
 	"image"
 	"image/color"
+
+	"github.com/fogleman/gg"
+	"github.com/ipoluianov/goforms/canvas"
 )
 
 type DrawContext interface {

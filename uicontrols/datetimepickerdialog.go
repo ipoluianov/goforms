@@ -1,8 +1,9 @@
 package uicontrols
 
 import (
-	"github.com/gazercloud/gazerui/uiinterfaces"
 	"time"
+
+	"github.com/ipoluianov/goforms/uiinterfaces"
 )
 
 type DateTimePickerDialog struct {

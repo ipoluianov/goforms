@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/gazercloud/gazerui/ui"
-	"github.com/gazercloud/gazerui/uiforms"
-	"github.com/gazercloud/gazerui/uitest/forms"
+	"github.com/ipoluianov/goforms/ui"
+	"github.com/ipoluianov/goforms/uiforms"
+	"github.com/ipoluianov/goforms/uitest/forms"
 )
 
 func main() {

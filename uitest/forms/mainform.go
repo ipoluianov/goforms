@@ -1,10 +1,11 @@
 package forms
 
 import (
-	"github.com/gazercloud/gazerui/uievents"
-	"github.com/gazercloud/gazerui/uiforms"
-	"github.com/gazercloud/gazerui/uiinterfaces"
 	"reflect"
+
+	"github.com/ipoluianov/goforms/uievents"
+	"github.com/ipoluianov/goforms/uiforms"
+	"github.com/ipoluianov/goforms/uiinterfaces"
 )
 
 type MainForm struct {

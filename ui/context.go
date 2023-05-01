@@ -1,9 +1,10 @@
 package ui
 
 import (
-	"github.com/gazercloud/gazerui/opengl/gl11/gl"
-	"github.com/golang-collections/collections/stack"
 	"image/color"
+
+	"github.com/golang-collections/collections/stack"
+	"github.com/ipoluianov/goforms/opengl/gl11/gl"
 )
 
 type ClipSettings struct {

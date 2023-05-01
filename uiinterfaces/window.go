@@ -1,9 +1,9 @@
 package uiinterfaces
 
 import (
-	"github.com/gazercloud/gazerui/ui"
-	"github.com/gazercloud/gazerui/uievents"
 	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/ipoluianov/goforms/ui"
+	"github.com/ipoluianov/goforms/uievents"
 )
 
 type Window interface {

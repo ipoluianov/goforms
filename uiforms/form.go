@@ -2,26 +2,24 @@ package uiforms
 
 import (
 	"fmt"
-	"github.com/gazercloud/gazerui/canvas"
-	"github.com/gazercloud/gazerui/grid/stats"
-	"github.com/gazercloud/gazerui/ui"
-	"github.com/gazercloud/gazerui/uicontrols"
-	"github.com/gazercloud/gazerui/uievents"
-	"github.com/gazercloud/gazerui/uiinterfaces"
-	"github.com/gazercloud/gazerui/uistyles"
-	"github.com/go-gl/glfw/v3.3/glfw"
-	"golang.org/x/image/colornames"
 	"image"
 	"image/color"
+	"math"
 	"math/rand"
 	"runtime"
 	"runtime/debug"
 	"sort"
-)
-
-import (
-	"math"
 	"time"
+
+	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/ipoluianov/goforms/canvas"
+	"github.com/ipoluianov/goforms/grid/stats"
+	"github.com/ipoluianov/goforms/ui"
+	"github.com/ipoluianov/goforms/uicontrols"
+	"github.com/ipoluianov/goforms/uievents"
+	"github.com/ipoluianov/goforms/uiinterfaces"
+	"github.com/ipoluianov/goforms/uistyles"
+	"golang.org/x/image/colornames"
 )
 
 var nextFormId int

@@ -1,10 +1,11 @@
 package uistyles
 
 import (
-	"github.com/gazercloud/gazerui/uiinterfaces"
-	"github.com/gazercloud/gazerui/uiproperties"
-	"gopkg.in/go-playground/colors.v1"
 	"image/color"
+
+	"github.com/ipoluianov/goforms/uiinterfaces"
+	"github.com/ipoluianov/goforms/uiproperties"
+	"gopkg.in/go-playground/colors.v1"
 )
 
 func InitDefaultStyle(w uiinterfaces.Widget) {

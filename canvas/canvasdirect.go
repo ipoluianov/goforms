@@ -3,15 +3,16 @@ package canvas
 import (
 	"flag"
 	"fmt"
-	"github.com/gazercloud/gazerui/grid/stats"
-	"github.com/golang/freetype"
-	"github.com/nfnt/resize"
 	"image"
 	"image/color"
 	"image/draw"
 	"math"
 	"runtime"
 	"strings"
+
+	"github.com/golang/freetype"
+	"github.com/ipoluianov/goforms/grid/stats"
+	"github.com/nfnt/resize"
 )
 
 type CanvasDirect struct {

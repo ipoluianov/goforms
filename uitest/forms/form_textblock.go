@@ -1,7 +1,7 @@
 package forms
 
 import (
-	"github.com/gazercloud/gazerui/uiforms"
+	"github.com/ipoluianov/goforms/uiforms"
 )
 
 type FormTextBlock struct {

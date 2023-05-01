@@ -1,8 +1,8 @@
 package uicontrols
 
 import (
-	"github.com/gazercloud/gazerui/canvas"
-	"github.com/gazercloud/gazerui/uiinterfaces"
+	"github.com/ipoluianov/goforms/canvas"
+	"github.com/ipoluianov/goforms/uiinterfaces"
 )
 
 type GroupBox struct {

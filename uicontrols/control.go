@@ -2,20 +2,21 @@ package uicontrols
 
 import (
 	"fmt"
-	"github.com/gazercloud/gazerui/canvas"
-	"github.com/gazercloud/gazerui/grid/stats"
-	"github.com/gazercloud/gazerui/ui"
-	"github.com/gazercloud/gazerui/uievents"
-	"github.com/gazercloud/gazerui/uiinterfaces"
-	"github.com/gazercloud/gazerui/uiproperties"
-	"github.com/gazercloud/gazerui/uistyles"
-	"golang.org/x/image/colornames"
 	"image"
 	"image/color"
 	"math/rand"
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/ipoluianov/goforms/canvas"
+	"github.com/ipoluianov/goforms/grid/stats"
+	"github.com/ipoluianov/goforms/ui"
+	"github.com/ipoluianov/goforms/uievents"
+	"github.com/ipoluianov/goforms/uiinterfaces"
+	"github.com/ipoluianov/goforms/uiproperties"
+	"github.com/ipoluianov/goforms/uistyles"
+	"golang.org/x/image/colornames"
 )
 
 // type DrawControl func(ctx *gg.Context)

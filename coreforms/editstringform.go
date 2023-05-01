@@ -1,8 +1,8 @@
 package coreforms
 
 import (
-	"github.com/gazercloud/gazerui/uicontrols"
-	"github.com/gazercloud/gazerui/uiinterfaces"
+	"github.com/ipoluianov/goforms/uicontrols"
+	"github.com/ipoluianov/goforms/uiinterfaces"
 )
 
 type EditStringForm struct {

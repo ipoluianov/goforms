@@ -2,8 +2,9 @@ package forms
 
 import (
 	"fmt"
-	"github.com/gazercloud/gazerui/uicontrols"
-	"github.com/gazercloud/gazerui/uiforms"
+
+	"github.com/ipoluianov/goforms/uicontrols"
+	"github.com/ipoluianov/goforms/uiforms"
 )
 
 type FormTreeView struct {

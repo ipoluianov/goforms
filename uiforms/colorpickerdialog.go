@@ -1,8 +1,9 @@
 package uiforms
 
 import (
-	"github.com/gazercloud/gazerui/uicontrols"
 	"image/color"
+
+	"github.com/ipoluianov/goforms/uicontrols"
 )
 
 type ColorPickerDialog struct {
