@@ -6,10 +6,31 @@ import (
 
 type Panel struct {
 	Container
+
+	isHorizontal bool
+
+	nextX int
+	nextY int
 }
 
 func NewPanel(parent Widget) *Panel {
 	var b Panel
+	b.InitControl(parent, &b)
+	b.PopupWidgets = make([]Widget, 0)
+	return &b
+}
+
+func NewHPanel(parent Widget) *Panel {
+	var b Panel
+	b.isHorizontal = true
+	b.InitControl(parent, &b)
+	b.PopupWidgets = make([]Widget, 0)
+	return &b
+}
+
+func NewVPanel(parent Widget) *Panel {
+	var b Panel
+	b.isHorizontal = false
 	b.InitControl(parent, &b)
 	b.PopupWidgets = make([]Widget, 0)
 	return &b
@@ -50,10 +71,28 @@ func (c *Panel) UpdateStyle() {
 	c.Container.UpdateStyle()
 }
 
+func (c *Panel) setNextXY(widget Widget) {
+	widget.SetGridX(c.nextX)
+	widget.SetGridY(c.nextY)
+	if c.isHorizontal {
+		c.nextX++
+	} else {
+		c.nextY++
+	}
+
+}
+
 func (c *Panel) AddButtonOnGrid(gridX int, gridY int, text string, onPress func(event *Event)) *Button {
 	control := NewButton(c, text, onPress)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
+	c.AddWidget(control)
+	return control
+}
+
+func (c *Panel) AddButton(text string, onPress func(event *Event)) *Button {
+	control := NewButton(c, text, onPress)
+	c.setNextXY(control)
 	c.AddWidget(control)
 	return control
 }
@@ -110,6 +149,20 @@ func (c *Panel) AddPanelOnGrid(gridX int, gridY int) *Panel {
 	control := NewPanel(c)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
+	c.AddWidget(control)
+	return control
+}
+
+func (c *Panel) AddHPanel() *Panel {
+	control := NewHPanel(c)
+	c.setNextXY(control)
+	c.AddWidget(control)
+	return control
+}
+
+func (c *Panel) AddVPanel() *Panel {
+	control := NewVPanel(c)
+	c.setNextXY(control)
 	c.AddWidget(control)
 	return control
 }
@@ -191,6 +244,13 @@ func (c *Panel) AddTextBlockOnGrid(gridX int, gridY int, text string) *TextBlock
 	control := NewTextBlock(c, text)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
+	c.AddWidget(control)
+	return control
+}
+
+func (c *Panel) AddTextBlock(text string) *TextBlock {
+	control := NewTextBlock(c, text)
+	c.setNextXY(control)
 	c.AddWidget(control)
 	return control
 }
