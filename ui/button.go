@@ -67,6 +67,8 @@ func NewButton(parent Widget, text string, onPress func(event *Event)) *Button {
 		c.showText = false
 	}
 
+	c.SetMinWidth(100)
+
 	c.rebuildContent()
 	return &c
 }

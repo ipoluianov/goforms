@@ -271,10 +271,24 @@ func (c *Panel) AddHSpacerOnGrid(gridX int, gridY int) *HSpacer {
 	return control
 }
 
+func (c *Panel) AddHSpacer() *HSpacer {
+	control := NewHSpacer(c)
+	c.setNextXY(control)
+	c.AddWidget(control)
+	return control
+}
+
 func (c *Panel) AddVSpacerOnGrid(gridX int, gridY int) *VSpacer {
 	control := NewVSpacer(c)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
+	c.AddWidget(control)
+	return control
+}
+
+func (c *Panel) AddVSpacer() *VSpacer {
+	control := NewVSpacer(c)
+	c.setNextXY(control)
 	c.AddWidget(control)
 	return control
 }

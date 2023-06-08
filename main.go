@@ -4,15 +4,22 @@ import (
 	"github.com/ipoluianov/goforms/ui"
 )
 
-func main() {
-	ui.InitUI()
+func makeMainForm() *ui.Form {
 	form := ui.NewForm()
+
 	panelTop := form.Panel().AddVPanel()
 	panelTop.AddTextBlock("Label")
+	panelTop.AddVSpacer()
+
 	panelBottom := form.Panel().AddHPanel()
-	btnOK := panelBottom.AddButtonOnGrid(1, 0, "OK", nil)
-	btnOK.SetMinWidth(100)
-	btnCancel := panelBottom.AddButtonOnGrid(2, 0, "Cancel", nil)
-	btnCancel.SetMinWidth(100)
-	ui.StartMainForm(form)
+	panelBottom.AddHSpacer()
+	panelBottom.AddButton("OK", func(event *ui.Event) { form.Close() })
+	panelBottom.AddButton("Cancel", func(event *ui.Event) { form.Close() })
+
+	return form
+}
+
+func main() {
+	ui.InitUI()
+	ui.StartMainForm(makeMainForm())
 }
