@@ -232,6 +232,13 @@ func (c *Panel) AddTextBoxOnGrid(gridX int, gridY int) *TextBox {
 	return control
 }
 
+func (c *Panel) AddTextBox() *TextBox {
+	control := NewTextBox(c)
+	c.setNextXY(control)
+	c.AddWidget(control)
+	return control
+}
+
 func (c *Panel) AddTextBoxExtOnGrid(gridX int, gridY int, text string, onSelect func(textBoxExt *TextBoxExt)) *TextBoxExt {
 	control := NewTextBoxExt(c, text, onSelect)
 	control.SetGridX(gridX)

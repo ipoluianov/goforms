@@ -1,0 +1,6 @@
+Windows. No console.
+-ldflags -H=windowsgui
+
+MacOS:
+mkdir -p goforms.app/Contents/MacOS
+go build -o goforms.app/Contents/MacOS/goforms
