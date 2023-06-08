@@ -1,5 +1,6 @@
 package coreforms
 
+/*
 import (
 	"github.com/ipoluianov/goforms/uicontrols"
 	"github.com/ipoluianov/goforms/uievents"
@@ -72,3 +73,4 @@ func (c *MultilineEditor) Text() string {
 func (c *MultilineEditor) ResultText() string {
 	return c.resValue
 }
+*/

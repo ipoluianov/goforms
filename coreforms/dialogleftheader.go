@@ -1,5 +1,6 @@
 package coreforms
 
+/*
 import (
 	"image"
 
@@ -45,3 +46,4 @@ func (c *DialogLeftHeader) Dispose() {
 	// local dispose
 	c.Panel.Dispose()
 }
+*/

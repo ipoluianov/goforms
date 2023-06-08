@@ -1,11 +1,6 @@
 package coreforms
 
-import (
-	"github.com/ipoluianov/goforms/uicontrols"
-	"github.com/ipoluianov/goforms/uievents"
-	"github.com/ipoluianov/goforms/uiforms"
-)
-
+/*
 type LuaEditor struct {
 	uiforms.Form
 
@@ -59,3 +54,4 @@ func (c *LuaEditor) onBtnOK(ev *uievents.Event) {
 	c.code = c.txtCode.Text()
 	c.Accept()
 }
+*/

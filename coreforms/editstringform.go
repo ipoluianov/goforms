@@ -1,5 +1,6 @@
 package coreforms
 
+/*
 import (
 	"github.com/ipoluianov/goforms/uicontrols"
 	"github.com/ipoluianov/goforms/uiinterfaces"
@@ -55,3 +56,4 @@ func NewEditStringForm(parent uiinterfaces.Widget, text string, OnOK func(newVal
 
 	return &c
 }
+*/

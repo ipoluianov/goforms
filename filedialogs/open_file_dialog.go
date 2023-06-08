@@ -1,5 +1,6 @@
 package filedialogs
 
+/*
 import (
 	"io/ioutil"
 	"path/filepath"
@@ -165,12 +166,6 @@ func (c *OpenFileDialog) loadNode(loadingNode *uicontrols.TreeNode) {
 				c.tvItems.SetNodeValue(n, 2, f.SizeAsString())
 				ff := f
 				n.UserData = &ff
-				/*if f.Dir {
-					n.Icon = uiresources.ResImageAdjusted("icons/material/file/drawable-hdpi/baseline_folder_open_black_48dp.png", c.ForeColor())
-					c.tvItems.AddNode(n, "loading ...")
-				} else {
-					n.Icon = uiresources.ResImageAdjusted("icons/material/file/drawable-hdpi/outline_text_snippet_black_48dp.png", c.ForeColor())
-				}*/
 			}
 		}
 	}
@@ -273,3 +268,4 @@ func ShowOpenFile(parent uiinterfaces.Widget, selected func(filePath string)) {
 		}
 	}
 }
+*/

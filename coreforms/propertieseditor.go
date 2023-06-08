@@ -1,5 +1,6 @@
 package coreforms
 
+/*
 import (
 	"fmt"
 	"image/color"
@@ -270,3 +271,4 @@ func (c *PropertiesEditor) ColorPickerChanged(colorPicker *uicontrols.ColorPicke
 func (c *PropertiesEditor) OnPropertyChanged(prop *uiproperties.Property) {
 	c.LoadPropertiesValues()
 }
+*/
