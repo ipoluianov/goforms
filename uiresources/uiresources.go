@@ -6,7 +6,7 @@ import (
 	"image/color"
 	"image/png"
 
-	"github.com/ipoluianov/goforms/canvas"
+	"github.com/ipoluianov/goforms/utils/canvas"
 	"golang.org/x/image/colornames"
 )
 

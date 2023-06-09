@@ -5,7 +5,7 @@ import (
 	"image/color"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
-	"github.com/ipoluianov/goforms/canvas"
+	"github.com/ipoluianov/goforms/utils/canvas"
 )
 
 type Button struct {

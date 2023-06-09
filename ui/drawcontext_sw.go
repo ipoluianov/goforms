@@ -7,8 +7,8 @@ import (
 
 	"github.com/fogleman/gg"
 	"github.com/go-gl/glfw/v3.3/glfw"
-	"github.com/ipoluianov/goforms/canvas"
-	"github.com/ipoluianov/goforms/opengl/gl11/gl"
+	"github.com/ipoluianov/goforms/utils/canvas"
+	"github.com/ipoluianov/goforms/utils/opengl/gl11/gl"
 )
 
 var texturesMap map[int]*image.RGBA

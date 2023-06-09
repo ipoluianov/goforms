@@ -4,7 +4,7 @@ import (
 	"image/color"
 
 	"github.com/golang-collections/collections/stack"
-	"github.com/ipoluianov/goforms/opengl/gl11/gl"
+	"github.com/ipoluianov/goforms/utils/opengl/gl11/gl"
 )
 
 type ClipSettings struct {

@@ -5,7 +5,7 @@ import (
 	"image/color"
 
 	"github.com/fogleman/gg"
-	"github.com/ipoluianov/goforms/canvas"
+	"github.com/ipoluianov/goforms/utils/canvas"
 )
 
 type DrawContext interface {

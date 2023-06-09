@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/ipoluianov/goforms/canvas"
 	"github.com/ipoluianov/goforms/utils"
+	"github.com/ipoluianov/goforms/utils/canvas"
 )
 
 type ImageCache struct {

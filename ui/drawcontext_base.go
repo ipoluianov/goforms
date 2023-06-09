@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/golang-collections/collections/stack"
-	"github.com/ipoluianov/goforms/canvas"
+	"github.com/ipoluianov/goforms/utils/canvas"
 	"golang.org/x/image/colornames"
 )
 

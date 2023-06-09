@@ -1,7 +1,7 @@
 package ui
 
 import (
-	"github.com/ipoluianov/goforms/canvas"
+	"github.com/ipoluianov/goforms/utils/canvas"
 )
 
 type MessageBox struct {

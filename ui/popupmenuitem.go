@@ -1,8 +1,8 @@
 package ui
 
 import (
-	"github.com/ipoluianov/goforms/canvas"
 	"github.com/ipoluianov/goforms/uiresources"
+	"github.com/ipoluianov/goforms/utils/canvas"
 
 	"image"
 	"time"

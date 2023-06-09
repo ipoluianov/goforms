@@ -3,7 +3,7 @@ package ui
 import (
 	"image"
 
-	"github.com/ipoluianov/goforms/canvas"
+	"github.com/ipoluianov/goforms/utils/canvas"
 	"github.com/nfnt/resize"
 )
 

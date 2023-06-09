@@ -6,8 +6,8 @@ import (
 	"math/rand"
 	"strconv"
 
-	"github.com/ipoluianov/goforms/canvas"
-	"github.com/ipoluianov/goforms/uiproperties"
+	"github.com/ipoluianov/goforms/utils/canvas"
+	"github.com/ipoluianov/goforms/utils/uiproperties"
 )
 
 type Table struct {

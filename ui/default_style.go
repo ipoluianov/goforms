@@ -3,7 +3,7 @@ package ui
 import (
 	"image/color"
 
-	"github.com/ipoluianov/goforms/uiproperties"
+	"github.com/ipoluianov/goforms/utils/uiproperties"
 	"gopkg.in/go-playground/colors.v1"
 )
 
