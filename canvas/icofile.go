@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	"golang.org/x/image/bmp"
 	"image"
 	"image/color"
 	"image/draw"
 	"image/png"
 	"io"
+
+	"golang.org/x/image/bmp"
 )
 
 func init() {
@@ -53,7 +54,7 @@ func DecodeConfig(r io.Reader) (image.Config, error) {
 		return cfg, err
 	}
 	buf = buf[:14+n]
-	if n > 8 && bytes.Compare(buf[14:22], pngHeader) == 0 {
+	if n > 8 && bytes.Equal(buf[14:22], pngHeader) {
 		return png.DecodeConfig(bytes.NewReader(buf[14:]))
 	}
 
@@ -102,7 +103,7 @@ func (d *decoder) decode(r io.Reader) (err error) {
 			return err
 		}
 		data = data[:14+n]
-		if n > 8 && bytes.Compare(data[14:22], pngHeader) == 0 { // decode as PNG
+		if n > 8 && bytes.Equal(data[14:22], pngHeader) { // decode as PNG
 			if d.images[i], err = png.Decode(bytes.NewReader(data[14:])); err != nil {
 				return err
 			}
