@@ -69,11 +69,7 @@ func (c *DrawScript) plot(x int, y int, col float64) {
 func (c *DrawScript) append(script *DrawScript) {
 	c.horLines = append(c.horLines, script.horLines...)
 	for k, v := range script.points {
-		if _, ok := c.points[k]; ok {
-			c.points[k] += v
-		} else {
-			c.points[k] = v
-		}
+		c.points[k] += v
 	}
 }
 

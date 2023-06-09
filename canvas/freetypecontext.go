@@ -11,12 +11,13 @@ package canvas
 
 import (
 	"errors"
+	"image"
+	"image/draw"
+
 	"github.com/golang/freetype/raster"
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
-	"image"
-	"image/draw"
 )
 
 // These constants determine the size of the glyph cache. The cache is keyed
@@ -251,7 +252,7 @@ func (c *Context) DrawString(s string, p fixed.Point26_6) (fixed.Point26_6, erro
 		dr := c.clip.Intersect(glyphRect)
 		if !dr.Empty() {
 			mp := image.Point{dr.Min.X - glyphRect.Min.X, dr.Min.Y - glyphRect.Min.Y}
-			draw.DrawMask(c.dst, dr, c.src, image.ZP, mask, mp, draw.Over)
+			draw.DrawMask(c.dst, dr, c.src, image.Point{}, mask, mp, draw.Over)
 		}
 		prev, hasPrev = index, true
 	}
