@@ -3,14 +3,15 @@ package canvas
 import (
 	"errors"
 	"fmt"
-	"github.com/golang/freetype"
-	"github.com/golang/freetype/truetype"
-	"golang.org/x/image/font"
 	"image"
 	"image/color"
 	"math"
 	"strconv"
 	"strings"
+
+	"github.com/golang/freetype"
+	"github.com/golang/freetype/truetype"
+	"golang.org/x/image/font"
 )
 
 type FontInfo struct {
@@ -102,7 +103,7 @@ func Font(family string, size float64, bold bool, italic bool) (result *truetype
 	}
 
 	if result == nil {
-		err = fmt.Errorf("No font found")
+		err = fmt.Errorf("no font found")
 	}
 
 	if _, ok := val.faces[size]; !ok {
@@ -228,7 +229,7 @@ func MeasureTextFreeType(family string, size float64, bold bool, italic bool, te
 func CharPositions(family string, size float64, bold bool, italic bool, text string) ([]int, error) {
 	runes := []rune(text)
 	result := make([]int, len(runes)+1)
-	for pos, _ := range runes {
+	for pos := range runes {
 		safeSubstring := string(runes[0:pos])
 		w, _, err := MeasureText(family, size, bold, italic, safeSubstring, false)
 		if err != nil {
