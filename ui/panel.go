@@ -105,14 +105,6 @@ func (c *Panel) AddCheckBoxOnGrid(gridX int, gridY int, text string) *CheckBox {
 	return control
 }
 
-func (c *Panel) AddColorPickerOnGrid(gridX int, gridY int) *ColorPicker {
-	control := NewColorPicker(c)
-	control.SetGridX(gridX)
-	control.SetGridY(gridY)
-	c.AddWidget(control)
-	return control
-}
-
 func (c *Panel) AddComboBoxOnGrid(gridX int, gridY int) *ComboBox {
 	control := NewComboBox(c)
 	control.SetGridX(gridX)

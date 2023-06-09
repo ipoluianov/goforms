@@ -10,15 +10,15 @@ import (
 	"time"
 
 	"github.com/ipoluianov/goforms/canvas"
-	"github.com/ipoluianov/goforms/grid/stats"
 	"github.com/ipoluianov/goforms/uiproperties"
+	"github.com/ipoluianov/goforms/utils"
 	"golang.org/x/image/colornames"
 )
 
 // type DrawControl func(ctx *gg.Context)
 
 type Control struct {
-	stats.Obj
+	utils.Obj
 	UserDataContainer
 
 	disposed bool

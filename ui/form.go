@@ -13,7 +13,7 @@ import (
 
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/ipoluianov/goforms/canvas"
-	"github.com/ipoluianov/goforms/grid/stats"
+	"github.com/ipoluianov/goforms/utils"
 	"golang.org/x/image/colornames"
 )
 
@@ -47,7 +47,7 @@ func init() {
 }
 
 type Form struct {
-	stats.Obj
+	utils.Obj
 	id       int
 	disposed bool
 	inited   bool
@@ -270,7 +270,7 @@ func (c *Form) Draw() bool {
 		avgDrawTimeMs += c.drawTimes[i].Milliseconds()
 	}
 	avgDrawTimeMs = avgDrawTimeMs / int64(c.drawTimesCount)
-	drawPeriodTime := 50 * time.Millisecond
+	drawPeriodTime := 20 * time.Millisecond
 	//drawPeriodTime := time.Duration(avgDrawTimeMs*2) * time.Millisecond
 	//fmt.Println("Form draw avg:", avgDrawTimeMs, "drawPeriod:", drawPeriodTime)
 

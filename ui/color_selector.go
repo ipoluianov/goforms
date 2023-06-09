@@ -1,9 +1,6 @@
 package ui
 
-import (
-	"image/color"
-)
-
+/*
 type ColorSelector struct {
 	Dialog
 	col               color.Color
@@ -238,3 +235,4 @@ func (c *ColorSelector) Color() color.Color {
 func (c *ColorSelector) ResColor() color.Color {
 	return c.resColor
 }
+*/

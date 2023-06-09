@@ -11,12 +11,12 @@ import (
 	"strings"
 
 	"github.com/golang/freetype"
-	"github.com/ipoluianov/goforms/grid/stats"
+	"github.com/ipoluianov/goforms/utils"
 	"github.com/nfnt/resize"
 )
 
 type CanvasDirect struct {
-	stats.Obj
+	utils.Obj
 	image       *image.RGBA
 	state       CanvasDirectState
 	savedStates []CanvasDirectState
@@ -581,12 +581,12 @@ func AdjustImageForColor(mask image.Image, width int, height int, col color.Colo
 
 	// Src
 	src := image.NewRGBA(image.Rectangle{image.Point{0, 0}, image.Point{width, height}})
-	draw.Draw(src, src.Bounds(), &image.Uniform{col}, image.ZP, draw.Src)
+	draw.Draw(src, src.Bounds(), &image.Uniform{col}, image.Point{}, draw.Src)
 
 	// Dest
 	dest := image.NewRGBA(image.Rectangle{image.Point{0, 0}, image.Point{width, height}})
 
-	draw.DrawMask(dest, dest.Bounds(), src, image.ZP, img, image.ZP, draw.Over)
+	draw.DrawMask(dest, dest.Bounds(), src, image.Point{}, img, image.Point{}, draw.Over)
 	return dest
 }
 

@@ -5,11 +5,11 @@ import (
 	"runtime"
 
 	"github.com/ipoluianov/goforms/canvas"
-	"github.com/ipoluianov/goforms/grid/stats"
+	"github.com/ipoluianov/goforms/utils"
 )
 
 type ImageCache struct {
-	stats.Obj
+	utils.Obj
 	images map[string]*canvas.CanvasDirect
 }
 

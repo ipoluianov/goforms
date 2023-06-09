@@ -1,4 +1,4 @@
-package filedialogs
+package x
 
 /*
 import (

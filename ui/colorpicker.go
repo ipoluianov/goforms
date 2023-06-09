@@ -1,10 +1,6 @@
 package ui
 
-import (
-	"image"
-	"image/color"
-)
-
+/*
 type ColorPicker struct {
 	Panel
 
@@ -37,9 +33,6 @@ func (c *ColorPicker) Dispose() {
 	c.Container.Dispose()
 }
 
-/*func (c *ColorPicker) SetEnabled(enabled bool) {
-
-}*/
 
 func (c *ColorPicker) Color() color.Color {
 	return c.color
@@ -103,3 +96,4 @@ func (c *ColorPicker) selectColor() {
 
 	c.Update("ColorPicker")
 }
+*/

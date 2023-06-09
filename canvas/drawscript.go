@@ -33,9 +33,9 @@ func NewDrawScript() *DrawScript {
 
 func (c *DrawScript) pointByCode(code int64) (int, int) {
 	const MaxUint = ^uint32(0)
-	const MinUint = 0
+	//const MinUint = 0
 	const MaxInt = int32(MaxUint >> 1)
-	const MinInt = -MaxInt - 1
+	//const MinInt = -MaxInt - 1
 
 	x := int((code >> 32) - int64(MaxInt/2))
 	y := int((code & 0xFFFFFFFF) - int64(MaxInt/2))
@@ -44,9 +44,9 @@ func (c *DrawScript) pointByCode(code int64) (int, int) {
 
 func (c *DrawScript) codeByPoint(x int, y int) int64 {
 	const MaxUint = ^uint32(0)
-	const MinUint = 0
+	//const MinUint = 0
 	const MaxInt = int32(MaxUint >> 1)
-	const MinInt = -MaxInt - 1
+	//const MinInt = -MaxInt - 1
 
 	x64 := int64(x + int(MaxInt/2))
 	y64 := int64(y + int(MaxInt/2))

@@ -1,4 +1,4 @@
-package coreforms
+package x
 
 /*
 import (
