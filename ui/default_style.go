@@ -14,16 +14,20 @@ func InitDefaultStyle(w Widget) {
 	if CurrentStyle == StyleDarkBlue {
 		InitDarkBlue(w)
 	}
+	if CurrentStyle == StyleDarkWhite {
+		InitDarkWhite(w)
+	}
 }
 
 type Style int
 
 const (
-	StyleLight    = 0
-	StyleDarkBlue = 1
+	StyleLight     = 0
+	StyleDarkBlue  = 1
+	StyleDarkWhite = 2
 )
 
-var CurrentStyle = StyleDarkBlue
+var CurrentStyle = StyleDarkWhite
 
 var DefaultBackColor color.Color
 
@@ -280,8 +284,154 @@ Control
 {
 	fontFamily: Roboto;
 	fontSize: 16;
-	backgroundColor:#202020FF;
+	backgroundColor:#303030FF;
 	foregroundColor:#2298EB;
+	inactiveColor:#444;
+	accentColor:#ff8c00;
+
+	leftBorderColor: #444;
+	rightBorderColor: #444;
+	topBorderColor: #444;
+	bottomBorderColor: #444;
+
+	selectionBackground: #00489B;
+
+	verticalScrollVisible: true;
+
+	leftBorderWidth: 0;
+	rightBorderWidth: 0;
+	topBorderWidth: 0;
+	bottomBorderWidth: 0;
+}
+
+Control:disabled
+{
+	foregroundColor:#004090;
+}
+
+Panel, HSpacer, VSpacer, TextBlock, ImageBox, Container, CheckBox
+{
+	backgroundColor:#FFFFFF00;
+}
+
+Dialog {
+	backgroundColor:#101010FF;
+}
+
+TimeChart {
+	color0: #ff8c00;
+	color1: #ff2000;
+	color2: #8cff00;
+	color3: #005566;
+	color4: #440000;
+}
+
+Button, TextBox, ListView, TreeView, ProgressBar, ComboBox, TimeChart
+{
+	leftBorderWidth: 1;
+	rightBorderWidth: 1;
+	topBorderWidth: 1;
+	bottomBorderWidth: 1;
+	barColor: #800;
+}
+
+Button:hover 
+{
+	backgroundColor:#004070;
+}
+
+Button:focus 
+{
+	backgroundColor:#202040FF;
+}
+
+TextBlock:disabled
+{
+	foregroundColor:#004455FF;
+}
+
+Button:disabled
+{
+	backgroundColor:#202020FF;
+	foregroundColor:#004455FF;
+}
+
+Button:clicked 
+{
+	backgroundColor:#777777FF;
+}
+
+ListViewHeader
+{
+	foregroundColor:#777;
+	backgroundColor:#242424;
+	leftBorderWidth: 0;
+	rightBorderWidth: 0;
+	topBorderWidth: 0;
+	bottomBorderWidth: 1;
+	bottomBorderColor: #444;
+}
+
+ListView {
+	gridColor: #333;
+}
+
+
+TreeViewHeader
+{
+	leftBorderWidth: 0;
+	rightBorderWidth: 0;
+	topBorderWidth: 0;
+	bottomBorderWidth: 1;
+}
+
+PopupMenu {
+	leftBorderColor: #777;
+	rightBorderColor: #777;
+	topBorderColor: #777;
+	bottomBorderColor: #777;
+	leftBorderWidth: 1;
+	rightBorderWidth: 1;
+	topBorderWidth: 1;
+	bottomBorderWidth: 1;
+}
+
+PopupMenuItem:hover {
+	backgroundColor:#444444FF;
+}
+
+ProgressBar
+{
+	barColor: #800;
+}
+
+`)
+
+	for _, line := range c.lines {
+
+		if line.elementType == "Control" {
+			if line.propertyName == "backgroundColor" {
+				v, _ := uiproperties.ParseCSSProperty(uiproperties.PropertyTypeColor, line.value)
+				DefaultBackColor = v.(color.Color)
+			}
+		}
+
+		w.ApplyStyleLine(line.elementName, line.elementType, "", line.subclass, line.propertyName, line.value)
+	}
+
+	return
+
+}
+
+func InitDarkWhite(w Widget) {
+	var c CSS
+	c.Parse(`
+Control 
+{
+	fontFamily: Roboto;
+	fontSize: 16;
+	backgroundColor:#303030FF;
+	foregroundColor:#AAAAAAFF;
 	inactiveColor:#444;
 	accentColor:#ff8c00;
 

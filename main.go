@@ -9,7 +9,8 @@ func makeMainForm() *ui.Form {
 
 	panelTop := form.Panel().AddVPanel()
 	panelTop.AddTextBlock("Label")
-	panelTop.AddTextBox()
+	txtBox := panelTop.AddTextBox()
+	txtBox.SetText("Hello!")
 	panelTop.AddVSpacer()
 
 	panelBottom := form.Panel().AddHPanel()
