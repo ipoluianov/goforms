@@ -10,11 +10,11 @@ import (
 type TabControl struct {
 	Container
 
-	headerButtons         []*Button
-	pages                 []*TabPage
-	visiblePages          []int
-	currentPageIndex      int
-	closeButtonIndexHover int
+	headerButtons    []*Button
+	pages            []*TabPage
+	visiblePages     []int
+	currentPageIndex int
+	//closeButtonIndexHover int
 
 	hoverTabIndex int
 

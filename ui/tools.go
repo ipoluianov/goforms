@@ -212,64 +212,64 @@ type FormSizeChangedEvent struct {
 }
 
 func (event *MouseWheelEvent) Translate(w CoordinateTranslator) *MouseWheelEvent {
-	var result MouseWheelEvent
-	result = *event
+	//var result MouseWheelEvent
+	result := *event
 	result.X = w.TranslateX(event.X)
 	result.Y = w.TranslateY(event.Y)
 	return &result
 }
 
 func (event *MouseMoveEvent) Translate(w CoordinateTranslator) *MouseMoveEvent {
-	var result MouseMoveEvent
-	result = *event
+	//var result MouseMoveEvent
+	result := *event
 	result.X = w.TranslateX(event.X)
 	result.Y = w.TranslateY(event.Y)
 	return &result
 }
 
 func (event *MouseDropEvent) Translate(w CoordinateTranslator) *MouseDropEvent {
-	var result MouseDropEvent
-	result = *event
+	//var result MouseDropEvent
+	result := *event
 	result.X = w.TranslateX(event.X)
 	result.Y = w.TranslateY(event.Y)
 	return &result
 }
 
 func (event *MouseValidateDropEvent) Translate(w CoordinateTranslator) *MouseValidateDropEvent {
-	var result MouseValidateDropEvent
-	result = *event
+	//var result MouseValidateDropEvent
+	result := *event
 	result.X = w.TranslateX(event.X)
 	result.Y = w.TranslateY(event.Y)
 	return &result
 }
 
 func (event *MouseDownEvent) Translate(w CoordinateTranslator) *MouseDownEvent {
-	var result MouseDownEvent
-	result = *event
+	//var result MouseDownEvent
+	result := *event
 	result.X = w.TranslateX(event.X)
 	result.Y = w.TranslateY(event.Y)
 	return &result
 }
 
 func (event *MouseUpEvent) Translate(w CoordinateTranslator) *MouseUpEvent {
-	var result MouseUpEvent
-	result = *event
+	//var result MouseUpEvent
+	result := *event
 	result.X = w.TranslateX(event.X)
 	result.Y = w.TranslateY(event.Y)
 	return &result
 }
 
 func (event *MouseClickEvent) Translate(w CoordinateTranslator) *MouseClickEvent {
-	var result MouseClickEvent
-	result = *event
+	//var result MouseClickEvent
+	result := *event
 	result.X = w.TranslateX(event.X)
 	result.Y = w.TranslateY(event.Y)
 	return &result
 }
 
 func (event *MouseDblClickEvent) Translate(w CoordinateTranslator) *MouseDblClickEvent {
-	var result MouseDblClickEvent
-	result = *event
+	//var result MouseDblClickEvent
+	result := *event
 	result.X = w.TranslateX(event.X)
 	result.Y = w.TranslateY(event.Y)
 	return &result

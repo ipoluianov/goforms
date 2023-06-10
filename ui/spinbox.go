@@ -126,8 +126,6 @@ func (c *SpinBox) SetValue(value float64) {
 		changed = true
 	}
 
-	c.value = value
-
 	if c.value < c.minValue {
 		value = c.minValue
 	}
@@ -135,6 +133,7 @@ func (c *SpinBox) SetValue(value float64) {
 	if c.value > c.maxValue {
 		value = c.maxValue
 	}
+	c.value = value
 
 	c.updateValue()
 

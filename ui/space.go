@@ -3,7 +3,7 @@ package ui
 type Space struct {
 	Control
 
-	onPress func(event *Event)
+	//onPress func(event *Event)
 }
 
 func NewSpace(parent Widget) *Space {
