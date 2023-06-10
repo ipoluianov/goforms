@@ -29,12 +29,6 @@ func NewImageBox(parent Widget, img image.Image) *ImageBox {
 	c.image = img
 	c.scaling = ImageBoxScaleNoScaleAdjustBox
 
-	if c.image != nil {
-		//c.SetMinWidth(c.image.Bounds().Max.X)
-		//c.SetMinHeight(c.image.Bounds().Max.Y)
-		/*c.SetMaxWidth(c.Image.Bounds().Max.X)
-		c.SetMaxHeight(c.Image.Bounds().Max.Y)*/
-	}
 	return &c
 }
 
@@ -45,8 +39,6 @@ func NewImageBoxBytes(parent Widget, data []byte) *ImageBox {
 	c.InitControl(parent, &c)
 	c.image = img
 
-	if c.image != nil {
-	}
 	return &c
 }
 

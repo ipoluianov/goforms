@@ -598,9 +598,6 @@ func (c *ListViewHeader) MouseUp(event *MouseUpEvent) {
 
 func (c *ListViewHeader) MouseMove(event *MouseMoveEvent) {
 	//fmt.Println("ListView Move: ", event.X, " ", event.Y)
-	if c.pressed {
-		//fmt.Println("ListView Move: ", event.X, " ", event.Y)
-	}
 	if c.columnResizing {
 		//fmt.Println("Move: event.Y:", event.X, " c.calcColumnXOffset(c.columnResizingIndex):", c.listView.calcColumnXOffset(c.columnResizingIndex), " w: ", event.Y-c.listView.calcColumnXOffset(c.columnResizingIndex))
 		c.listView.columns[c.columnResizingIndex].width = event.X - c.listView.calcColumnXOffset(c.columnResizingIndex)

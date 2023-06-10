@@ -6,8 +6,8 @@ import (
 
 type MessageBox struct {
 	Dialog
-	lblText      *TextBlock
-	pButtons     *Panel
+	lblText *TextBlock
+	//pButtons     *Panel
 	text         string
 	header       string
 	typeOfDialog string

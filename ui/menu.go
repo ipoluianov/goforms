@@ -7,13 +7,13 @@ import (
 
 type Menu struct {
 	Control
-	items           []*MenuItem
-	visible         bool
-	ownerWindow     Window
-	menuOpened      bool
-	openedItem      *MenuItem
-	hoverItem       *MenuItem
-	openedPopupMenu *PopupMenu
+	items       []*MenuItem
+	visible     bool
+	ownerWindow Window
+	menuOpened  bool
+	//openedItem      *MenuItem
+	hoverItem *MenuItem
+	//openedPopupMenu *PopupMenu
 
 	hoverBackgroundColor  *uiproperties.Property
 	openedBackgroundColor *uiproperties.Property
@@ -150,7 +150,7 @@ func (c *Menu) ShowSubmenu(item *MenuItem) {
 	ctxMenu.ShowMenu(c, wnd.Position().X+wX+item.posX, wnd.Position().Y+wY+item.height-2)*/
 }
 
-func (c *Menu) remakePopupMenu() {
+/*func (c *Menu) remakePopupMenu() {
 	if c.openedPopupMenu != nil {
 		c.openedPopupMenu.RemoveAllItems()
 
@@ -158,13 +158,13 @@ func (c *Menu) remakePopupMenu() {
 			c.openedPopupMenu.AddItem(item.Text, nil, nil, "")
 		}
 	}
-}
+}*/
 
-func (c *Menu) submenuClosed() {
+/*func (c *Menu) submenuClosed() {
 	c.openedPopupMenu = nil
 	c.openedItem = nil
 	c.menuOpened = false
-}
+}*/
 
 func (c *Menu) findMenuItemByXOffset(xOffset int) *MenuItem {
 	for _, item := range c.items {

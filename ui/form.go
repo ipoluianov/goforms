@@ -80,7 +80,7 @@ type Form struct {
 
 	keyModifiers KeyModifiers
 
-	drawTime     []float64
+	//drawTime     []float64
 	dialogResult bool
 
 	formTimers []*FormTimer
@@ -265,11 +265,11 @@ func (c *Form) Draw() bool {
 
 	//fmt.Println("Form Draw", time.Now().Format("02-01-2006 15-04-05.999"))
 
-	avgDrawTimeMs := int64(0)
+	/*avgDrawTimeMs := int64(0)
 	for i := 0; i < c.drawTimesCount; i++ {
 		avgDrawTimeMs += c.drawTimes[i].Milliseconds()
 	}
-	avgDrawTimeMs = avgDrawTimeMs / int64(c.drawTimesCount)
+	avgDrawTimeMs = avgDrawTimeMs / int64(c.drawTimesCount)*/
 	drawPeriodTime := 20 * time.Millisecond
 	//drawPeriodTime := time.Duration(avgDrawTimeMs*2) * time.Millisecond
 	//fmt.Println("Form draw avg:", avgDrawTimeMs, "drawPeriod:", drawPeriodTime)
@@ -860,9 +860,6 @@ func (c *Form) ProcessMouseWheel(delta int) {
 
 func (c *Form) updateHoverWidget(x, y int) {
 	wHover := c.userPanel.ProcessFindWidgetUnderPointer(x, y)
-	if wHover != nil {
-		//fmt.Println("HOVER:", wHover.FullPath(), wHover.X(), wHover.Y(), wHover.ScrollOffsetX())
-	}
 	if wHover != c.hoverWidget {
 		if c.hoverWidget != nil {
 			if c.hoverWidget.Hover() {
@@ -1115,9 +1112,7 @@ func (c *Form) Close() {
 	c.window.Hide()
 	c.window.Destroy()
 
-	if _, ok := windowByGLFWWindow[c.window]; ok {
-		delete(windowByGLFWWindow, c.window)
-	}
+	delete(windowByGLFWWindow, c.window)
 
 	windowIndex := -1
 	for i := 0; i < len(windows); i++ {
@@ -1302,7 +1297,7 @@ func (c *Form) realUpdateLayout() {
 			c.Panel().ClearLayoutCache()
 			c.Panel().UpdateLayout()
 
-			minW := c.Panel().MinWidth()
+			/*minW := c.Panel().MinWidth()
 			minH := c.Panel().MinHeight()
 			maxW := 2000
 			maxH := 2000
@@ -1312,7 +1307,7 @@ func (c *Form) realUpdateLayout() {
 			}
 			if minH > maxH {
 				minH = maxH - 1
-			}
+			}*/
 
 			//c.Window().SetSizeLimits(minW, minH, maxW, maxH)
 		}
@@ -1341,8 +1336,7 @@ func (c *Form) LoopUI_OpenGL() {
 
 		for _, window := range windows {
 			window.MainTimer()
-			if !window.Draw() {
-			}
+			window.Draw()
 		}
 	}
 }
