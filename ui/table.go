@@ -1,12 +1,9 @@
 package ui
 
 import (
-	"image"
-	"image/draw"
 	"math/rand"
 	"strconv"
 
-	"github.com/ipoluianov/goforms/utils/canvas"
 	"github.com/ipoluianov/goforms/utils/uiproperties"
 )
 
@@ -24,22 +21,22 @@ type TableColumn struct {
 	Name  string
 	Width int
 
-	leftBorderWidth  *uiproperties.Property
-	leftBorderColor  *uiproperties.Property
+	leftBorderWidth *uiproperties.Property
+	//leftBorderColor  *uiproperties.Property
 	rightBorderWidth *uiproperties.Property
-	rightBorderColor *uiproperties.Property
+	//rightBorderColor *uiproperties.Property
 }
 
 type TableRow struct {
 	Name   string
 	Height int
 	Cells  []Widget
-	rows   []*TableRow
+	//rows   []*TableRow
 
-	topBorderWidth    *uiproperties.Property
-	topBorderColor    *uiproperties.Property
+	topBorderWidth *uiproperties.Property
+	//topBorderColor    *uiproperties.Property
 	bottomBorderWidth *uiproperties.Property
-	bottomBorderColor *uiproperties.Property
+	//bottomBorderColor *uiproperties.Property
 }
 
 func NewTable(parent Widget, x int, y int, width int, height int) *Table {
@@ -61,10 +58,6 @@ func NewTable(parent Widget, x int, y int, width int, height int) *Table {
 	}
 
 	return &c
-}
-
-func (c *Table) btnClick(event *Event) {
-	//c.OwnWindow.MessageBox("123", "asd")
 }
 
 func (c *Table) AddRow(name string) {
@@ -142,7 +135,7 @@ func (c *Table) Draw(ctx DrawContext) {
 
 }
 
-func drawWidgetOnCanvasTest(ctx *canvas.CanvasDirect, w Widget) {
+/*func drawWidgetOnCanvasTest(ctx *canvas.CanvasDirect, w Widget) {
 
 	// Content of control
 	cnvInner := canvas.NewCanvas(w.InnerWidth(), w.InnerHeight())
@@ -159,7 +152,7 @@ func drawWidgetOnCanvasTest(ctx *canvas.CanvasDirect, w Widget) {
 
 	cnv := canvas.NewCanvas(w.Width(), w.Height())
 	//w.DrawBackground(cnv)
-	draw.Draw(cnv.Image(), bInner, cnvInner.Image(), image.ZP, draw.Over) // Content 20
+	draw.Draw(cnv.Image(), bInner, cnvInner.Image(), image.Point{}, draw.Over) // Content 20
 	//w.DrawBorders(cnv)                                                    // Borders 10
 	//w.DrawScrollBars(cnv)
 
@@ -169,8 +162,8 @@ func drawWidgetOnCanvasTest(ctx *canvas.CanvasDirect, w Widget) {
 	b.Min.Y += w.Y()
 	b.Max.X += w.X()
 	b.Max.Y += w.Y()
-	draw.Draw(ctx.Image(), b, cnv.Image(), image.ZP, draw.Src)
-}
+	draw.Draw(ctx.Image(), b, cnv.Image(), image.Point{}, draw.Src)
+}*/
 
 func (c *Table) updateCellSizes() {
 	yOffset := c.horizontalHeaderHeight
@@ -286,10 +279,10 @@ func (c *Table) cellByPoint(x, y int) (int, int) {
 	return -1, -1
 }
 
-func (c *Table) clearFocus() {
+/*func (c *Table) clearFocus() {
 	c.Control.ClearFocus()
 	c.clearFocusForCells()
-}
+}*/
 
 func (c *Table) clearFocusForCells() {
 	for _, row := range c.rows {
@@ -299,13 +292,15 @@ func (c *Table) clearFocusForCells() {
 	}
 }
 
-func (c *Table) setFocus(focus bool) {
-	c.Control.SetFocus(focus)
-	if !focus {
-		c.clearFocusForCells()
+/*
+	func (c *Table) setFocus(focus bool) {
+		c.Control.SetFocus(focus)
+		if !focus {
+			c.clearFocusForCells()
+		}
 	}
-}
-
+*/
+/*
 func (c *Table) updateInnerSize() {
 
 	height := c.horizontalHeaderHeight
@@ -325,3 +320,4 @@ func (c *Table) updateInnerSize() {
 	c.innerWidthOverloaded = width
 	c.innerSizeOverloaded = true
 }
+*/
