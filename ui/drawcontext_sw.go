@@ -154,7 +154,7 @@ func (c *DrawContextSW) drawCanvasRect(img image.Image, x, y int, textureSize in
 
 	var rgba *image.RGBA
 	var ok bool
-	if rgba, ok = texturesMap[textureSize]; !ok {
+	if _, ok = texturesMap[textureSize]; !ok {
 		rgba = image.NewRGBA(image.Rectangle{Min: image.Point{0, 0}, Max: image.Point{textureSize, textureSize}})
 		texturesMap[textureSize] = rgba
 	} else {
@@ -162,8 +162,8 @@ func (c *DrawContextSW) drawCanvasRect(img image.Image, x, y int, textureSize in
 	}
 	draw.Draw(rgba, img.Bounds(), img, image.Point{x, y}, draw.Src)
 
-	var texid []uint32
-	texid = make([]uint32, 1)
+	//var texid []uint32
+	texid := make([]uint32, 1)
 	texid[0] = 0xFFFFFFFF
 
 	//fmt.Println("123131231", p1x, p1y, p2x, p2y)
@@ -211,8 +211,8 @@ func (c *DrawContextSW) drawCanvasRect(img image.Image, x, y int, textureSize in
 func (c *DrawContextSW) Finish() {
 	img := c.cnv.Image()
 
-	var imgScaled image.Image
-	imgScaled = img
+	//var imgScaled image.Image
+	imgScaled := img
 	/*winWidth, winHeight := c.Window.GetSize()
 	if img.Bounds().Max.X != winWidth || img.Bounds().Max.Y != winHeight {
 		imgScaled = resize.Resize(uint(winWidth), uint(winHeight), img, resize.Lanczos3)

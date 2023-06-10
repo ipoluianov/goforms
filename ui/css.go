@@ -7,9 +7,9 @@ import (
 )
 
 type CSSLine struct {
-	elementName  string
-	elementType  string
-	class        string
+	elementName string
+	elementType string
+	//class        string
 	subclass     string
 	propertyName string
 	value        string

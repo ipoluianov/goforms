@@ -54,9 +54,9 @@ func (c *Menu) Draw(ctx DrawContext) {
 	}
 }
 
-func (c *Menu) preferredHeight() int {
+/*func (c *Menu) preferredHeight() int {
 	return 22
-}
+}*/
 
 func (c *Menu) IsVisible() bool {
 	return c.visible
@@ -132,9 +132,9 @@ func (c *Menu) MouseMove(event *MouseMoveEvent) {
 	}*/
 }
 
-func (c *Menu) onClickItem(ev *Event) {
+/*func (c *Menu) onClickItem(ev *Event) {
 	//c.OwnWindow.MessageBox("Title", "OnClick")
-}
+}*/
 
 func (c *Menu) ShowSubmenu(item *MenuItem) {
 	/*ctxMenu := NewPopupMenu(c.window())

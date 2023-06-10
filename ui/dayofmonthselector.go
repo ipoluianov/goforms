@@ -17,8 +17,8 @@ type DayOfMonthSelector struct {
 	mousePointerInRect bool
 
 	enabled_ bool
-	checked_ bool
-	Image    image.Image
+	//checked_ bool
+	Image image.Image
 
 	buttons []*Button
 

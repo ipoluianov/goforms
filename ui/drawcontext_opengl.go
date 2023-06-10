@@ -31,7 +31,7 @@ func NewDrawContextOpenGL(window *glfw.Window) *DrawContextOpenGL {
 	return &c
 }
 
-var vao uint32
+//var vao uint32
 
 func (c *DrawContextOpenGL) Init() {
 	c.DrawContextBase.InitBase()
@@ -114,9 +114,9 @@ func (c *DrawContextOpenGL) FillRect(x, y, width, height int) {
 		x4, y4, 0,
 	}
 
-	r, g, b, a := c.CurrentColor.RGBA()
+	_, g, b, a := c.CurrentColor.RGBA()
 	gl.UseProgram(SimpleProgram)
-	r = 65535
+	r := 65535
 	gl.Uniform4f(gl.GetUniformLocation(SimpleProgram, gl.Str("pixelColor\x00")), float32(r)/65535, float32(g)/65535, float32(b)/65535, float32(a)/65535)
 
 	var vbo uint32
@@ -168,9 +168,9 @@ func (c *DrawContextOpenGL) DrawLine(x1, y1, x2, y2 int) {
 	vertices[12], vertices[13] = c.xyTo01(int(vertices[12]), int(vertices[13]))
 	vertices[15], vertices[16] = c.xyTo01(int(vertices[15]), int(vertices[16]))
 
-	r, g, b, a := c.CurrentColor.RGBA()
+	r, _, b, a := c.CurrentColor.RGBA()
 	gl.UseProgram(SimpleProgram)
-	g = 65535
+	g := 65535
 	gl.Uniform4f(gl.GetUniformLocation(SimpleProgram, gl.Str("pixelColor\x00")), float32(r)/65535, float32(g)/65535, float32(b)/65535, float32(a)/65535)
 
 	var vbo uint32

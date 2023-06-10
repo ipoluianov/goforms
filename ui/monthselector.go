@@ -14,12 +14,12 @@ type MonthSelector struct {
 	mousePointerInRect bool
 
 	enabled_ bool
-	checked_ bool
-	Image    image.Image
+	//checked_ bool
+	Image image.Image
 
-	buttons      []*Button
-	buttonWidth  int
-	buttonHeight int
+	buttons []*Button
+	//buttonWidth  int
+	//buttonHeight int
 
 	MonthChanged func()
 }

@@ -2,7 +2,6 @@ package ui
 
 import (
 	"fmt"
-	"image"
 	"image/color"
 	"math/rand"
 	"runtime"
@@ -10,7 +9,6 @@ import (
 	"time"
 
 	"github.com/ipoluianov/goforms/utils"
-	"github.com/ipoluianov/goforms/utils/canvas"
 	"github.com/ipoluianov/goforms/utils/uiproperties"
 	"golang.org/x/image/colornames"
 )
@@ -111,12 +109,12 @@ type Control struct {
 	OnContextMenuNeed func(x, y int) IMenu
 
 	//innerCanvas  *CanvasDirect
-	widgetCanvas *canvas.CanvasDirect
+	//widgetCanvas *canvas.CanvasDirect
 	needToRedraw bool
 	alwaysRedraw bool
 	isUpdating   bool
 
-	acceptReturnKey bool
+	//acceptReturnKey bool
 
 	onMouseWheel    func(event *MouseWheelEvent)
 	onMouseMove     func(event *MouseMoveEvent)
@@ -185,9 +183,9 @@ func (c *Control) InitControl(parent Widget, w Widget) {
 		}
 	}
 
-	if parent == nil {
+	/*if parent == nil {
 		//fmt.Error("no parent for control")
-	}
+	}*/
 
 	c.parent = parent
 	if parent != nil {
@@ -654,7 +652,7 @@ func (c *Control) HasFocus() bool {
 }
 
 func (c *Control) BackColor() color.Color {
-	return c.backgroundColor.Color().(color.Color)
+	return c.backgroundColor.Color()
 }
 
 func (c *Control) ForeColor() color.Color {
@@ -933,9 +931,9 @@ func (c *Control) ProcessMouseWheel(event *MouseWheelEvent) {
 	me.Y += c.widget.ScrollOffsetY()
 
 	if c.innerSizeOverloaded {
-		widthIn := c.Width() - c.LeftBorderWidth() - c.RightBorderWidth()
-		if c.InnerWidth() > widthIn {
-		}
+		//widthIn := c.Width() - c.LeftBorderWidth() - c.RightBorderWidth()
+		/*if c.InnerWidth() > widthIn {
+		}*/
 		heightIn := c.Height() - c.TopBorderWidth() - c.BottomBorderWidth()
 		if c.InnerHeight() > heightIn {
 			c.scrollOffsetY -= me.Delta * 20
@@ -1017,9 +1015,9 @@ func (c *Control) ProcessKeyUp(event *KeyUpEvent) {
 
 func (c *Control) MouseWheel(event *MouseWheelEvent) {
 	if c.innerSizeOverloaded {
-		widthIn := c.Width() - c.LeftBorderWidth() - c.RightBorderWidth()
-		if c.InnerWidth() > widthIn {
-		}
+		//widthIn := c.Width() - c.LeftBorderWidth() - c.RightBorderWidth()
+		/*if c.InnerWidth() > widthIn {
+		}*/
 		heightIn := c.Height() - c.TopBorderWidth() - c.BottomBorderWidth()
 		if c.InnerHeight() > heightIn {
 			c.scrollOffsetY++
@@ -1094,16 +1092,12 @@ func (c *Control) DrawScrollBars(ctx DrawContext) {
 		if c.verticalScrollDisplayed {
 			ctx.SetColor(scrollBarsColor)
 			ctx.FillRect(c.vScroll.X, c.vScroll.Y, c.vScroll.Width, c.vScroll.Height)
-		} else {
-			//c.scrollOffsetY = 0
 		}
 
 		c.hScroll = c.horizontalScrollRect()
 		if c.horizontalScrollDisplayed {
 			ctx.SetColor(scrollBarsColor)
 			ctx.FillRect(c.hScroll.X, c.hScroll.Y, c.hScroll.Width, c.hScroll.Height)
-		} else {
-			//c.scrollOffsetX = 0
 		}
 	}
 }
@@ -1189,7 +1183,7 @@ func (c *Control) ScrollEnsureVisible(x1, y1 int) {
 	}
 }
 
-func drawCopyOver(dst *image.RGBA, src *image.RGBA, x int, y int) {
+/*func drawCopyOver(dst *image.RGBA, src *image.RGBA, x int, y int) {
 	height := src.Rect.Max.Y
 	for yy := y; yy < y+height; yy++ {
 		srcIndex := (yy - y) * src.Stride
@@ -1204,7 +1198,7 @@ func drawCopyOver(dst *image.RGBA, src *image.RGBA, x int, y int) {
 		}
 		copy(dst.Pix[destIndex:destIndexEnd], src.Pix[srcIndex:srcIndexEnd])
 	}
-}
+}*/
 
 func (c *Control) Subclass() string {
 	result := "default"
@@ -1368,10 +1362,10 @@ func (c *Control) FirstFocusControl() Widget {
 	return nil
 }
 
-func (c *Control) translateMouseEvent(event *MouseEvent) {
+/*func (c *Control) translateMouseEvent(event *MouseEvent) {
 	event.X = c.TranslateX(event.X)
 	event.Y = c.TranslateX(event.Y)
-}
+}*/
 
 func (c *Control) SetContextMenu(menu IMenu) {
 	c.contextMenu = menu

@@ -12,7 +12,7 @@ type PopupMenu struct {
 	menuHeight int
 	items      []*PopupMenuItem
 	CloseEvent func()
-	closingAll func()
+	//closingAll func()
 	parentMenu *PopupMenu
 }
 

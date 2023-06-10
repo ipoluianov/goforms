@@ -6,9 +6,9 @@ import (
 
 type DateTimePickerDialog struct {
 	Dialog
-	lblYear   *TextBlock
-	lblMonth  *TextBlock
-	lblDay    *TextBlock
+	//lblYear   *TextBlock
+	lblMonth *TextBlock
+	//lblDay    *TextBlock
 	lblHour   *TextBlock
 	lblMinute *TextBlock
 	lblSecond *TextBlock
