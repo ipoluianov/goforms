@@ -309,8 +309,8 @@ func (c *TextBox) Draw(ctx DrawContext) {
 	}
 }
 
-func (c *TextBox) onFocusChanged(focus bool) {
-}
+/*func (c *TextBox) onFocusChanged(focus bool) {
+}*/
 
 func (c *TextBox) KeyChar(event *KeyCharEvent) {
 	if c.readonly {
@@ -467,7 +467,7 @@ func (c *TextBox) moveCursorNearPoint(x, y int, modifiers KeyModifiers) {
 		lineNumber = 0
 	}
 
-	charPos, err := canvas.CharPositions(c.FontFamily(), c.FontSize(), c.FontBold(), c.FontItalic(), c.lines[lineNumber])
+	charPos, _ := canvas.CharPositions(c.FontFamily(), c.FontSize(), c.FontBold(), c.FontItalic(), c.lines[lineNumber])
 	for i := 0; i < len(charPos); i++ {
 		charPos[i] = charPos[i] + c.leftAndRightPadding
 	}
@@ -678,7 +678,7 @@ func (c *TextBox) ensureVisibleCursor() {
 	c.ScrollEnsureVisible(scrollX1+1, cursorPosInPixelsY)
 	c.ScrollEnsureVisible(scrollX2+1, cursorPosInPixelsY+textHeight)*/
 
-	_, oneLineHeight, err := canvas.MeasureText(c.FontFamily(), c.FontSize(), c.FontBold(), c.FontItalic(), "Q", false)
+	_, oneLineHeight, _ := canvas.MeasureText(c.FontFamily(), c.FontSize(), c.FontBold(), c.FontItalic(), "Q", false)
 	charPos, err := canvas.CharPositions(c.FontFamily(), c.fontSize.Float64(), c.FontBold(), c.FontItalic(), c.lines[c.cursorPosY])
 	for i := 0; i < len(charPos); i++ {
 		charPos[i] = charPos[i] + c.leftAndRightPadding
@@ -782,7 +782,7 @@ func (c *TextBox) modifyText(cmd textboxModifyCommand, modifiers KeyModifiers, d
 	case textboxModifyCommandInsertString:
 		{
 			c.blockUpdate = true
-			runes := []rune(data.(string))
+			runes := string(data.(string))
 			for _, ch := range runes {
 				if ch < 32 {
 					if ch == 10 {
@@ -858,8 +858,5 @@ func (c *TextBox) MinHeight() int {
 }*/
 
 func (c *TextBox) AcceptsReturn() bool {
-	if c.multiline {
-		return true
-	}
-	return false
+	return c.multiline
 }

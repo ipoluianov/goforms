@@ -340,7 +340,7 @@ func (c *TreeViewContent) drawGrid(ctx DrawContext) {
 	}
 }
 
-func (c *TreeView) drawHeader(ctx *canvas.CanvasDirect) int {
+/*func (c *TreeView) drawHeader(ctx *canvas.CanvasDirect) int {
 	xOffset := 0
 	yOffset := 0
 
@@ -353,7 +353,7 @@ func (c *TreeView) drawHeader(ctx *canvas.CanvasDirect) int {
 	ctx.DrawLine(0, c.itemHeight-1, c.InnerWidth(), 19, 1, c.foregroundColor.Color())
 
 	return yOffset + c.itemHeight
-}
+}*/
 
 func (c *TreeView) TabStop() bool {
 	return true

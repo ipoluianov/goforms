@@ -25,7 +25,7 @@ type toolPanelButton struct {
 	text    string
 	img     image.Image
 	onClick func()
-	button  *Button
+	//button  *Button
 }
 
 func NewToolPanel(parent Widget, title string) *ToolPanel {
