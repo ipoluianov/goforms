@@ -72,6 +72,7 @@ func (c *DrawContextGL) UnClip() {
 	c.setViewport()
 }
 
+/*
 func (c *DrawContextGL) xyTo01(x, y int) (float32, float32) {
 	dx := 2 / float64(c.currentClipSettings.width)
 	dy := 2 / float64(c.currentClipSettings.height)
@@ -80,7 +81,7 @@ func (c *DrawContextGL) xyTo01(x, y int) (float32, float32) {
 	y1d = -y1d // OpenGL coordinates are inverted by Y
 	return x1d, y1d
 }
-
+*/
 /*func (c *DrawContextGL) FillRect(x, y, width, height int) {
 	temp.checkProgram()
 

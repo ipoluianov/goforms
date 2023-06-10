@@ -44,9 +44,9 @@ type Container struct {
 	layoutCacheMinHeightValid   bool
 
 	layoutCacheXExpandable bool
-	layoutCacheYExpandable bool
-	layoutCacheMinWidth    int
-	layoutCacheMinHeight   int
+	//layoutCacheYExpandable bool
+	layoutCacheMinWidth  int
+	layoutCacheMinHeight int
 }
 
 func (c *Container) InitControl(parent Widget, w Widget) {
@@ -291,11 +291,11 @@ func (c *Container) updateLayout(fullWidth int, fullHeight int) {
 		fullHeight -= c.widget.TopBorderWidth()
 		fullHeight -= c.widget.BottomBorderWidth()*/
 
-		columnsInfo, minX, maxX, allCellPaddingX := c.makeColumnsInfo(fullWidth)
-		columnsInfo, _, _, _ = c.makeColumnsInfo(fullWidth - (c.panelPadding + allCellPaddingX + c.panelPadding))
+		_, minX, maxX, allCellPaddingX := c.makeColumnsInfo(fullWidth)
+		columnsInfo, _, _, _ := c.makeColumnsInfo(fullWidth - (c.panelPadding + allCellPaddingX + c.panelPadding))
 
-		rowsInfo, minY, maxY, allCellPaddingY := c.makeRowsInfo(fullHeight)
-		rowsInfo, _, _, _ = c.makeRowsInfo(fullHeight - (c.panelPadding + allCellPaddingY + c.panelPadding))
+		_, minY, maxY, allCellPaddingY := c.makeRowsInfo(fullHeight)
+		rowsInfo, _, _, _ := c.makeRowsInfo(fullHeight - (c.panelPadding + allCellPaddingY + c.panelPadding))
 
 		xOffset := c.panelPadding //+ c.LeftBorderWidth()
 		for x := minX; x <= maxX; x++ {
@@ -587,8 +587,8 @@ func (c *Container) MinWidth() int {
 	}
 
 	result := 0
-	columnsInfo, _, _, allCellPadding := c.makeColumnsInfo(c.Width())
-	columnsInfo, _, _, _ = c.makeColumnsInfo(c.Width() - (c.panelPadding + allCellPadding + c.panelPadding))
+	_, _, _, allCellPadding := c.makeColumnsInfo(c.Width())
+	columnsInfo, _, _, _ := c.makeColumnsInfo(c.Width() - (c.panelPadding + allCellPadding + c.panelPadding))
 
 	for _, columnInfo := range columnsInfo {
 		result += columnInfo.minWidth
@@ -613,8 +613,8 @@ func (c *Container) MinHeight() int {
 
 	result := 0
 
-	rowsInfo, _, _, allCellPadding := c.makeRowsInfo(c.Height())
-	rowsInfo, _, _, _ = c.makeRowsInfo(c.Height() - (c.panelPadding + allCellPadding + c.panelPadding))
+	_, _, _, allCellPadding := c.makeRowsInfo(c.Height())
+	rowsInfo, _, _, _ := c.makeRowsInfo(c.Height() - (c.panelPadding + allCellPadding + c.panelPadding))
 	for _, rowInfo := range rowsInfo {
 		result += rowInfo.minHeight
 	}

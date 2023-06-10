@@ -17,13 +17,13 @@ type ColorPalette struct {
 	OnColorChanged func(colorPicker *ColorPalette, color color.Color)
 
 	loadedColors map[string]color.Color
-	rectSize     int
+	//rectSize     int
 
 	colCount int
 	rowCount int
 
-	xRectSize int
-	yRectSize int
+	//xRectSize int
+	//yRectSize int
 }
 
 func NewColorPalette(parent Widget) *ColorPalette {
@@ -79,7 +79,7 @@ func (c *ColorPalette) ControlType() string {
 	return "ColorPalette"
 }
 
-func (c *ColorPalette) colorByCoordinates(x int, y int) (color.Color, error) {
+/*func (c *ColorPalette) colorByCoordinates(x int, y int) (color.Color, error) {
 	cellX := x / c.xRectSize
 	cellY := y / c.yRectSize
 
@@ -88,7 +88,7 @@ func (c *ColorPalette) colorByCoordinates(x int, y int) (color.Color, error) {
 	}
 
 	return nil, fmt.Errorf("no color found")
-}
+}*/
 
 func (c *ColorPalette) Draw(ctx DrawContext) {
 	/*ctx.DrawRect(0, 0, c.InnerWidth(), c.InnerHeight(), c.rightBorderColor.Color(), 1)
@@ -128,12 +128,10 @@ func (c *ColorPalette) MouseUp(event *MouseUpEvent) {
 	if c.pressed {
 		c.pressed = false
 		c.Update("ColorPalette")
-		if event.X >= 0 && event.Y >= 0 && event.X < c.InnerWidth() && event.Y < c.InnerHeight() {
-
-		}
 	}
 }
 
+/*
 func (c *ColorPalette) colorChangedInDialog(color color.Color) {
 	c.color = color
 	if c.OnColorChanged != nil {
@@ -143,7 +141,7 @@ func (c *ColorPalette) colorChangedInDialog(color color.Color) {
 }
 
 func (c *ColorPalette) selectColor() {
-	/*var originalColor color.RGBA
+	var originalColor color.RGBA
 	{
 		r, g, b, a := c.color.RGBA()
 		originalColor = color.RGBA{uint8(r / 256), uint8(g / 256), uint8(b / 256), uint8(a / 256)}
@@ -159,5 +157,6 @@ func (c *ColorPalette) selectColor() {
 	if c.OnColorChanged != nil {
 		c.OnColorChanged(c, c.color)
 	}
-	c.Update("ColorPicker")*/
+	c.Update("ColorPicker")
 }
+*/
