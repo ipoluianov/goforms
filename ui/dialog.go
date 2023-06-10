@@ -2,8 +2,8 @@ package ui
 
 import (
 	"github.com/go-gl/glfw/v3.3/glfw"
-	"github.com/ipoluianov/goforms/utils/canvas"
 	"github.com/ipoluianov/goforms/uiresources"
+	"github.com/ipoluianov/goforms/utils/canvas"
 
 	"golang.org/x/image/colornames"
 )
@@ -14,9 +14,9 @@ type Dialog struct {
 	headerPanel  *dialogHeader
 	contentPanel *Panel
 
-	title      string
-	menuWidth  int
-	menuHeight int
+	title string
+	//menuWidth  int
+	//menuHeight int
 	CloseEvent func()
 
 	closed bool
@@ -299,7 +299,6 @@ func (c *Dialog) KeyDown(event *KeyDownEvent) bool {
 	if event.Key == glfw.KeyEnter || event.Key == glfw.KeyKPEnter {
 		if c.acceptButton != nil {
 			c.acceptButton.Press()
-		} else {
 		}
 		c.Accept()
 		return true
@@ -307,7 +306,6 @@ func (c *Dialog) KeyDown(event *KeyDownEvent) bool {
 	if event.Key == glfw.KeyEscape {
 		if c.rejectButton != nil {
 			c.rejectButton.Press()
-		} else {
 		}
 		c.Reject()
 		return true
