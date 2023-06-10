@@ -1,8 +1,8 @@
 package uiforms
 
 import (
-	"github.com/ipoluianov/goforms/canvas"
 	"github.com/ipoluianov/goforms/ui"
+	"github.com/ipoluianov/goforms/utils/canvas"
 )
 
 type AboutDialog struct {
