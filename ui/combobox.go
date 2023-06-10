@@ -4,8 +4,8 @@ import (
 	"image"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
-	"github.com/ipoluianov/goforms/utils/canvas"
 	"github.com/ipoluianov/goforms/uiresources"
+	"github.com/ipoluianov/goforms/utils/canvas"
 	"golang.org/x/image/colornames"
 )
 
@@ -181,7 +181,7 @@ func (c *ComboBox) ShowPopupForm() {
 
 	for _, item := range c.Items {
 		lvItem := lvItems.AddItem(item.Text)
-		lvItem.TempData = item.TempData
+		lvItem.SetUserData("temp_data", item.UserData("temp_data"))
 	}
 
 	c.popupWidget = container

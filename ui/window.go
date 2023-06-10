@@ -55,7 +55,6 @@ type Window interface {
 	Parent() Window
 	Menu() Menu
 
-	//CreatePopupForm(window Window, x int, y int)
 	CreateModalForm(window Window)
 
 	Modal() bool
@@ -89,10 +88,6 @@ type Window interface {
 	ProcessTabDown()
 
 	ControlRemoved()
-
-	//SelectColorDialog(col color.Color, onColorChanged func(color color.Color)) (bool, color.Color)
-	//SelectDateTimeDialog(dt time.Time, onDateTimeChanged func(dateTime time.Time)) (bool, time.Time)
-	//MessageBox(title, text string)
 
 	ShowMaximazed() bool
 

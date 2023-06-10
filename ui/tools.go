@@ -28,7 +28,7 @@ func (c *FormTimer) StopTimer() {
 
 type UserDataContainer struct {
 	userDataContainer map[string]interface{}
-	TempData          string
+	//TempData          string
 }
 
 func (c *UserDataContainer) SetUserData(key string, data interface{}) {

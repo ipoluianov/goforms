@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ipoluianov/goforms/utils"
 	"github.com/ipoluianov/goforms/utils/canvas"
 	"github.com/ipoluianov/goforms/utils/uiproperties"
-	"github.com/ipoluianov/goforms/utils"
 	"golang.org/x/image/colornames"
 )
 
@@ -43,8 +43,8 @@ type Control struct {
 	scrollOffsetX int
 	scrollOffsetY int
 
-	HScroll Rect
-	VScroll Rect
+	hScroll Rect
+	vScroll Rect
 
 	gridX       int
 	gridY       int
@@ -702,7 +702,7 @@ func (c *Control) ProcessMouseDown(event *MouseDownEvent) {
 	// ScrollBars
 	processed := false
 
-	vRect := c.VScroll
+	vRect := c.vScroll
 
 	if vRect.Contains(me.X, me.Y) {
 		c.verticalScrollMoving = true
@@ -715,7 +715,7 @@ func (c *Control) ProcessMouseDown(event *MouseDownEvent) {
 		me.SetUserData("processedWidget", c)
 	}
 
-	hRect := c.HScroll
+	hRect := c.hScroll
 
 	if hRect.Contains(me.X, me.Y) {
 		c.horizontalScrollMoving = true
@@ -1090,18 +1090,18 @@ func (c *Control) DrawScrollBars(ctx DrawContext) {
 
 		scrollBarsColor := ColorWithAlpha(c.leftBorderColor.Color(), 192)
 
-		c.VScroll = c.verticalScrollRect()
+		c.vScroll = c.verticalScrollRect()
 		if c.verticalScrollDisplayed {
 			ctx.SetColor(scrollBarsColor)
-			ctx.FillRect(c.VScroll.X, c.VScroll.Y, c.VScroll.Width, c.VScroll.Height)
+			ctx.FillRect(c.vScroll.X, c.vScroll.Y, c.vScroll.Width, c.vScroll.Height)
 		} else {
 			//c.scrollOffsetY = 0
 		}
 
-		c.HScroll = c.horizontalScrollRect()
+		c.hScroll = c.horizontalScrollRect()
 		if c.horizontalScrollDisplayed {
 			ctx.SetColor(scrollBarsColor)
-			ctx.FillRect(c.HScroll.X, c.HScroll.Y, c.HScroll.Width, c.HScroll.Height)
+			ctx.FillRect(c.hScroll.X, c.hScroll.Y, c.hScroll.Width, c.hScroll.Height)
 		} else {
 			//c.scrollOffsetX = 0
 		}
