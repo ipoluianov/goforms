@@ -3,9 +3,10 @@ package uiproperties
 import (
 	"errors"
 	"fmt"
-	"golang.org/x/image/colornames"
 	"image/color"
 	"strconv"
+
+	"golang.org/x/image/colornames"
 )
 
 type IPropertyOwner interface {
@@ -461,7 +462,7 @@ func ParseHexColor(hexColor string) color.Color {
 		b *= 17
 	}
 	if len(hexColor) == 5 {
-		fmt.Sscanf(hexColor, hexShortFormatRGBA1, &r, &g, &b, &a)
+		fmt.Sscanf(hexColor, hexShortFormatRGBA1, &a, &r, &g, &b)
 		r *= 17
 		g *= 17
 		b *= 17
@@ -470,7 +471,7 @@ func ParseHexColor(hexColor string) color.Color {
 		fmt.Sscanf(hexColor, hexFormatRGB, &r, &g, &b)
 	}
 	if len(hexColor) == 9 {
-		fmt.Sscanf(hexColor, hexFormatRGBA, &r, &g, &b, &a)
+		fmt.Sscanf(hexColor, hexFormatRGBA, &a, &r, &g, &b)
 	}
 
 	return color.RGBA{r, g, b, a}

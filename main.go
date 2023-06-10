@@ -4,7 +4,7 @@ import (
 	"github.com/ipoluianov/goforms/ui"
 )
 
-func makeMainForm() *ui.Form {
+func newMainForm() *ui.Form {
 	form := ui.NewForm()
 
 	panelTop := form.Panel().AddVPanel()
@@ -23,5 +23,5 @@ func makeMainForm() *ui.Form {
 
 func main() {
 	ui.InitUI()
-	ui.StartMainForm(makeMainForm())
+	ui.StartMainForm(newMainForm())
 }

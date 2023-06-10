@@ -430,8 +430,8 @@ Control
 {
 	fontFamily: Roboto;
 	fontSize: 16;
-	backgroundColor:#303030FF;
-	foregroundColor:#AAAAAAFF;
+	backgroundColor:#303030;
+	foregroundColor:#AAAAAA;
 	inactiveColor:#444;
 	accentColor:#ff8c00;
 
@@ -457,11 +457,11 @@ Control:disabled
 
 Panel, HSpacer, VSpacer, TextBlock, ImageBox, Container, CheckBox
 {
-	backgroundColor:#FFFFFF00;
+	backgroundColor:#00FFFFFF;
 }
 
 Dialog {
-	backgroundColor:#101010FF;
+	backgroundColor:#FF101010;
 }
 
 TimeChart {
@@ -488,23 +488,23 @@ Button:hover
 
 Button:focus 
 {
-	backgroundColor:#202040FF;
+	backgroundColor:#202040;
 }
 
 TextBlock:disabled
 {
-	foregroundColor:#004455FF;
+	foregroundColor:#004455;
 }
 
 Button:disabled
 {
-	backgroundColor:#202020FF;
-	foregroundColor:#004455FF;
+	backgroundColor:#202020;
+	foregroundColor:#004455;
 }
 
 Button:clicked 
 {
-	backgroundColor:#777777FF;
+	backgroundColor:#777777;
 }
 
 ListViewHeader
@@ -543,7 +543,7 @@ PopupMenu {
 }
 
 PopupMenuItem:hover {
-	backgroundColor:#444444FF;
+	backgroundColor:#444444;
 }
 
 ProgressBar
