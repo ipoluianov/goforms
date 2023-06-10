@@ -1,13 +1,14 @@
 package ui
 
 import (
+	"embed"
 	"image/color"
 
 	"github.com/ipoluianov/goforms/utils/uiproperties"
-	"gopkg.in/go-playground/colors.v1"
 )
 
 func InitDefaultStyle(w Widget) {
+	_ = embed.FS.Open
 	if CurrentStyle == StyleLight {
 		InitLight(w)
 	}
@@ -157,9 +158,6 @@ ProgressBar
 
 		w.ApplyStyleLine(line.elementName, line.elementType, "", line.subclass, line.propertyName, line.value)
 	}
-
-	return
-
 }
 
 func InitDarkGreen(w Widget) {
@@ -272,9 +270,6 @@ ProgressBar
 
 		w.ApplyStyleLine(line.elementName, line.elementType, "", line.subclass, line.propertyName, line.value)
 	}
-
-	return
-
 }
 
 func InitDarkBlue(w Widget) {
@@ -418,140 +413,14 @@ ProgressBar
 
 		w.ApplyStyleLine(line.elementName, line.elementType, "", line.subclass, line.propertyName, line.value)
 	}
-
-	return
-
 }
+
+//go:embed style_dark_white.style
+var styleDarkWhiteBS []byte
 
 func InitDarkWhite(w Widget) {
 	var c CSS
-	c.Parse(`
-Control 
-{
-	fontFamily: Roboto;
-	fontSize: 16;
-	backgroundColor:#303030;
-	foregroundColor:#AAAAAA;
-	inactiveColor:#444;
-	accentColor:#ff8c00;
-
-	leftBorderColor: #444;
-	rightBorderColor: #444;
-	topBorderColor: #444;
-	bottomBorderColor: #444;
-
-	selectionBackground: #00489B;
-
-	verticalScrollVisible: true;
-
-	leftBorderWidth: 0;
-	rightBorderWidth: 0;
-	topBorderWidth: 0;
-	bottomBorderWidth: 0;
-}
-
-Control:disabled
-{
-	foregroundColor:#004090;
-}
-
-Panel, HSpacer, VSpacer, TextBlock, ImageBox, Container, CheckBox
-{
-	backgroundColor:#00FFFFFF;
-}
-
-Dialog {
-	backgroundColor:#FF101010;
-}
-
-TimeChart {
-	color0: #ff8c00;
-	color1: #ff2000;
-	color2: #8cff00;
-	color3: #005566;
-	color4: #440000;
-}
-
-Button, TextBox, ListView, TreeView, ProgressBar, ComboBox, TimeChart
-{
-	leftBorderWidth: 1;
-	rightBorderWidth: 1;
-	topBorderWidth: 1;
-	bottomBorderWidth: 1;
-	barColor: #800;
-}
-
-Button:hover 
-{
-	backgroundColor:#004070;
-}
-
-Button:focus 
-{
-	backgroundColor:#202040;
-}
-
-TextBlock:disabled
-{
-	foregroundColor:#004455;
-}
-
-Button:disabled
-{
-	backgroundColor:#202020;
-	foregroundColor:#004455;
-}
-
-Button:clicked 
-{
-	backgroundColor:#777777;
-}
-
-ListViewHeader
-{
-	foregroundColor:#777;
-	backgroundColor:#242424;
-	leftBorderWidth: 0;
-	rightBorderWidth: 0;
-	topBorderWidth: 0;
-	bottomBorderWidth: 1;
-	bottomBorderColor: #444;
-}
-
-ListView {
-	gridColor: #333;
-}
-
-
-TreeViewHeader
-{
-	leftBorderWidth: 0;
-	rightBorderWidth: 0;
-	topBorderWidth: 0;
-	bottomBorderWidth: 1;
-}
-
-PopupMenu {
-	leftBorderColor: #777;
-	rightBorderColor: #777;
-	topBorderColor: #777;
-	bottomBorderColor: #777;
-	leftBorderWidth: 1;
-	rightBorderWidth: 1;
-	topBorderWidth: 1;
-	bottomBorderWidth: 1;
-}
-
-PopupMenuItem:hover {
-	backgroundColor:#444444;
-}
-
-ProgressBar
-{
-	barColor: #800;
-}
-
-`)
+	c.Parse(string(styleDarkWhiteBS))
 
 	for _, line := range c.lines {
 
@@ -564,18 +433,4 @@ ProgressBar
 
 		w.ApplyStyleLine(line.elementName, line.elementType, "", line.subclass, line.propertyName, line.value)
 	}
-
-	return
-
-}
-
-func parseHexColor(str string) color.Color {
-	hex, _ := colors.ParseHEX(str)
-	rgb := hex.ToRGB()
-	var col color.RGBA
-	col.R = rgb.R
-	col.G = rgb.G
-	col.B = rgb.B
-	col.A = 255
-	return col
 }

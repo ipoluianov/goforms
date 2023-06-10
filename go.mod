@@ -1,6 +1,6 @@
 module github.com/ipoluianov/goforms
 
-go 1.17
+go 1.19
 
 require (
 	github.com/fogleman/gg v1.3.0
