@@ -87,7 +87,7 @@ func (c *Container) ControlType() string {
 
 func (c *Container) AddWidget(w Widget) {
 	c.Controls = append(c.Controls, w)
-	w.SetWindow(c.OwnWindow)
+	w.SetWindow(c.ownWindow)
 	w.SetParent(c)
 	c.Window().UpdateLayout()
 	c.SetStatistics("panel_" + c.Name())
@@ -96,7 +96,7 @@ func (c *Container) AddWidget(w Widget) {
 func (c *Container) AddWidgetOnGrid(w Widget, x int, y int) {
 	w.SetGridPos(x, y)
 	c.Controls = append(c.Controls, w)
-	w.SetWindow(c.OwnWindow)
+	w.SetWindow(c.ownWindow)
 	w.SetParent(c)
 	//p.Window().UpdateLayout()
 	c.SetStatistics("panel_" + c.Name())

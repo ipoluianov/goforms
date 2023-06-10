@@ -59,7 +59,7 @@ type Control struct {
 	enabled bool
 
 	parent    Widget
-	OwnWindow Window
+	ownWindow Window
 
 	theme  string
 	widget Widget
@@ -315,7 +315,7 @@ func (c *Control) IsVisibleRec() bool {
 func (c *Control) SetVisible(visible bool) {
 	c.visible = visible
 
-	c.OwnWindow.UpdateLayout()
+	c.ownWindow.UpdateLayout()
 	c.Window().UpdateLayout()
 
 	c.Update("Control")
@@ -380,11 +380,11 @@ func (c *Control) Dispose() {
 		prop.Dispose()
 	}
 
-	if c.OwnWindow != nil {
-		c.OwnWindow.ControlRemoved()
+	if c.ownWindow != nil {
+		c.ownWindow.ControlRemoved()
 	}
 
-	c.OwnWindow = nil
+	c.ownWindow = nil
 	c.parent = nil
 	c.widget = nil
 	if c.contextMenu != nil {
@@ -418,8 +418,8 @@ func (c *Control) Update(source string) {
 	if c.parent != nil {
 		c.parent.Update(source)
 	} else {
-		if c.OwnWindow != nil {
-			c.OwnWindow.UpdateWindow(source)
+		if c.ownWindow != nil {
+			c.ownWindow.UpdateWindow(source)
 		}
 	}
 }
@@ -641,7 +641,7 @@ func (c *Control) ClearHover() {
 }
 
 func (c *Control) Focus() {
-	c.OwnWindow.SetFocusForWidget(c.widget)
+	c.ownWindow.SetFocusForWidget(c.widget)
 	c.Update("Control")
 }
 
@@ -1341,7 +1341,7 @@ func (c *Control) Window() Window {
 	if c.parent != nil {
 		return c.parent.Window()
 	}
-	return c.OwnWindow
+	return c.ownWindow
 }
 
 func (c *Control) TranslateX(x int) int {
@@ -1382,7 +1382,7 @@ func (c *Control) ContextMenu() IMenu {
 }
 
 func (c *Control) SetWindow(w Window) {
-	c.OwnWindow = w
+	c.ownWindow = w
 }
 
 func (c *Control) redraw() {
@@ -1412,8 +1412,8 @@ func (c *Control) EndUpdate() {
 }
 
 func (c *Control) BeginDrag(draggingObject interface{}) {
-	if c.OwnWindow != nil {
-		c.OwnWindow.BeginDrag(draggingObject)
+	if c.ownWindow != nil {
+		c.ownWindow.BeginDrag(draggingObject)
 	}
 }
 

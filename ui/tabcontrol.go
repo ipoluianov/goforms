@@ -114,7 +114,7 @@ func (c *TabControl) ControlType() string {
 func (c *TabControl) AddPage() *TabPage {
 	var t TabPage
 	t.InitControl(c, &t)
-	t.SetWindow(c.OwnWindow)
+	t.SetWindow(c.ownWindow)
 
 	pageIndex := len(c.pages)
 	c.pagesPanel.AddWidgetOnGrid(&t, pageIndex, 0)

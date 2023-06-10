@@ -111,7 +111,7 @@ func (c *SplitContainer) SetRightCollapsed(collapsed bool) {
 }
 
 func (c *SplitContainer) SetWindow(w Window) {
-	c.OwnWindow = w
+	c.ownWindow = w
 	c.Panel1.SetWindow(w)
 	c.Panel2.SetWindow(w)
 }

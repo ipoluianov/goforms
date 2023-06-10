@@ -27,7 +27,7 @@ type PopupMenuItem struct {
 }
 
 func (c *PopupMenuItem) OnInit() {
-	c.timerShowInnerMenu = c.OwnWindow.NewTimer(200, c.timerShowInnerMenuHandler)
+	c.timerShowInnerMenu = c.ownWindow.NewTimer(200, c.timerShowInnerMenuHandler)
 	c.AdjustColorForImage = true
 }
 
@@ -37,8 +37,8 @@ func (c *PopupMenuItem) SetText(text string) {
 }
 
 func (c *PopupMenuItem) Dispose() {
-	if c.OwnWindow != nil {
-		c.OwnWindow.RemoveTimer(c.timerShowInnerMenu)
+	if c.ownWindow != nil {
+		c.ownWindow.RemoveTimer(c.timerShowInnerMenu)
 	}
 
 	if c.innerMenu != nil {
@@ -116,7 +116,7 @@ func (c *PopupMenuItem) MouseClick(event *MouseClickEvent) {
 }
 
 func (c *PopupMenuItem) MouseEnter() {
-	c.OwnWindow.CloseAfterPopupWidget(c.parentMenu)
+	c.ownWindow.CloseAfterPopupWidget(c.parentMenu)
 
 	if c.innerMenu != nil {
 		c.timerShowInnerMenu.Enabled = true

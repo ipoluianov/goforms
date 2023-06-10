@@ -133,7 +133,7 @@ func (c *Form) Init() {
 	c.userPanel.SetBackColor(DefaultBackColor)
 	c.userPanel.SetPos(0, 0)
 	c.userPanel.SetSize(c.Width(), c.Height())
-	c.userPanel.OwnWindow = c
+	c.userPanel.ownWindow = c
 	c.userPanel.SetName("MainPanelOfForm")
 	c.userPanel.SetIsTabPlate(true)
 	//f.userPanel.SetName("MainPanel")
