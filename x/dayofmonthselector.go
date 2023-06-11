@@ -1,5 +1,6 @@
-package ui
+package x
 
+/*
 import (
 	"image"
 	"time"
@@ -137,3 +138,4 @@ func (c *DayOfMonthSelector) SetDay(day int) {
 func (c *DayOfMonthSelector) onClickButton(ev *Event) {
 	c.SetDay(ev.Sender.(*Button).UserData("day").(int))
 }
+*/

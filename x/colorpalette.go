@@ -1,5 +1,6 @@
-package ui
+package x
 
+/*
 import (
 	"fmt"
 	"image/color"
@@ -79,7 +80,7 @@ func (c *ColorPalette) ControlType() string {
 	return "ColorPalette"
 }
 
-/*func (c *ColorPalette) colorByCoordinates(x int, y int) (color.Color, error) {
+func (c *ColorPalette) colorByCoordinates(x int, y int) (color.Color, error) {
 	cellX := x / c.xRectSize
 	cellY := y / c.yRectSize
 
@@ -88,10 +89,10 @@ func (c *ColorPalette) ControlType() string {
 	}
 
 	return nil, fmt.Errorf("no color found")
-}*/
+}
 
 func (c *ColorPalette) Draw(ctx DrawContext) {
-	/*ctx.DrawRect(0, 0, c.InnerWidth(), c.InnerHeight(), c.rightBorderColor.Color(), 1)
+	ctx.DrawRect(0, 0, c.InnerWidth(), c.InnerHeight(), c.rightBorderColor.Color(), 1)
 
 	xRectSize := c.Width() / c.colCount
 	yRectSize := c.Height() / c.rowCount
@@ -103,7 +104,7 @@ func (c *ColorPalette) Draw(ctx DrawContext) {
 				ctx.FillRect(x*xRectSize, y*yRectSize, xRectSize, yRectSize, col)
 			}
 		}
-	}*/
+	}
 }
 
 func (c *ColorPalette) Color() color.Color {

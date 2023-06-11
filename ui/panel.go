@@ -113,14 +113,6 @@ func (c *Panel) AddComboBoxOnGrid(gridX int, gridY int) *ComboBox {
 	return control
 }
 
-func (c *Panel) AddDateTimePickerOnGrid(gridX int, gridY int) *DateTimePicker {
-	control := NewDateTimePicker(c)
-	control.SetGridX(gridX)
-	control.SetGridY(gridY)
-	c.AddWidget(control)
-	return control
-}
-
 func (c *Panel) AddImageBoxOnGrid(gridX int, gridY int, img image.Image) *ImageBox {
 	control := NewImageBox(c, img)
 	control.SetGridX(gridX)
@@ -257,14 +249,6 @@ func (c *Panel) AddTextBlockOnGrid(gridX int, gridY int, text string) *TextBlock
 func (c *Panel) AddTextBlock(text string) *TextBlock {
 	control := NewTextBlock(c, text)
 	c.setNextXY(control)
-	c.AddWidget(control)
-	return control
-}
-
-func (c *Panel) AddTreeViewOnGrid(gridX int, gridY int) *TreeView {
-	control := NewTreeView(c)
-	control.SetGridX(gridX)
-	control.SetGridY(gridY)
 	c.AddWidget(control)
 	return control
 }

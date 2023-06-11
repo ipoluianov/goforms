@@ -1,5 +1,6 @@
-package ui
+package x
 
+/*
 import (
 	"image"
 	"image/color"
@@ -339,21 +340,6 @@ func (c *TreeViewContent) drawGrid(ctx DrawContext) {
 		ctx.DrawLine(xOffset, 0, xOffset, c.Height()+c.scrollOffsetY)
 	}
 }
-
-/*func (c *TreeView) drawHeader(ctx *canvas.CanvasDirect) int {
-	xOffset := 0
-	yOffset := 0
-
-	for _, column := range c.columns {
-		//ctx.DrawRect(xOffset, yOffset, column.width, 20, c.foregroundColor.Color(), 1)
-		ctx.DrawLine(xOffset, 0, xOffset, c.itemHeight, 1, c.foregroundColor.Color())
-		ctx.DrawText(xOffset+5, yOffset, column.text, c.fontFamily.String(), c.fontSize.Float64(), c.foregroundColor.Color(), false)
-		xOffset += column.width
-	}
-	ctx.DrawLine(0, c.itemHeight-1, c.InnerWidth(), 19, 1, c.foregroundColor.Color())
-
-	return yOffset + c.itemHeight
-}*/
 
 func (c *TreeView) TabStop() bool {
 	return true
@@ -796,3 +782,4 @@ func (c *TreeViewHeader) ControlType() string {
 func (c *TreeViewHeader) MouseLeave() {
 	c.Window().SetMouseCursor(MouseCursorArrow)
 }
+*/

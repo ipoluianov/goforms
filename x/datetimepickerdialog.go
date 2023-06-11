@@ -1,5 +1,6 @@
-package ui
+package x
 
+/*
 import (
 	"time"
 )
@@ -95,10 +96,10 @@ func NewDateTimePickerDialog(parent Widget) *DateTimePickerDialog {
 	c.cmbMonth.OnCurrentIndexChanged = func(event *ComboBoxEvent) {
 		c.dateTimeChanged()
 	}
-	/*c.monthSelector = NewMonthSelector(pDay)
+	c.monthSelector = NewMonthSelector(pDay)
 	c.monthSelector.SetMonth(1)
 	c.monthSelector.MonthChanged = c.dateTimeChanged
-	pMonth.AddWidgetOnGrid(c.monthSelector, 1, 0)*/
+	pMonth.AddWidgetOnGrid(c.monthSelector, 1, 0)
 
 	//c.lblDay = pDay.AddTextBlockOnGrid(0, 0, "Day")
 	//c.lblDay.SetMinWidth(60)
@@ -138,9 +139,9 @@ func (c *DateTimePickerDialog) SetDateTime(dateTime time.Time) {
 		c.numYear.SetValue(float64(c.dateTime.Year()))
 	}
 
-	/*if c.monthSelector != nil {
+	if c.monthSelector != nil {
 		c.monthSelector.SetMonth(int(c.dateTime.Month()))
-	}*/
+	}
 	if c.cmbMonth != nil {
 		c.cmbMonth.SetCurrentItemIndex(int(c.dateTime.Month()) - 1)
 		c.dayOfMonthSelector.SetYearAndMonth(c.dateTime.Year(), int(c.dateTime.Month()))
@@ -186,3 +187,4 @@ func (c *DateTimePickerDialog) dateTimeChanged() {
 	//c.dayOfMonthSelector.SetYearAndMonth(int(c.numYear.Value()), c.monthSelector.Month())
 	c.dayOfMonthSelector.SetYearAndMonth(int(c.numYear.Value()), c.cmbMonth.CurrentItemIndex+1)
 }
+*/
