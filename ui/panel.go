@@ -137,6 +137,13 @@ func (c *Panel) AddListViewOnGrid(gridX int, gridY int) *ListView {
 	return control
 }
 
+func (c *Panel) AddListView() *ListView {
+	control := NewListView(c)
+	c.setNextXY(control)
+	c.AddWidget(control)
+	return control
+}
+
 func (c *Panel) AddPanelOnGrid(gridX int, gridY int) *Panel {
 	control := NewPanel(c)
 	control.SetGridX(gridX)

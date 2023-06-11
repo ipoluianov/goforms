@@ -3,7 +3,7 @@ Control
 	fontFamily: Roboto;
 	fontSize: 16;
 	backgroundColor:#303030;
-	foregroundColor:#AAAAAA;
+	foregroundColor:#CCCCCC;
 	inactiveColor:#444;
 	accentColor:#ff8c00;
 
@@ -81,7 +81,7 @@ Button:clicked
 
 ListViewHeader
 {
-	foregroundColor:#777;
+	foregroundColor:#CCCCCC;
 	backgroundColor:#242424;
 	leftBorderWidth: 0;
 	rightBorderWidth: 0;
