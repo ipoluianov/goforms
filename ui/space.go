@@ -1,5 +1,6 @@
 package ui
 
+/*
 type Space struct {
 	Control
 
@@ -27,3 +28,4 @@ func (c *Space) Draw(ctx DrawContext) {
 func (c *Space) TabStop() bool {
 	return false
 }
+*/

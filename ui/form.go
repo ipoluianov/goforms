@@ -22,8 +22,8 @@ var windows []Window
 var windowByGLFWWindow map[*glfw.Window]Window
 
 const (
-	DefaultWindowWidth  = 480
-	DefaultWindowHeight = 320
+	DefaultWindowWidth  = 640
+	DefaultWindowHeight = 480
 )
 
 func (c *Form) LoopUI() {

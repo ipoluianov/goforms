@@ -182,6 +182,13 @@ func (c *Panel) AddProgressBarOnGrid(gridX int, gridY int) *ProgressBar {
 	return control
 }
 
+func (c *Panel) AddProgressBar() *ProgressBar {
+	control := NewProgressBar(c)
+	c.setNextXY(control)
+	c.AddWidget(control)
+	return control
+}
+
 func (c *Panel) AddRadioButtonOnGrid(gridX int, gridY int, text string, onCheckChanged func(checkBox *RadioButton, checked bool)) *RadioButton {
 	control := NewRadioButton(c, text)
 	control.SetGridX(gridX)

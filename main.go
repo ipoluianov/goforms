@@ -17,6 +17,10 @@ func newMainForm() *ui.Form {
 	lv.AddItem3("3", "222", "333")
 	panelTop.AddTextBlock("Label")
 	panelTop.AddTextBox()
+	panelTop.AddListView()
+	pr := panelTop.AddProgressBar()
+	pr.SetMinMaxValue(0, 0.000000000001)
+	pr.SetValueAndText(0.42, "0.42%")
 	//panelTop.AddVSpacer()
 
 	panelBottom := form.Panel().AddHPanel()
