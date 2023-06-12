@@ -46,6 +46,7 @@ func NewButton(parent Widget, text string, onPress func(event *Event)) *Button {
 	var c Button
 	c.InitControl(parent, &c)
 	c.SetStatistics("btn_" + text)
+	c.SetMouseCursor(MouseCursorPointer)
 
 	c.text = text
 	c.img = nil
