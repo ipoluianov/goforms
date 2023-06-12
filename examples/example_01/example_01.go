@@ -22,7 +22,7 @@ func newMainForm() *ui.Form {
 	return form
 }
 
-func ExecWindow() {
+func ExecMainForm() {
 	ui.InitUI()
 	ui.StartMainForm(newMainForm())
 }
