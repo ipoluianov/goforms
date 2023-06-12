@@ -3,14 +3,14 @@ Control
 	fontFamily: Roboto;
 	fontSize: 16;
 	backgroundColor:#303030;
-	foregroundColor:#CCCCCC;
+	foregroundColor:#DDD;
 	inactiveColor:#444;
 	accentColor:#ff8c00;
 
-	leftBorderColor: #444;
-	rightBorderColor: #444;
-	topBorderColor: #444;
-	bottomBorderColor: #444;
+	leftBorderColor: #777;
+	rightBorderColor: #777;
+	topBorderColor: #777;
+	bottomBorderColor: #777;
 
 	selectionBackground: #00489B;
 
