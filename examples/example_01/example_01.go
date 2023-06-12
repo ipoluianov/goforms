@@ -2,6 +2,13 @@ package example01
 
 import "github.com/ipoluianov/goforms/ui"
 
+/*
+	Form with Label, TextBox and Buttons
+	TextBox.OnTextChanged -> Label.Text = TextBox.Text
+	Button1 -> Label.Text = "Button is pressed"
+	Button2 -> Close Window
+*/
+
 func newMainForm() *ui.Form {
 	form := ui.NewForm()
 
