@@ -1,7 +1,6 @@
 package ui
 
 import (
-	"fmt"
 	"runtime"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
@@ -31,8 +30,13 @@ var CursorIBeam *glfw.Cursor
 
 var UseOpenGL33 bool = false
 var ServiceDrawBorders = false
+var uiInited bool = false
 
 func InitUI() error {
+	if uiInited {
+		return nil
+	}
+	uiInited = true
 	runtime.LockOSThread()
 
 	if err := glfw.Init(); err != nil {
@@ -59,14 +63,4 @@ func InitUI() error {
 	CursorIBeam = glfw.CreateStandardCursor(glfw.IBeamCursor)
 
 	return nil
-}
-
-func InitUISystem() {
-	runtime.LockOSThread()
-
-	if err := InitUI(); err != nil {
-		fmt.Println(err)
-		return
-	}
-
 }

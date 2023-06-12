@@ -11,21 +11,6 @@ import (
 type Button struct {
 	Container
 
-	text        string
-	img         image.Image
-	imgDisabled image.Image
-
-	imageBeforeText              bool
-	textImageVerticalOrientation bool
-
-	showText   bool
-	txtBlock   *TextBlock
-	textHAlign canvas.HAlign
-	textVAlign canvas.VAlign
-
-	imgBox    *ImageBox
-	showImage bool
-
 	pressed            bool
 	mousePointerInRect bool
 
@@ -33,11 +18,27 @@ type Button struct {
 
 	checked_ bool
 
-	imageWidth     int
-	imageHeight    int
+	// Text
+	text       string
+	showText   bool
+	txtBlock   *TextBlock
+	textHAlign canvas.HAlign
+	textVAlign canvas.VAlign
+
+	// Image
+	imageBeforeText              bool
+	textImageVerticalOrientation bool
+	img                          image.Image
+	imgDisabled                  image.Image
+	imgBox                       *ImageBox
+	showImage                    bool
+	imageWidth                   int
+	imageHeight                  int
+
 	padding        int
 	drawBackground bool
 
+	// Events
 	onPress func(event *Event)
 }
 
