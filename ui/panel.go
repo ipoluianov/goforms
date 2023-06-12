@@ -121,6 +121,13 @@ func (c *Panel) AddImageBoxOnGrid(gridX int, gridY int, img image.Image) *ImageB
 	return control
 }
 
+func (c *Panel) AddImageBox(img image.Image) *ImageBox {
+	control := NewImageBox(c, img)
+	c.setNextXY(control)
+	c.AddWidget(control)
+	return control
+}
+
 func (c *Panel) AddListViewOnGrid(gridX int, gridY int) *ListView {
 	control := NewListView(c)
 	control.SetGridX(gridX)

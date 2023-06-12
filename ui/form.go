@@ -270,7 +270,7 @@ func (c *Form) Draw() bool {
 		avgDrawTimeMs += c.drawTimes[i].Milliseconds()
 	}
 	avgDrawTimeMs = avgDrawTimeMs / int64(c.drawTimesCount)*/
-	drawPeriodTime := 20 * time.Millisecond
+	drawPeriodTime := 50 * time.Millisecond
 	//drawPeriodTime := time.Duration(avgDrawTimeMs*2) * time.Millisecond
 	//fmt.Println("Form draw avg:", avgDrawTimeMs, "drawPeriod:", drawPeriodTime)
 

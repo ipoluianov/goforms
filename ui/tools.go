@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"bytes"
+	"image"
 	"image/color"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
@@ -278,4 +280,10 @@ func (event *MouseDblClickEvent) Translate(w CoordinateTranslator) *MouseDblClic
 func ColorWithAlpha(col color.Color, alpha uint8) color.Color {
 	r, b, g, _ := col.RGBA()
 	return color.RGBA{uint8(r >> 8), uint8(g >> 8), uint8(b >> 8), alpha}
+}
+
+func DecodeImage(bs []byte) image.Image {
+	reader := bytes.NewReader(bs)
+	image, _, _ := image.Decode(reader)
+	return image
 }
