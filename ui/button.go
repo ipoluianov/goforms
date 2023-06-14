@@ -90,6 +90,11 @@ func (c *Button) ControlType() string {
 	return "Button"
 }
 
+func (c *Button) SetImageBeforeText(imageBeforeText bool) {
+	c.imageBeforeText = imageBeforeText
+	c.rebuildContent()
+}
+
 func (c *Button) SetTextImageVerticalOrientation(textImageVerticalOrientation bool) {
 	c.textImageVerticalOrientation = textImageVerticalOrientation
 	c.rebuildContent()
@@ -156,6 +161,7 @@ func (c *Button) rebuildContent() {
 	c.txtBlock = nil
 	c.imgBox = nil
 	c.panelPadding = c.padding
+	c.cellPadding = c.padding
 
 	if c.showText {
 		c.txtBlock = NewTextBlock(c, c.text)
