@@ -120,6 +120,13 @@ func (c *Panel) AddComboBoxOnGrid(gridX int, gridY int) *ComboBox {
 	return control
 }
 
+func (c *Panel) AddComboBox() *ComboBox {
+	control := NewComboBox(c)
+	c.setNextXY(control)
+	c.AddWidget(control)
+	return control
+}
+
 func (c *Panel) AddImageBoxOnGrid(gridX int, gridY int, img image.Image) *ImageBox {
 	control := NewImageBox(c, img)
 	control.SetGridX(gridX)

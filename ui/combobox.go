@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"embed"
 	"image"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
@@ -34,6 +35,7 @@ type ComboBox struct {
 }
 
 func NewComboBox(parent Widget) *ComboBox {
+	_ = embed.FS.Open
 	var c ComboBox
 	c.InitControl(parent, &c)
 	c.Items = make([]*ComboBoxItem, 0)
@@ -47,13 +49,17 @@ func NewComboBox(parent Widget) *ComboBox {
 	c.panelPadding = 0
 
 	c.UpdateStyle()
+	c.SetMouseCursor(MouseCursorPointer)
 
 	return &c
 }
 
+//go:embed res/combobox.png
+var combobox_image []byte
+
 func (c *ComboBox) UpdateStyle() {
 	c.Container.UpdateStyle()
-	c.img = uiresources.ResImgCol(uiresources.R_icons_material4_png_navigation_arrow_drop_down_materialicons_48dp_1x_baseline_arrow_drop_down_black_48dp_png, c.ForeColor())
+	c.img = uiresources.ResImgCol(combobox_image, c.ForeColor())
 }
 
 func (c *ComboBox) ControlType() string {
