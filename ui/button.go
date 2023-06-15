@@ -223,8 +223,8 @@ func (c *Button) rebuildContent() {
 			imgGridX = 1
 			imgGridY = 0
 		}
-		vs := NewHSpacer(c)
-		c.AddWidgetOnGrid(vs, 2, 0)
+		//vs := NewHSpacer(c)
+		//c.AddWidgetOnGrid(vs, 2, 0)
 	}
 
 	if c.txtBlock != nil {

@@ -38,13 +38,15 @@ func newMainForm() *ui.Form {
 	row2.AddHSpacer()
 
 	row3 := vPanel.AddHPanel()
-	btn31 := row3.AddButton("Text Button 123 123 123 123 123", func(event *ui.Event) {})
+	btn31 := row3.AddButton("Text Button", func(event *ui.Event) {})
 	btn31.SetImage(ui.DecodeImage(button_icon))
 	btn31.SetTextImageVerticalOrientation(false)
 	btn32 := row3.AddButton("Text Button", func(event *ui.Event) {})
 	btn32.SetImage(ui.DecodeImage(button_icon))
 	btn32.SetTextImageVerticalOrientation(false)
 	btn32.SetImageBeforeText(false)
+	btn32.SetTextHAlign(canvas.HAlignRight)
+	//btn32.SetMinWidth(300)
 	row3.AddHSpacer()
 
 	vPanel.AddVSpacer()

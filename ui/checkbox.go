@@ -1,8 +1,8 @@
 package ui
 
 import (
-	"github.com/ipoluianov/goforms/utils/canvas"
 	"github.com/ipoluianov/goforms/uiresources"
+	"github.com/ipoluianov/goforms/utils/canvas"
 )
 
 type CheckBox struct {
@@ -12,8 +12,6 @@ type CheckBox struct {
 
 	imgBox  *ImageBox
 	txtText *TextBlock
-
-	//eventCheckChanged ui.WidgetEvent
 
 	OnCheckedChanged func(checkBox *CheckBox, checked bool)
 }
