@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"embed"
+
 	"github.com/ipoluianov/goforms/uiresources"
 	"github.com/ipoluianov/goforms/utils/canvas"
 )
@@ -17,11 +19,18 @@ type CheckBox struct {
 }
 
 func NewCheckBox(parent Widget, text string) *CheckBox {
+	_ = embed.FS.Open
 	var c CheckBox
 	c.text = text
 	c.InitControl(parent, &c)
 	return &c
 }
+
+//go:embed "res/checkbox_checked.png"
+var checkbox_checked []byte
+
+//go:embed "res/checkbox_unchecked.png"
+var checkbox_unchecked []byte
 
 func (c *CheckBox) InitControl(parent Widget, w Widget) {
 	c.Container.InitControl(parent, w)
@@ -34,6 +43,7 @@ func (c *CheckBox) InitControl(parent Widget, w Widget) {
 	c.AddWidgetOnGrid(c.imgBox, 0, 0)
 	c.txtText = NewTextBlock(c, c.text)
 	c.txtText.TextHAlign = canvas.HAlignLeft
+	c.txtText.SetMouseCursor(MouseCursorPointer)
 	c.AddWidgetOnGrid(c.txtText, 1, 0)
 	c.updateImage()
 }
@@ -66,11 +76,13 @@ func (c *CheckBox) EnabledChanged(enabled bool) {
 
 func (c *CheckBox) updateImage() {
 	if c.checked {
-		c.imgBox.SetImage(uiresources.ResImgCol(uiresources.R_icons_material4_png_toggle_check_box_materialiconsoutlined_48dp_1x_outline_check_box_black_48dp_png, c.ForeColor())) /////////////////////////////////
+		c.imgBox.SetImage(uiresources.ResImgCol(checkbox_checked, c.ForeColor()))
 		c.imgBox.SetScaling(ImageBoxScaleAdjustImageKeepAspectRatio)
+		c.imgBox.SetMouseCursor(MouseCursorPointer)
 	} else {
-		c.imgBox.SetImage(uiresources.ResImgCol(uiresources.R_icons_material4_png_toggle_check_box_outline_blank_materialiconsoutlined_48dp_1x_outline_check_box_outline_blank_black_48dp_png, c.ForeColor()))
+		c.imgBox.SetImage(uiresources.ResImgCol(checkbox_unchecked, c.ForeColor()))
 		c.imgBox.SetScaling(ImageBoxScaleAdjustImageKeepAspectRatio)
+		c.imgBox.SetMouseCursor(MouseCursorPointer)
 	}
 }
 
