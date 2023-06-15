@@ -195,6 +195,13 @@ func (c *Panel) AddGroupBoxOnGrid(gridX int, gridY int, title string) *GroupBox 
 	return control
 }
 
+func (c *Panel) AddGroupBox(title string) *GroupBox {
+	control := NewGroupBox(c, title)
+	c.setNextXY(control)
+	c.AddWidget(control)
+	return control
+}
+
 func (c *Panel) AddProgressBarOnGrid(gridX int, gridY int) *ProgressBar {
 	control := NewProgressBar(c)
 	control.SetGridX(gridX)
