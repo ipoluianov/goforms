@@ -1,7 +1,7 @@
 package main
 
-import example12 "github.com/ipoluianov/goforms/examples/example_12"
+import example13 "github.com/ipoluianov/goforms/examples/example_13"
 
 func main() {
-	example12.ExecMainForm()
+	example13.ExecMainForm()
 }
