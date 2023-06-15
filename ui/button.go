@@ -39,7 +39,7 @@ type Button struct {
 	drawBackground bool
 
 	// Events
-	onPress func(event *Event)
+	OnPress func(event *Event)
 }
 
 func NewButton(parent Widget, text string, onPress func(event *Event)) *Button {
@@ -50,7 +50,7 @@ func NewButton(parent Widget, text string, onPress func(event *Event)) *Button {
 
 	c.text = text
 	c.img = nil
-	c.onPress = onPress
+	c.OnPress = onPress
 	c.showImage = false
 	c.showText = false
 	c.imageBeforeText = true
@@ -73,10 +73,6 @@ func NewButton(parent Widget, text string, onPress func(event *Event)) *Button {
 
 	c.rebuildContent()
 	return &c
-}
-
-func (c *Button) SetOnPress(onPress func(ev *Event)) {
-	c.onPress = onPress
 }
 
 func (c *Button) Subclass() string {
@@ -310,12 +306,7 @@ func (c *Button) SetTextVAlign(textVAlign canvas.VAlign) {
 
 func (c *Button) KeyDown(event *KeyDownEvent) bool {
 	if event.Key == glfw.KeySpace {
-		if c.onPress != nil {
-			var ev Event
-			ev.Sender = c
-			c.onPress(&ev)
-			return true
-		}
+		return c.Press()
 	}
 	return false
 }
@@ -344,12 +335,14 @@ func (c *Button) MouseUp(event *MouseUpEvent) {
 	}
 }
 
-func (c *Button) Press() {
-	if c.onPress != nil {
+func (c *Button) Press() bool {
+	if c.OnPress != nil {
 		var ev Event
 		ev.Sender = c
-		c.onPress(&ev)
+		c.OnPress(&ev)
+		return true
 	}
+	return false
 }
 
 func (c *Button) FindWidgetUnderPointer(x, y int) Widget {

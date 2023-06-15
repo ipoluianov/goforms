@@ -114,7 +114,7 @@ func (c *MessageBox) OnInit() {
 		btnYes.SetMinWidth(70)
 		btnNo := pButtons.AddButtonOnGrid(2, 0, "No", nil)
 		btnNo.SetMinWidth(70)
-		btnNo.onPress = func(event *Event) {
+		btnNo.OnPress = func(event *Event) {
 			if c.onNo != nil {
 				c.onNo()
 			}
