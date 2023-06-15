@@ -242,6 +242,13 @@ func (c *Panel) AddTabControlOnGrid(gridX int, gridY int) *TabControl {
 	return control
 }
 
+func (c *Panel) AddTabControl() *TabControl {
+	control := NewTabControl(c)
+	c.setNextXY(control)
+	c.AddWidget(control)
+	return control
+}
+
 func (c *Panel) AddTableOnGrid(gridX int, gridY int) *Table {
 	control := NewTable(c, 0, 0, 0, 0)
 	control.SetGridX(gridX)
@@ -261,14 +268,6 @@ func (c *Panel) AddTextBoxOnGrid(gridX int, gridY int) *TextBox {
 func (c *Panel) AddTextBox() *TextBox {
 	control := NewTextBox(c)
 	c.setNextXY(control)
-	c.AddWidget(control)
-	return control
-}
-
-func (c *Panel) AddTextBoxExtOnGrid(gridX int, gridY int, text string, onSelect func(textBoxExt *TextBoxExt)) *TextBoxExt {
-	control := NewTextBoxExt(c, text, onSelect)
-	control.SetGridX(gridX)
-	control.SetGridY(gridY)
 	c.AddWidget(control)
 	return control
 }

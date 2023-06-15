@@ -199,6 +199,7 @@ func (c *TabControl) updateHeaderButtons() {
 		btnClose.SetBorderLeft(0, color.RGBA{})
 		btnClose.SetImage(uiresources.ResImgCol(uiresources.R_icons_material4_png_navigation_close_materialiconsoutlined_48dp_1x_outline_close_black_48dp_png, c.ForeColor()))
 		btnClose.SetImageSize(16, 16)
+		btnClose.SetMinWidth(0)
 
 		if pageIndex == c.currentPageIndex {
 			/*btn.SetForeColor(c.BackColor())
