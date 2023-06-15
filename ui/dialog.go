@@ -60,6 +60,7 @@ func NewDialogHeader(parent Widget) *dialogHeader {
 	c.btnClose.imageForeColor = true
 	c.btnClose.showText = false
 	c.btnClose.rebuildContent()
+	c.btnClose.SetMinWidth(30)
 	c.btnClose.SetMaxWidth(30)
 	c.btnClose.onMouseEnter = func() {
 		c.btnClose.SetBackColor(colornames.Red)
