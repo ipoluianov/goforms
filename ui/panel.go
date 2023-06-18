@@ -82,18 +82,23 @@ func (c *Panel) setNextXY(widget Widget) {
 
 }
 
+func (c *Panel) AddWidget(w Widget) {
+	c.setNextXY(w)
+	c.addWidget(w)
+}
+
 func (c *Panel) AddButtonOnGrid(gridX int, gridY int, text string, onPress func(event *Event)) *Button {
 	control := NewButton(c, text, onPress)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
 func (c *Panel) AddButton(text string, onPress func(event *Event)) *Button {
 	control := NewButton(c, text, onPress)
 	c.setNextXY(control)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -101,14 +106,14 @@ func (c *Panel) AddCheckBoxOnGrid(gridX int, gridY int, text string) *CheckBox {
 	control := NewCheckBox(c, text)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
 func (c *Panel) AddCheckBox(text string) *CheckBox {
 	control := NewCheckBox(c, text)
 	c.setNextXY(control)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -116,14 +121,14 @@ func (c *Panel) AddComboBoxOnGrid(gridX int, gridY int) *ComboBox {
 	control := NewComboBox(c)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
 func (c *Panel) AddComboBox() *ComboBox {
 	control := NewComboBox(c)
 	c.setNextXY(control)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -131,14 +136,14 @@ func (c *Panel) AddImageBoxOnGrid(gridX int, gridY int, img image.Image) *ImageB
 	control := NewImageBox(c, img)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
 func (c *Panel) AddImageBox(img image.Image) *ImageBox {
 	control := NewImageBox(c, img)
 	c.setNextXY(control)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -146,14 +151,14 @@ func (c *Panel) AddListViewOnGrid(gridX int, gridY int) *ListView {
 	control := NewListView(c)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
 func (c *Panel) AddListView() *ListView {
 	control := NewListView(c)
 	c.setNextXY(control)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -161,21 +166,21 @@ func (c *Panel) AddPanelOnGrid(gridX int, gridY int) *Panel {
 	control := NewPanel(c)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
 func (c *Panel) AddHPanel() *Panel {
 	control := NewHPanel(c)
 	c.setNextXY(control)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
 func (c *Panel) AddVPanel() *Panel {
 	control := NewVPanel(c)
 	c.setNextXY(control)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -183,7 +188,7 @@ func (c *Panel) AddSplitContainerOnGrid(gridX int, gridY int) *SplitContainer {
 	control := NewSplitContainer(c)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -191,14 +196,14 @@ func (c *Panel) AddGroupBoxOnGrid(gridX int, gridY int, title string) *GroupBox 
 	control := NewGroupBox(c, title)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
 func (c *Panel) AddGroupBox(title string) *GroupBox {
 	control := NewGroupBox(c, title)
 	c.setNextXY(control)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -206,14 +211,14 @@ func (c *Panel) AddProgressBarOnGrid(gridX int, gridY int) *ProgressBar {
 	control := NewProgressBar(c)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
 func (c *Panel) AddProgressBar() *ProgressBar {
 	control := NewProgressBar(c)
 	c.setNextXY(control)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -222,7 +227,7 @@ func (c *Panel) AddRadioButtonOnGrid(gridX int, gridY int, text string, onCheckC
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
 	control.OnCheckedChanged = onCheckChanged
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -230,7 +235,7 @@ func (c *Panel) AddSpinBoxOnGrid(gridX int, gridY int) *SpinBox {
 	control := NewSpinBox(c)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -238,14 +243,14 @@ func (c *Panel) AddTabControlOnGrid(gridX int, gridY int) *TabControl {
 	control := NewTabControl(c)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
 func (c *Panel) AddTabControl() *TabControl {
 	control := NewTabControl(c)
 	c.setNextXY(control)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -253,7 +258,7 @@ func (c *Panel) AddTableOnGrid(gridX int, gridY int) *Table {
 	control := NewTable(c, 0, 0, 0, 0)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -261,14 +266,14 @@ func (c *Panel) AddTextBoxOnGrid(gridX int, gridY int) *TextBox {
 	control := NewTextBox(c)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
 func (c *Panel) AddTextBox() *TextBox {
 	control := NewTextBox(c)
 	c.setNextXY(control)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -276,14 +281,14 @@ func (c *Panel) AddTextBlockOnGrid(gridX int, gridY int, text string) *TextBlock
 	control := NewTextBlock(c, text)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
 func (c *Panel) AddTextBlock(text string) *TextBlock {
 	control := NewTextBlock(c, text)
 	c.setNextXY(control)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -291,14 +296,14 @@ func (c *Panel) AddHSpacerOnGrid(gridX int, gridY int) *HSpacer {
 	control := NewHSpacer(c)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
 func (c *Panel) AddHSpacer() *HSpacer {
 	control := NewHSpacer(c)
 	c.setNextXY(control)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
@@ -306,13 +311,13 @@ func (c *Panel) AddVSpacerOnGrid(gridX int, gridY int) *VSpacer {
 	control := NewVSpacer(c)
 	control.SetGridX(gridX)
 	control.SetGridY(gridY)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }
 
 func (c *Panel) AddVSpacer() *VSpacer {
 	control := NewVSpacer(c)
 	c.setNextXY(control)
-	c.AddWidget(control)
+	c.addWidget(control)
 	return control
 }

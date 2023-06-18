@@ -86,7 +86,7 @@ func (c *PopupMenu) AddItem(text string, onClick func(event *Event), img image.I
 	item.KeyCombination = keyCombination
 	pItem := &item
 	c.items = append(c.items, pItem)
-	c.Panel.AddWidget(&item)
+	c.Panel.addWidget(&item)
 	return pItem
 }
 
@@ -100,7 +100,7 @@ func (c *PopupMenu) AddItemWithUiResImage(text string, onClick func(event *Event
 	item.KeyCombination = keyCombination
 	pItem := &item
 	c.items = append(c.items, pItem)
-	c.Panel.AddWidget(&item)
+	c.Panel.addWidget(&item)
 	return pItem
 }
 
@@ -113,7 +113,7 @@ func (c *PopupMenu) AddItemWithSubmenu(text string, img image.Image, innerMenu *
 	item.innerMenu = innerMenu
 	pItem := &item
 	c.items = append(c.items, pItem)
-	c.Panel.AddWidget(&item)
+	c.Panel.addWidget(&item)
 	return pItem
 }
 

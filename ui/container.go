@@ -85,7 +85,7 @@ func (c *Container) ControlType() string {
 	return "Panel"
 }
 
-func (c *Container) AddWidget(w Widget) {
+func (c *Container) addWidget(w Widget) {
 	c.Controls = append(c.Controls, w)
 	w.SetWindow(c.ownWindow)
 	w.SetParent(c)

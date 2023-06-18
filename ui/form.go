@@ -410,7 +410,7 @@ func (c *Form) Panel() *Panel {
 }
 
 func (c *Form) AddWidget(w Widget) {
-	c.userPanel.AddWidget(w)
+	c.userPanel.addWidget(w)
 }
 
 func (c *Form) SetTheme(theme string) {
