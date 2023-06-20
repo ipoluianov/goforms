@@ -114,6 +114,8 @@ type Form struct {
 	drawTimes      []time.Duration
 	drawTimesIndex int
 	drawTimesCount int
+
+	OnKeyDown func(event *KeyDownEvent) bool
 }
 
 func init() {
@@ -773,23 +775,30 @@ func (c *Form) ProcessKeyDown(key glfw.Key) {
 
 	if c.focusWidget != nil {
 		processed := false
-		if key == glfw.KeyKPEnter || key == glfw.KeyEnter || key == glfw.KeyTab {
-			if (key == glfw.KeyKPEnter || key == glfw.KeyEnter) && !c.focusWidget.AcceptsReturn() {
-				if c.ProcessReturnDown() {
+
+		var event KeyDownEvent
+		event.Modifiers = c.keyModifiers
+		event.Key = key
+
+		if c.OnKeyDown != nil {
+			processed = c.OnKeyDown(&event)
+		}
+
+		if !processed {
+			if key == glfw.KeyKPEnter || key == glfw.KeyEnter || key == glfw.KeyTab {
+				if (key == glfw.KeyKPEnter || key == glfw.KeyEnter) && !c.focusWidget.AcceptsReturn() {
+					if c.ProcessReturnDown() {
+						processed = true
+					}
+				}
+				if key == glfw.KeyTab && !c.focusWidget.AcceptsTab() {
+					c.ProcessTabDown()
 					processed = true
 				}
-			}
-			if key == glfw.KeyTab && !c.focusWidget.AcceptsTab() {
-				c.ProcessTabDown()
-				processed = true
 			}
 		}
 
 		if !processed {
-			var event KeyDownEvent
-			event.Modifiers = c.keyModifiers
-			event.Key = key
-
 			ctrl := c.focusWidget
 			for ctrl != nil {
 				if ctrl.ProcessKeyDown(&event) {
