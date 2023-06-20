@@ -80,11 +80,15 @@ type ListViewItem struct {
 
 func NewListView(parent Widget) *ListView {
 	var c ListView
-	c.items = make([]*ListViewItem, 0)
-	c.selectionBackground = AddPropertyToWidget(&c, "selectionBackground", uiproperties.PropertyTypeColor)
-	c.gridColor = AddPropertyToWidget(&c, "gridColor", uiproperties.PropertyTypeColor)
 	c.InitControl(parent, &c)
+	c.Construct()
+	return &c
+}
 
+func (c *ListView) Construct() {
+	c.items = make([]*ListViewItem, 0)
+	c.selectionBackground = AddPropertyToWidget(c, "selectionBackground", uiproperties.PropertyTypeColor)
+	c.gridColor = AddPropertyToWidget(c, "gridColor", uiproperties.PropertyTypeColor)
 	c.cellPadding = 0
 	c.panelPadding = 0
 	c.cache = NewImageCache("ListView")
@@ -92,13 +96,13 @@ func NewListView(parent Widget) *ListView {
 	c.contentPadding = 3
 	c.headerVisible = true
 
-	c.header = NewListViewHeader(&c, 0, 0, c.Width(), c.itemHeight)
-	c.header.listView = &c
+	c.header = NewListViewHeader(c, 0, 0, c.Width(), c.itemHeight)
+	c.header.listView = c
 	c.header.SetVisible(c.headerVisible)
 	c.AddWidgetOnGrid(c.header, 0, 0)
 
-	c.content = NewListViewContent(&c, 0, c.itemHeight, c.Width(), c.Height()-c.itemHeight)
-	c.content.listView = &c
+	c.content = NewListViewContent(c, 0, c.itemHeight, c.Width(), c.Height()-c.itemHeight)
+	c.content.listView = c
 	c.content.SetXExpandable(true)
 	c.content.SetYExpandable(true)
 	c.AddWidgetOnGrid(c.content, 0, 1)
@@ -127,7 +131,6 @@ func NewListView(parent Widget) *ListView {
 	})
 	//c.showingTime.StartTimer()
 
-	return &c
 }
 
 func NewListViewContent(parent Widget, x int, y int, width int, height int) *ListViewContent {
