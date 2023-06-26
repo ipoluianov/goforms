@@ -36,6 +36,11 @@ type ListView struct {
 	showing         bool
 	showingProgress float64
 	showingTime     *FormTimer
+
+	AllowDeselectItems bool
+
+	OnMouseDown func()
+	OnMouseUp   func()
 }
 
 type ListViewHeader struct {
@@ -86,6 +91,7 @@ func NewListView(parent Widget) *ListView {
 }
 
 func (c *ListView) Construct() {
+	c.AllowDeselectItems = true
 	c.items = make([]*ListViewItem, 0)
 	c.selectionBackground = AddPropertyToWidget(c, "selectionBackground", uiproperties.PropertyTypeColor)
 	c.gridColor = AddPropertyToWidget(c, "gridColor", uiproperties.PropertyTypeColor)
@@ -589,6 +595,10 @@ func (c *ListViewHeader) MouseDown(event *MouseDownEvent) {
 		c.columnResizing = true
 		c.columnResizingIndex = colRightBorder
 	}
+
+	if c.listView.OnMouseDown != nil {
+		c.listView.OnMouseDown()
+	}
 }
 
 func (c *ListViewHeader) MouseUp(event *MouseUpEvent) {
@@ -596,6 +606,10 @@ func (c *ListViewHeader) MouseUp(event *MouseUpEvent) {
 		c.pressed = false
 		c.columnResizing = false
 		c.Update("ListView")
+	}
+
+	if c.listView.OnMouseUp != nil {
+		c.listView.OnMouseUp()
 	}
 }
 
@@ -719,11 +733,17 @@ func (c *ListViewContent) Draw(ctx DrawContext) {
 	c.listView.displayedItems = make([]*displayedItem, 0)
 
 	visRect := c.VisibleInnerRect()
-	beginIndex := visRect.Y / c.listView.itemHeight
+	beginIndex := visRect.Y/c.listView.itemHeight - 1
+	if beginIndex < 0 {
+		beginIndex = 0
+	}
 	if beginIndex >= len(c.listView.items) {
 		beginIndex = len(c.listView.items) - 1
 	}
-	endIndex := (visRect.Y + visRect.Height) / c.listView.itemHeight
+	endIndex := (visRect.Y+visRect.Height)/c.listView.itemHeight + 1
+	if endIndex < 0 {
+		endIndex = 0
+	}
 	if endIndex >= len(c.listView.items) {
 		endIndex = len(c.listView.items) - 1
 	}
@@ -747,13 +767,13 @@ func (c *ListViewContent) ControlType() string {
 func (c *ListViewContent) drawItem(ctx DrawContext, item *ListViewItem, y int, itemIndex int) int {
 	yOffset := 0
 
-	rowX := 0
-	rowWidth := c.InnerWidth()
-	rowY := y
+	//rowX := 0
+	//rowWidth := c.InnerWidth()
+	//rowY := y
 	rowHeight := c.listView.itemHeight
 
 	visRect := c.VisibleInnerRect()
-	if rowX+rowWidth < visRect.X {
+	/*if rowX+rowWidth < visRect.X {
 		yOffset += rowHeight
 		return yOffset
 	}
@@ -768,7 +788,7 @@ func (c *ListViewContent) drawItem(ctx DrawContext, item *ListViewItem, y int, i
 	if rowY > visRect.Y+visRect.Height {
 		yOffset += rowHeight
 		return yOffset
-	}
+	}*/
 
 	var dItem displayedItem
 	dItem.currentX = 0
@@ -908,8 +928,14 @@ func (c *ListView) ClearSelection() {
 
 func (c *ListViewContent) MouseClick(event *MouseClickEvent) {
 	dItem := c.listView.findDisplayItemByCoordinates(event.X, event.Y)
+	if c.listView.OnMouseDown != nil {
+		c.listView.OnMouseDown()
+	}
+
 	if dItem == nil {
-		c.listView.ClearSelection()
+		if c.listView.AllowDeselectItems {
+			c.listView.ClearSelection()
+		}
 		return
 	}
 
