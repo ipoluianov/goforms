@@ -31,9 +31,9 @@ type Control struct {
 
 	anchors *uiproperties.Property
 
-	innerSizeOverloaded   bool
-	innerWidthOverloaded  int
-	innerHeightOverloaded int
+	InnerSizeOverloaded   bool
+	InnerWidthOverloaded  int
+	InnerHeightOverloaded int
 
 	hover bool
 	focus bool
@@ -535,15 +535,15 @@ func (c *Control) ClientHeight() int {
 }
 
 func (c *Control) InnerWidth() int {
-	if c.innerSizeOverloaded {
-		return c.innerWidthOverloaded
+	if c.InnerSizeOverloaded {
+		return c.InnerWidthOverloaded
 	}
 	return c.width.Int() - c.leftBorderWidth.Int() - c.rightBorderWidth.Int()
 }
 
 func (c *Control) InnerHeight() int {
-	if c.innerSizeOverloaded {
-		return c.innerHeightOverloaded
+	if c.InnerSizeOverloaded {
+		return c.InnerHeightOverloaded
 	}
 	return c.height.Int() - c.topBorderWidth.Int() - c.bottomBorderWidth.Int()
 }
@@ -930,7 +930,7 @@ func (c *Control) ProcessMouseWheel(event *MouseWheelEvent) {
 	me.X += c.widget.ScrollOffsetX()
 	me.Y += c.widget.ScrollOffsetY()
 
-	if c.innerSizeOverloaded {
+	if c.InnerSizeOverloaded {
 		//widthIn := c.Width() - c.LeftBorderWidth() - c.RightBorderWidth()
 		/*if c.InnerWidth() > widthIn {
 		}*/
@@ -1014,7 +1014,7 @@ func (c *Control) ProcessKeyUp(event *KeyUpEvent) {
 }
 
 func (c *Control) MouseWheel(event *MouseWheelEvent) {
-	if c.innerSizeOverloaded {
+	if c.InnerSizeOverloaded {
 		//widthIn := c.Width() - c.LeftBorderWidth() - c.RightBorderWidth()
 		/*if c.InnerWidth() > widthIn {
 		}*/
@@ -1084,7 +1084,7 @@ func (c *Control) DrawBorders(ctx DrawContext) {
 func (c *Control) DrawScrollBars(ctx DrawContext) {
 	c.verticalScrollDisplayed = false
 	c.horizontalScrollDisplayed = false
-	if c.innerSizeOverloaded {
+	if c.InnerSizeOverloaded {
 
 		scrollBarsColor := ColorWithAlpha(c.leftBorderColor.Color(), 192)
 
@@ -1483,15 +1483,15 @@ func (c *Control) Initialized() bool {
 }
 
 func (c *Control) SetInnerSizeDirect(w int, h int) {
-	c.innerWidthOverloaded = w
-	c.innerHeightOverloaded = h
-	c.innerSizeOverloaded = true
+	c.InnerWidthOverloaded = w
+	c.InnerHeightOverloaded = h
+	c.InnerSizeOverloaded = true
 	c.verticalScrollVisible.SetOwnValue(true)
 	c.horizontalScrollVisible.SetOwnValue(true)
 }
 
 func (c *Control) ResetInnerSizeDirect() {
-	c.innerSizeOverloaded = false
+	c.InnerSizeOverloaded = false
 	c.verticalScrollVisible.SetOwnValue(false)
 	c.horizontalScrollVisible.SetOwnValue(false)
 }

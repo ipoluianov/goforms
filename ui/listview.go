@@ -877,16 +877,16 @@ func (c *ListViewContent) drawGrid(ctx DrawContext) {
 }
 
 func (c *ListViewContent) updateInnerSize() {
-	c.innerSizeOverloaded = true
-	_, c.innerHeightOverloaded = c.calcTreeColumnSize()
+	c.InnerSizeOverloaded = true
+	_, c.InnerHeightOverloaded = c.calcTreeColumnSize()
 	c.updateInnerWidth()
 
 }
 
 func (c *ListViewContent) updateInnerWidth() {
-	c.innerWidthOverloaded = 0
+	c.InnerWidthOverloaded = 0
 	for _, column := range c.listView.columns {
-		c.innerWidthOverloaded += column.width
+		c.InnerWidthOverloaded += column.width
 	}
 }
 

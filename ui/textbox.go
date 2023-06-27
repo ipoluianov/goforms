@@ -182,7 +182,7 @@ func (c *TextBox) updateInnerSize() {
 	if err != nil {
 		return
 	}
-	c.innerHeightOverloaded = textHeight * len(c.lines)
+	c.InnerHeightOverloaded = textHeight * len(c.lines)
 	var maxTextWidth int
 	for _, line := range c.lines {
 		textWidth, _, err := canvas.MeasureText(c.FontFamily(), c.FontSize(), c.FontBold(), c.FontItalic(), line, false)
@@ -193,11 +193,11 @@ func (c *TextBox) updateInnerSize() {
 			maxTextWidth = textWidth
 		}
 	}
-	c.innerWidthOverloaded = maxTextWidth + c.leftAndRightPadding*3
-	c.innerSizeOverloaded = true
+	c.InnerWidthOverloaded = maxTextWidth + c.leftAndRightPadding*3
+	c.InnerSizeOverloaded = true
 
 	if !c.multiline {
-		c.innerHeightOverloaded = textHeight
+		c.InnerHeightOverloaded = textHeight
 	}
 }
 
