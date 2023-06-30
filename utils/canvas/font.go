@@ -1,6 +1,7 @@
 package canvas
 
 import (
+	"embed"
 	"errors"
 	"fmt"
 	"image"
@@ -25,62 +26,39 @@ type FontInfo struct {
 
 var globalFonts map[string]*FontInfo
 
+//go:embed "fonts/Roboto_Regular.ttf"
+var fontRoboto []byte
+
+//go:embed "fonts/RobotoMono_Regular.ttf"
+var fontRobotoMono []byte
+
 func init() {
+	_ = embed.FS.Open
 
 	globalFonts = make(map[string]*FontInfo)
-	for _, assetName := range AssetNames() {
-		if strings.HasPrefix(assetName, "fonts") {
-			nameParts := strings.Split(assetName, "/")
-			fontName := nameParts[len(nameParts)-2]
-			fileName := nameParts[len(nameParts)-1]
-
-			if _, ok := globalFonts[fontName]; !ok {
-				var fontInfo FontInfo
-				fontInfo.family = strings.ToLower(fontName)
-				fontInfo.faces = make(map[float64]font.Face)
-				globalFonts[fontName] = &fontInfo
-			}
-
-			val := globalFonts[fontName]
-
-			if strings.Contains(strings.ToLower(fileName), "regular") {
-				f, err := readFontFromAsset(assetName)
-				if err == nil {
-					val.fontRegular = f
-				}
-			}
-			if strings.Contains(strings.ToLower(fileName), "bold") && !strings.Contains(strings.ToLower(fileName), "italic") {
-				f, err := readFontFromAsset(assetName)
-				if err == nil {
-					val.fontBold = f
-				}
-			}
-			if strings.Contains(strings.ToLower(fileName), "italic") && !strings.Contains(strings.ToLower(fileName), "bold") {
-				f, err := readFontFromAsset(assetName)
-				if err == nil {
-					val.fontItalic = f
-				}
-			}
-			if strings.Contains(strings.ToLower(fileName), "italic") && strings.Contains(strings.ToLower(fileName), "bold") {
-				f, err := readFontFromAsset(assetName)
-				if err == nil {
-					val.fontBoldItalic = f
-				}
-			}
-		}
-	}
+	addFont("roboto", fontRoboto)
+	addFont("robotomono", fontRobotoMono)
 }
 
-func readFontFromAsset(assentName string) (*truetype.Font, error) {
-	fontBytes, err := Asset(assentName)
-	if err != nil {
-		return nil, err
+func addFont(name string, data []byte) {
+
+	if _, ok := globalFonts[name]; !ok {
+		var fontInfo FontInfo
+		fontInfo.family = strings.ToLower(name)
+		fontInfo.faces = make(map[float64]font.Face)
+		globalFonts[name] = &fontInfo
 	}
-	f, err := freetype.ParseFont(fontBytes)
+
+	val := globalFonts[name]
+	f, err := freetype.ParseFont(data)
 	if err != nil {
-		return nil, err
+		return
 	}
-	return f, nil
+	if err == nil {
+		val.fontRegular = f
+	}
+
+	return
 }
 
 func Font(family string, size float64, bold bool, italic bool) (result *truetype.Font, face font.Face, err error) {
