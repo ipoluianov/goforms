@@ -4,9 +4,10 @@ import (
 	"embed"
 	"image"
 
-	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/ipoluianov/goforms/uiresources"
 	"github.com/ipoluianov/goforms/utils/canvas"
+	"github.com/ipoluianov/nui/nuikey"
+	"github.com/ipoluianov/nui/nuimouse"
 	"golang.org/x/image/colornames"
 )
 
@@ -49,7 +50,7 @@ func NewComboBox(parent Widget) *ComboBox {
 	c.panelPadding = 0
 
 	c.UpdateStyle()
-	c.SetMouseCursor(MouseCursorPointer)
+	c.SetMouseCursor(nuimouse.MouseCursorPointer)
 
 	return &c
 }
@@ -140,23 +141,23 @@ func (c *ComboBox) ClosePopup() {
 
 func (c *ComboBox) KeyDown(event *KeyDownEvent) bool {
 	//fmt.Println(event)
-	if event.Key == glfw.KeySpace {
+	if event.Key == nuikey.KeySpace {
 		c.SetCurrentItemIndex(0)
 		return true
 	}
-	if event.Key == glfw.KeyDown && event.Modifiers.Alt {
+	if event.Key == nuikey.KeyArrowDown && event.Modifiers.Alt {
 		c.ShowPopupForm()
 		return true
 	}
-	if event.Key == glfw.KeyDown && !event.Modifiers.Alt {
+	if event.Key == nuikey.KeyArrowDown && !event.Modifiers.Alt {
 		c.SetCurrentItemIndex(c.CurrentItemIndex + 1)
 		return true
 	}
-	if event.Key == glfw.KeyUp && !event.Modifiers.Alt {
+	if event.Key == nuikey.KeyArrowUp && !event.Modifiers.Alt {
 		c.SetCurrentItemIndex(c.CurrentItemIndex - 1)
 		return true
 	}
-	if event.Key == glfw.KeyEscape {
+	if event.Key == nuikey.KeyEsc {
 		c.ClosePopup()
 		return true
 	}

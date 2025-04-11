@@ -1,9 +1,9 @@
 package ui
 
 import (
-	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/ipoluianov/goforms/uiresources"
 	"github.com/ipoluianov/goforms/utils/canvas"
+	"github.com/ipoluianov/nui/nuikey"
 
 	"golang.org/x/image/colornames"
 )
@@ -297,14 +297,14 @@ func (c *Dialog) Reject() {
 }
 
 func (c *Dialog) KeyDown(event *KeyDownEvent) bool {
-	if event.Key == glfw.KeyEnter || event.Key == glfw.KeyKPEnter {
+	if event.Key == nuikey.KeyEnter {
 		if c.acceptButton != nil {
 			c.acceptButton.Press()
 		}
 		c.Accept()
 		return true
 	}
-	if event.Key == glfw.KeyEscape {
+	if event.Key == nuikey.KeyEsc {
 		if c.rejectButton != nil {
 			c.rejectButton.Press()
 		}

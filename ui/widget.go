@@ -4,6 +4,7 @@ import (
 	"image/color"
 
 	"github.com/ipoluianov/goforms/utils/uiproperties"
+	"github.com/ipoluianov/nui/nuimouse"
 )
 
 type Widget interface {
@@ -133,7 +134,7 @@ type Widget interface {
 	ContextMenu() IMenu
 	SetWindow(window Window)
 
-	MouseCursor() MouseCursor
+	MouseCursor() nuimouse.MouseCursor
 
 	SetUserData(key string, data interface{})
 	UserData(key string) interface{}

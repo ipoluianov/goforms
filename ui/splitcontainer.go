@@ -2,6 +2,8 @@ package ui
 
 import (
 	"math"
+
+	"github.com/ipoluianov/nui/nuimouse"
 )
 
 type SplitContainer struct {
@@ -150,9 +152,9 @@ func (c *SplitContainer) MouseUp(event *MouseUpEvent) {
 func (c *SplitContainer) MouseMove(event *MouseMoveEvent) {
 	diff := math.Abs(float64(event.X - c.position))
 	if diff <= 3 {
-		c.Window().SetMouseCursor(MouseCursorResizeHor)
+		c.Window().SetMouseCursor(nuimouse.MouseCursorResizeHor)
 	} else {
-		c.Window().SetMouseCursor(MouseCursorArrow)
+		c.Window().SetMouseCursor(nuimouse.MouseCursorArrow)
 	}
 
 	if c.splitResizing {

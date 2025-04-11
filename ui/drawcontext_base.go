@@ -3,9 +3,9 @@ package ui
 import (
 	"image/color"
 
-	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/golang-collections/collections/stack"
 	"github.com/ipoluianov/goforms/utils/canvas"
+	"github.com/ipoluianov/nui/nui"
 	"golang.org/x/image/colornames"
 )
 
@@ -23,10 +23,8 @@ type DrawContextBase struct {
 	StackClipSettings   stack.Stack
 	WindowWidth         int
 	WindowHeight        int
-	WindowWidthScale    float32
-	WindowHeightScale   float32
 
-	Window *glfw.Window
+	Window nui.Window
 }
 
 type StateStruct struct {
@@ -44,7 +42,7 @@ type StateStruct struct {
 func (c *DrawContextBase) InitBase() {
 	c.TextHAlign = canvas.HAlignLeft
 	c.TextVAlign = canvas.VAlignCenter
-	c.FontFamily = "Roboto"
+	c.FontFamily = "RobotoMono"
 	c.FontSize = 12
 	c.StrokeWidth = 1
 	c.CurrentColor = colornames.Black

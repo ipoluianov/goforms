@@ -37,7 +37,7 @@ func InitLight(w Widget) {
 	c.Parse(`
 Control 
 {
-	fontFamily: roboto;
+	fontFamily: RobotoMono;
 	fontSize: 16;
 	backgroundColor:#FFFFFFFF;
 	foregroundColor:#555555;
@@ -165,7 +165,7 @@ func InitDarkGreen(w Widget) {
 	c.Parse(`
 Control 
 {
-	fontFamily: Roboto;
+	fontFamily: RobotoMono;
 	fontSize: 16;
 	backgroundColor:#222222FF;
 	foregroundColor:#148014;
@@ -277,7 +277,7 @@ func InitDarkBlue(w Widget) {
 	c.Parse(`
 Control 
 {
-	fontFamily: Roboto;
+	fontFamily: RobotoMono;
 	fontSize: 16;
 	backgroundColor:#303030FF;
 	foregroundColor:#2298EB;

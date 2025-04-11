@@ -55,6 +55,5 @@ func newMainForm() *ui.Form {
 }
 
 func ExecMainForm() {
-	ui.InitUI()
 	ui.StartMainForm(newMainForm())
 }

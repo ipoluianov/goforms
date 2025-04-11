@@ -2,13 +2,10 @@ package ui
 
 import (
 	"image"
-	"image/draw"
-	"unsafe"
 
 	"github.com/fogleman/gg"
-	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/ipoluianov/goforms/utils/canvas"
-	"github.com/ipoluianov/goforms/utils/opengl/gl11/gl"
+	"github.com/ipoluianov/nui/nui"
 )
 
 var texturesMap map[int]*image.RGBA
@@ -23,17 +20,30 @@ type DrawContextSW struct {
 	cc  *gg.Context
 }
 
-func NewDrawContextSW(window *glfw.Window) *DrawContextSW {
+func NewDrawContextSW(window nui.Window) *DrawContextSW {
 	var c DrawContextSW
 	c.Window = window
-	c.WindowWidth, c.WindowHeight = window.GetSize()
-	kx, ky := window.GetContentScale()
+	c.WindowWidth, c.WindowHeight = window.Size()
+	/*kx, ky := window.GetContentScale()
 	c.WindowWidthScale = kx
-	c.WindowHeightScale = ky
+	c.WindowHeightScale = ky*/
 
 	c.DrawContextBase.InitBase()
 
 	c.cnv = canvas.NewCanvasWindow(int(float32(c.WindowWidth)), int(float32(c.WindowHeight)))
+
+	c.setViewport()
+	return &c
+}
+
+func NewDrawContextSWRGBA(window nui.Window, rgba *image.RGBA) *DrawContextSW {
+	var c DrawContextSW
+	c.Window = window
+	c.WindowWidth, c.WindowHeight = window.Size()
+
+	c.DrawContextBase.InitBase()
+
+	c.cnv = canvas.NewCanvasRGBA(rgba)
 
 	c.setViewport()
 	return &c
@@ -54,11 +64,11 @@ func NewDrawContextSWSpecial(width, height int) *DrawContextSW {
 }
 
 func (c *DrawContextSW) Init() {
-	c.DrawContextBase.InitBase()
+	/*c.DrawContextBase.InitBase()
 	//c.Window.MakeContextCurrent()
 	c.setViewport()
 	gl.Clear(gl.DEPTH_BUFFER_BIT)
-	c.cc = gg.NewContextForRGBA(c.GraphContextImage())
+	c.cc = gg.NewContextForRGBA(c.GraphContextImage())*/
 	//gl.Clear(gl.COLOR_BUFFER_BIT)
 }
 
@@ -71,7 +81,7 @@ func (c *DrawContextSW) GraphContextImage() *image.RGBA {
 }
 
 func (c *DrawContextSW) setViewport() {
-	gl.Viewport(int32(c.CurrentClipSettings.x), int32(c.WindowHeight-c.CurrentClipSettings.y-c.CurrentClipSettings.height), int32(c.CurrentClipSettings.width)*int32(c.WindowWidthScale), int32(c.CurrentClipSettings.height*int(c.WindowHeightScale)))
+	//gl.Viewport(int32(c.CurrentClipSettings.x), int32(c.WindowHeight-c.CurrentClipSettings.y-c.CurrentClipSettings.height), int32(c.CurrentClipSettings.width)*int32(c.WindowWidthScale), int32(c.CurrentClipSettings.height*int(c.WindowHeightScale)))
 }
 
 func (c *DrawContextSW) xyTo01(x, y int) (float32, float32) {
@@ -149,7 +159,7 @@ func (c *DrawContextSW) Load() {
 
 func (c *DrawContextSW) drawCanvasRect(img image.Image, x, y int, textureSize int) {
 
-	p1x, p1y := c.xyTo01(x, y)
+	/*p1x, p1y := c.xyTo01(x, y)
 	p2x, p2y := c.xyTo01(x+textureSize, y+textureSize)
 
 	var rgba *image.RGBA
@@ -205,21 +215,17 @@ func (c *DrawContextSW) drawCanvasRect(img image.Image, x, y int, textureSize in
 	gl.Disable(gl.DEPTH_TEST)
 	gl.Disable(gl.TEXTURE_2D)
 
-	gl.DeleteTextures(1, &texid[0])
+	gl.DeleteTextures(1, &texid[0])*/
 }
 
-func (c *DrawContextSW) Finish() {
-	img := c.cnv.Image()
+func (c *DrawContextSW) Finish(rgba *image.RGBA) {
+	/*img := c.cnv.Image()
 
 	//var imgScaled image.Image
 	imgScaled := img
-	/*winWidth, winHeight := c.Window.GetSize()
-	if img.Bounds().Max.X != winWidth || img.Bounds().Max.Y != winHeight {
-		imgScaled = resize.Resize(uint(winWidth), uint(winHeight), img, resize.Lanczos3)
-	}*/
 
-	var maxTextSize int32
-	gl.GetIntegerv(gl.MAX_TEXTURE_SIZE, &maxTextSize)
+	//var maxTextSize int32
+	//gl.GetIntegerv(gl.MAX_TEXTURE_SIZE, &maxTextSize)
 
 	tw := imgScaled.Bounds().Max.X
 	th := imgScaled.Bounds().Max.Y
@@ -233,5 +239,5 @@ func (c *DrawContextSW) Finish() {
 		for y := 0; y < rectsByY; y++ {
 			c.drawCanvasRect(imgScaled, x*textureSize, y*textureSize, textureSize)
 		}
-	}
+	}*/
 }

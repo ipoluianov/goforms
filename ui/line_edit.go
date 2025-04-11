@@ -12,19 +12,16 @@ import (
 	"golang.org/x/image/colornames"
 )
 
-type TextBox struct {
+type LineEdit struct {
 	Control
 	lines []string
 
 	cursorPosX          int
 	cursorPosY          int
 	selectionLeftX      int
-	selectionLeftY      int
 	selectionRightX     int
-	selectionRightY     int
 	mouseButtonPressed  bool
 	cursorWidth         int
-	multiline           bool
 	leftAndRightPadding int
 
 	dragingCursor bool
@@ -39,30 +36,30 @@ type TextBox struct {
 	timerBlink    *FormTimer
 	cursorVisible bool
 
-	OnTextChanged    func(txtBox *TextBox, oldValue string, newValue string)
+	OnTextChanged    func(txtBox *LineEdit, oldValue string, newValue string)
 	onValidateNeeded func(oldValue string, newValue string) bool
 }
 
-type textboxModifyCommand int
+type lineeditModifyCommand int
 
-const textboxModifyCommandInsertChar textboxModifyCommand = 0
-const textboxModifyCommandInsertString textboxModifyCommand = 1
-const textboxModifyCommandInsertReturn textboxModifyCommand = 2
-const textboxModifyCommandBackspace textboxModifyCommand = 3
-const textboxModifyCommandDelete textboxModifyCommand = 4
-const textboxModifyCommandSetText textboxModifyCommand = 5
+const lineeditModifyCommandInsertChar textboxModifyCommand = 0
+const lineeditModifyCommandInsertString textboxModifyCommand = 1
+const lineeditModifyCommandInsertReturn textboxModifyCommand = 2
+const lineeditModifyCommandBackspace textboxModifyCommand = 3
+const lineeditModifyCommandDelete textboxModifyCommand = 4
+const lineeditModifyCommandSetText textboxModifyCommand = 5
 
-type TextBoxSelection struct {
+type LineEditSelection struct {
 	X1, Y1, X2, Y2 int
 	Text           string
 }
 
-func (c *TextBox) ControlType() string {
+func (c *LineEdit) ControlType() string {
 	return "TextBox"
 }
 
-func NewTextBox(parent Widget) *TextBox {
-	var b TextBox
+func NewLineEdit(parent Widget) *LineEdit {
+	var b LineEdit
 	b.lines = make([]string, 1)
 	b.selectionBackground = AddPropertyToWidget(&b, "selectionBackground", uiproperties.PropertyTypeColor)
 	b.InitControl(parent, &b)
@@ -71,14 +68,11 @@ func NewTextBox(parent Widget) *TextBox {
 	b.cursorWidth = 1
 	b.leftAndRightPadding = 3
 	b.alwaysRedraw = false
-	b.multiline = false
 	b.cursorVisible = true
 	b.timerBlink = b.Window().NewTimer(250, b.timerCursorBlinking)
 	b.timerBlink.StartTimer()
 	b.ScrollToBegin()
-	b.SetMultiline(b.multiline)
 	b.updateInnerSize()
-	//b.verticalScrollVisible.SetOwnValue(true)
 
 	menu := NewPopupMenu(&b)
 	menu.AddItem("Cut", func(event *Event) {
@@ -103,7 +97,7 @@ func NewTextBox(parent Widget) *TextBox {
 	return &b
 }
 
-func (c *TextBox) Dispose() {
+func (c *LineEdit) Dispose() {
 	c.selectionBackground.Dispose()
 	c.selectionBackground = nil
 
@@ -116,25 +110,25 @@ func (c *TextBox) Dispose() {
 	c.Control.Dispose()
 }
 
-func (c *TextBox) OnInit() {
+func (c *LineEdit) OnInit() {
 }
 
-func (c *TextBox) SetReadOnly(readonly bool) {
+func (c *LineEdit) SetReadOnly(readonly bool) {
 	c.readonly = readonly
 }
 
-func (c *TextBox) SetIsPassword(isPassword bool) {
+func (c *LineEdit) SetIsPassword(isPassword bool) {
 	c.isPassword = isPassword
 }
 
-func (c *TextBox) timerCursorBlinking() {
+func (c *LineEdit) timerCursorBlinking() {
 	if c.focus {
 		c.cursorVisible = !c.cursorVisible
 		c.Update("TextBox cursor")
 	}
 }
 
-func (c *TextBox) SetText(text string) {
+func (c *LineEdit) SetText(text string) {
 	c.redraw()
 	var modifiers nuikey.KeyModifiers
 	c.modifyText(textboxModifyCommandSetText, modifiers, text)
@@ -143,7 +137,7 @@ func (c *TextBox) SetText(text string) {
 	c.Update("TextBox")
 }
 
-func (c *TextBox) SetEmptyText(text string) {
+func (c *LineEdit) SetEmptyText(text string) {
 	c.redraw()
 	c.emptyText = text
 	c.updateInnerSize()
@@ -151,23 +145,11 @@ func (c *TextBox) SetEmptyText(text string) {
 	c.Update("TextBox")
 }
 
-func (c *TextBox) Text() string {
+func (c *LineEdit) Text() string {
 	return c.AssemblyText(c.lines)
 }
 
-func (c *TextBox) SetMultiline(multiline bool) {
-	c.multiline = multiline
-	if c.multiline {
-		c.SetXExpandable(true)
-		c.SetYExpandable(true)
-		c.verticalScrollVisible.SetOwnValue(true)
-		c.horizontalScrollVisible.SetOwnValue(true)
-	}
-	c.updateInnerSize()
-	c.Update("TextBox")
-}
-
-func (c *TextBox) AssemblyText(lines []string) string {
+func (c *LineEdit) AssemblyText(lines []string) string {
 	result := ""
 	for pos, line := range lines {
 		result += line
@@ -178,7 +160,7 @@ func (c *TextBox) AssemblyText(lines []string) string {
 	return result
 }
 
-func (c *TextBox) updateInnerSize() {
+func (c *LineEdit) updateInnerSize() {
 	_, textHeight, err := canvas.MeasureText(c.FontFamily(), c.FontSize(), c.FontBold(), c.FontItalic(), "0", false)
 	if err != nil {
 		return
@@ -197,12 +179,10 @@ func (c *TextBox) updateInnerSize() {
 	c.InnerWidthOverloaded = maxTextWidth + c.leftAndRightPadding*3
 	c.InnerSizeOverloaded = true
 
-	if !c.multiline {
-		c.InnerHeightOverloaded = textHeight
-	}
+	c.InnerHeightOverloaded = textHeight
 }
 
-func (c *TextBox) lineToPasswordChars(line string) string {
+func (c *LineEdit) lineToPasswordChars(line string) string {
 	if c.isPassword {
 		lenOfLine := utf8.RuneCountInString(line)
 		line = ""
@@ -213,16 +193,12 @@ func (c *TextBox) lineToPasswordChars(line string) string {
 	return line
 }
 
-func (c *TextBox) Draw(ctx DrawContext) {
+func (c *LineEdit) Draw(ctx DrawContext) {
 
 	oneLineHeight := c.OneLineHeight()
 
 	var yStaticOffset int
-	if c.multiline {
-		yStaticOffset = 1
-	} else {
-		yStaticOffset = c.ClientHeight()/2 - oneLineHeight/2
-	}
+	yStaticOffset = c.ClientHeight()/2 - oneLineHeight/2
 
 	// Selection
 	if len(c.selectedLines()) > 0 {
@@ -250,9 +226,7 @@ func (c *TextBox) Draw(ctx DrawContext) {
 
 			rectY := selY * oneLineHeight
 
-			if !c.multiline {
-				rectY = yStaticOffset
-			}
+			rectY = yStaticOffset
 
 			ctx.SetColor(c.selectionBackground.Color())
 			ctx.FillRect(selXBegin, rectY, selXWidth, oneLineHeight)
@@ -313,12 +287,14 @@ func (c *TextBox) Draw(ctx DrawContext) {
 /*func (c *TextBox) onFocusChanged(focus bool) {
 }*/
 
-func (c *TextBox) KeyChar(event *KeyCharEvent) {
+func (c *LineEdit) KeyChar(event *KeyCharEvent) {
+
 	if c.readonly {
 		return
 	}
 
 	c.redraw()
+
 	ch := event.Ch
 	if ch < 32 {
 		return
@@ -327,18 +303,18 @@ func (c *TextBox) KeyChar(event *KeyCharEvent) {
 	c.modifyText(textboxModifyCommandInsertChar, event.Modifiers, ch)
 }
 
-func (c *TextBox) cutSelected() {
+func (c *LineEdit) cutSelected() {
 	/*glfw.SetClipboardString(c.SelectedText())
 	if !c.readonly {
 		c.modifyText(textboxModifyCommandDelete, nuikey.KeyModifiers{}, nil)
 	}*/
 }
 
-func (c *TextBox) copySelected() {
+func (c *LineEdit) copySelected() {
 	//glfw.SetClipboardString(c.SelectedText())
 }
 
-func (c *TextBox) paste() {
+func (c *LineEdit) paste() {
 	/*str := glfw.GetClipboardString()
 	c.modifyText(textboxModifyCommandInsertString, nuikey.KeyModifiers{
 		Shift: false,
@@ -347,7 +323,7 @@ func (c *TextBox) paste() {
 	}, str)*/
 }
 
-func (c *TextBox) KeyDown(event *KeyDownEvent) bool {
+func (c *LineEdit) KeyDown(event *KeyDownEvent) bool {
 	c.redraw()
 
 	if event.Modifiers.Ctrl && event.Key == nuikey.KeyA {
@@ -372,27 +348,27 @@ func (c *TextBox) KeyDown(event *KeyDownEvent) bool {
 	}
 
 	if event.Key == nuikey.KeyArrowLeft {
-		c.moveCursor(c.cursorPosX-1, c.cursorPosY, event.Modifiers)
+		c.moveCursor(c.cursorPosX-1, c.cursorPosY, event.Modifiers, true)
 		return true
 	}
 
 	if event.Key == nuikey.KeyArrowRight {
-		c.moveCursor(c.cursorPosX+1, c.cursorPosY, event.Modifiers)
+		c.moveCursor(c.cursorPosX+1, c.cursorPosY, event.Modifiers, true)
 		return true
 	}
 
 	if event.Key == nuikey.KeyArrowUp {
-		c.moveCursor(c.cursorPosX, c.cursorPosY-1, event.Modifiers)
+		c.moveCursor(c.cursorPosX, c.cursorPosY-1, event.Modifiers, true)
 		return true
 	}
 
 	if event.Key == nuikey.KeyArrowDown {
-		c.moveCursor(c.cursorPosX, c.cursorPosY+1, event.Modifiers)
+		c.moveCursor(c.cursorPosX, c.cursorPosY+1, event.Modifiers, true)
 		return true
 	}
 
 	if event.Key == nuikey.KeyHome {
-		c.moveCursor(0, c.cursorPosY, event.Modifiers)
+		c.moveCursor(0, c.cursorPosY, event.Modifiers, true)
 		return true
 	}
 
@@ -400,12 +376,12 @@ func (c *TextBox) KeyDown(event *KeyDownEvent) bool {
 		if c.readonly {
 			return false
 		}
-		return c.insertReturn(event.Modifiers)
+		return true
 	}
 
 	if event.Key == nuikey.KeyEnd {
 		runes := []rune(c.lines[c.cursorPosY])
-		c.moveCursor(len(runes), c.cursorPosY, event.Modifiers)
+		c.moveCursor(len(runes), c.cursorPosY, event.Modifiers, true)
 		return true
 	}
 
@@ -426,24 +402,22 @@ func (c *TextBox) KeyDown(event *KeyDownEvent) bool {
 	return false
 }
 
-func (c *TextBox) KeyUp(event *KeyUpEvent) {
+func (c *LineEdit) KeyUp(event *KeyUpEvent) {
 }
 
-func (c *TextBox) MouseDown(event *MouseDownEvent) {
+func (c *LineEdit) MouseDown(event *MouseDownEvent) {
 	if event.Button == nuimouse.MouseButtonLeft {
 		c.redraw()
 		c.mouseButtonPressed = true
 		c.moveCursorNearPoint(event.X, event.Y, event.Modifiers)
 		c.selectionLeftX = c.cursorPosX
-		c.selectionLeftY = c.cursorPosY
 		c.selectionRightX = c.cursorPosX
-		c.selectionRightY = c.cursorPosY
 		c.dragingCursor = true
 		c.Update("TextBox")
 	}
 }
 
-func (c *TextBox) MouseMove(event *MouseMoveEvent) {
+func (c *LineEdit) MouseMove(event *MouseMoveEvent) {
 	c.redraw()
 	if c.mouseButtonPressed {
 		c.moveCursorNearPoint(event.X, event.Y, event.Modifiers)
@@ -452,7 +426,7 @@ func (c *TextBox) MouseMove(event *MouseMoveEvent) {
 	//fmt.Println("onMouseMove: ", event.X, " ", event.Y)
 }
 
-func (c *TextBox) moveCursorNearPoint(x, y int, modifiers nuikey.KeyModifiers) {
+func (c *LineEdit) moveCursorNearPoint(x, y int, modifiers nuikey.KeyModifiers) {
 
 	_, textHeight, err := canvas.MeasureText(c.FontFamily(), c.FontSize(), c.FontBold(), c.FontItalic(), "0", false)
 	if err != nil {
@@ -474,78 +448,50 @@ func (c *TextBox) moveCursorNearPoint(x, y int, modifiers nuikey.KeyModifiers) {
 	}
 
 	if len(charPos) == 1 {
-		c.moveCursor(0, lineNumber, modifiers)
+		c.moveCursor(0, lineNumber, modifiers, true)
 		return
 	}
 
 	if x < charPos[1]-(charPos[1]-charPos[0])/2 {
-		c.moveCursor(0, lineNumber, modifiers)
+		c.moveCursor(0, lineNumber, modifiers, true)
 	}
 
 	for pos := 1; pos < len(charPos)-1; pos++ {
 		left := charPos[pos] - (charPos[pos]-charPos[pos-1])/2
 		right := charPos[pos] + (charPos[pos+1]-charPos[pos])/2
 		if x >= left && x < right {
-			c.moveCursor(pos, lineNumber, modifiers)
+			c.moveCursor(pos, lineNumber, modifiers, true)
 			break
 		}
 	}
 
 	if x > charPos[len(charPos)-1] {
-		c.moveCursor(len(charPos)-1, lineNumber, modifiers)
+		c.moveCursor(len(charPos)-1, lineNumber, modifiers, true)
 	}
 }
 
-func (c *TextBox) MouseUp(event *MouseUpEvent) {
+func (c *LineEdit) MouseUp(event *MouseUpEvent) {
 	c.dragingCursor = false
 	c.redraw()
 	c.mouseButtonPressed = false
 	c.Update("TextBox")
 }
 
-func (c *TextBox) insertReturn(modifiers nuikey.KeyModifiers) bool {
-	if !c.multiline {
-		return false
-	}
-
-	c.modifyText(textboxModifyCommandInsertReturn, modifiers, nil)
-	return true
-}
-
-func (c *TextBox) selectionRange() TextBoxSelection {
+func (c *LineEdit) selectionRange() TextBoxSelection {
 	var result TextBoxSelection
-	//var res1X, res1Y, res2X, res2Y int
-	if c.selectionLeftY > c.selectionRightY {
-		result.Y1 = c.selectionRightY
-		result.Y2 = c.selectionLeftY
+
+	if c.selectionLeftX > c.selectionRightX {
 		result.X1 = c.selectionRightX
 		result.X2 = c.selectionLeftX
-	}
-
-	if c.selectionLeftY < c.selectionRightY {
-		result.Y2 = c.selectionRightY
-		result.Y1 = c.selectionLeftY
+	} else {
 		result.X2 = c.selectionRightX
 		result.X1 = c.selectionLeftX
-	}
-
-	if c.selectionLeftY == c.selectionRightY {
-		result.Y1 = c.selectionLeftY
-		result.Y2 = c.selectionRightY
-
-		if c.selectionLeftX > c.selectionRightX {
-			result.X1 = c.selectionRightX
-			result.X2 = c.selectionLeftX
-		} else {
-			result.X2 = c.selectionRightX
-			result.X1 = c.selectionLeftX
-		}
 	}
 
 	return result
 }
 
-func (c *TextBox) selectedLines() []int {
+func (c *LineEdit) selectedLines() []int {
 	var result []int
 	result = make([]int, 0)
 	selection := c.selectionRange()
@@ -561,7 +507,7 @@ func (c *TextBox) selectedLines() []int {
 	return result
 }
 
-func (c *TextBox) moveCursor(posX int, posY int, modifiers nuikey.KeyModifiers) {
+func (c *LineEdit) moveCursor(posX int, posY int, modifiers nuikey.KeyModifiers, allowSelection bool) {
 
 	if posY < 0 {
 		return
@@ -588,18 +534,24 @@ func (c *TextBox) moveCursor(posX int, posY int, modifiers nuikey.KeyModifiers) 
 		c.clearSelection()
 	}
 
-	if modifiers.Shift || c.dragingCursor {
-		c.selectionRightX = c.cursorPosX
-		c.selectionRightY = c.cursorPosY
+	if allowSelection {
+		if modifiers.Shift || c.dragingCursor {
+			c.selectionRightX = c.cursorPosX
+		}
 	}
 
 	if !c.blockUpdate {
 		c.ensureVisibleCursor()
 	}
-	c.Update("TextBox")
+
+	c.cursorVisible = true
+	if c.timerBlink != nil {
+		c.timerBlink.RestartTimer()
+	}
+	c.Update("LineEdit")
 }
 
-func (c *TextBox) SelectedText() string {
+func (c *LineEdit) SelectedText() string {
 	result := ""
 
 	//lines := make([]string, 0)
@@ -627,7 +579,7 @@ func (c *TextBox) SelectedText() string {
 	return result
 }
 
-func (c *TextBox) removeSelectedText(modifiers nuikey.KeyModifiers) (bool, []string, int, int) {
+func (c *LineEdit) removeSelectedText(modifiers nuikey.KeyModifiers) (bool, []string, int, int) {
 	lines := make([]string, 0)
 	modified := false
 	selection := c.selectionRange()
@@ -649,36 +601,7 @@ func (c *TextBox) removeSelectedText(modifiers nuikey.KeyModifiers) (bool, []str
 	return modified, lines, curPosX, curPosY
 }
 
-func (c *TextBox) ensureVisibleCursor() {
-	/*runes := []rune(c.lines[c.cursorPosY])
-	str := string(runes)
-	charPos, err := canvas.CharPositions(c.FontFamily(), c.FontSize(), c.FontBold(), c.FontItalic(), str)
-	for i := 0; i < len(charPos); i++ {
-		charPos[i] = charPos[i] + c.leftAndRightPadding
-	}
-	if err != nil {
-		return
-	}
-	cursorPosInPixelsX := charPos[c.cursorPosX]
-
-	_, textHeight, err := canvas.MeasureText(c.FontFamily(), c.FontSize(), c.FontBold(), c.FontItalic(), "0", false)
-	cursorPosInPixelsY := c.cursorPosY * textHeight
-	scrollX1 := cursorPosInPixelsX - c.cursorWidth
-	if scrollX1 < 0 {
-		scrollX1 = 0
-	}
-	scrollX2 := cursorPosInPixelsX + c.cursorWidth
-	if scrollX2 < 0 {
-		scrollX2 = 0
-	}
-
-	if c.cursorPosX == 0 {
-		scrollX1 = 0
-	}
-
-	c.ScrollEnsureVisible(scrollX1+1, cursorPosInPixelsY)
-	c.ScrollEnsureVisible(scrollX2+1, cursorPosInPixelsY+textHeight)*/
-
+func (c *LineEdit) ensureVisibleCursor() {
 	_, oneLineHeight, _ := canvas.MeasureText(c.FontFamily(), c.FontSize(), c.FontBold(), c.FontItalic(), "Q", false)
 	charPos, err := canvas.CharPositions(c.FontFamily(), c.fontSize.Float64(), c.FontBold(), c.FontItalic(), c.lines[c.cursorPosY])
 	for i := 0; i < len(charPos); i++ {
@@ -695,18 +618,17 @@ func (c *TextBox) ensureVisibleCursor() {
 	c.ScrollEnsureVisible(curX+c.cursorWidth, curY+oneLineHeight)
 }
 
-func (c *TextBox) clearSelection() {
+func (c *LineEdit) clearSelection() {
 	c.selectionLeftX = c.cursorPosX
-	c.selectionLeftY = c.cursorPosY
 	c.selectionRightX = c.cursorPosX
-	c.selectionRightY = c.cursorPosY
 }
 
-func (c *TextBox) modifyText(cmd textboxModifyCommand, modifiers nuikey.KeyModifiers, data interface{}) {
+func (c *LineEdit) modifyText(cmd textboxModifyCommand, modifiers nuikey.KeyModifiers, data interface{}) {
 	c.redraw()
 
 	valid := true
 	selectedTextRemoved, lines, curPosX, curPosY := c.removeSelectedText(modifiers)
+	allowSelection := true
 
 	switch cmd {
 	case textboxModifyCommandInsertChar:
@@ -716,6 +638,7 @@ func (c *TextBox) modifyText(cmd textboxModifyCommand, modifiers nuikey.KeyModif
 			right := string(out[curPosX:])
 			lines[curPosY] = left + string(data.(rune)) + right
 			curPosX += 1
+			allowSelection = false
 			//fmt.Println("MOD: ", lines[curPosY])
 		}
 	case textboxModifyCommandInsertReturn:
@@ -787,7 +710,7 @@ func (c *TextBox) modifyText(cmd textboxModifyCommand, modifiers nuikey.KeyModif
 			for _, ch := range runes {
 				if ch < 32 {
 					if ch == 10 {
-						c.insertReturn(modifiers)
+						//c.insertReturn(modifiers)
 					}
 				}
 
@@ -811,7 +734,7 @@ func (c *TextBox) modifyText(cmd textboxModifyCommand, modifiers nuikey.KeyModif
 
 	if valid {
 		c.lines = lines
-		c.moveCursor(curPosX, curPosY, modifiers)
+		c.moveCursor(curPosX, curPosY, modifiers, allowSelection)
 
 		if !c.blockUpdate {
 			c.clearSelection()
@@ -826,28 +749,26 @@ func (c *TextBox) modifyText(cmd textboxModifyCommand, modifiers nuikey.KeyModif
 
 	}
 
-	c.Update("TextBox")
+	//c.Update("TextBox")
 }
 
-func (c *TextBox) SelectAllText() {
+func (c *LineEdit) SelectAllText() {
 	runesLast := []rune(c.lines[len(c.lines)-1])
 	c.selectionLeftX = 0
-	c.selectionLeftY = 0
 	c.selectionRightX = len(runesLast)
-	c.selectionRightY = len(c.lines) - 1
 }
 
-func (c *TextBox) ScrollToBegin() {
+func (c *LineEdit) ScrollToBegin() {
 	c.ScrollEnsureVisible(0, 0)
 	c.ScrollEnsureVisible(0, 1)
 }
 
-func (c *TextBox) OneLineHeight() int {
+func (c *LineEdit) OneLineHeight() int {
 	_, fontHeight, _ := canvas.MeasureText(c.FontFamily(), c.FontSize(), false, false, "1Qg", false)
 	return fontHeight
 }
 
-func (c *TextBox) MinHeight() int {
+func (c *LineEdit) MinHeight() int {
 	return c.OneLineHeight() + 4 + c.TopBorderWidth() + c.BottomBorderWidth()
 }
 
@@ -858,6 +779,6 @@ func (c *TextBox) MinHeight() int {
 	return c.OneLineHeight()
 }*/
 
-func (c *TextBox) AcceptsReturn() bool {
-	return c.multiline
+func (c *LineEdit) AcceptsReturn() bool {
+	return false
 }

@@ -10,6 +10,7 @@ import (
 
 	"github.com/ipoluianov/goforms/utils"
 	"github.com/ipoluianov/goforms/utils/uiproperties"
+	"github.com/ipoluianov/nui/nuimouse"
 	"golang.org/x/image/colornames"
 )
 
@@ -141,7 +142,7 @@ type Control struct {
 
 	OnMouseDrop func(droppedValue interface{}, x, y int)
 
-	cursor MouseCursor
+	cursor nuimouse.MouseCursor
 
 	isTabPlate bool
 	tabIndex   int
@@ -593,18 +594,18 @@ func (c *Control) Anchors() int {
 
 func (c *Control) SetHover(hover bool) {
 	if hover {
-		if c.cursor != MouseCursorNotDefined && hover {
+		if c.cursor != nuimouse.MouseCursorNotDefined && hover {
 			c.Window().SetMouseCursor(c.cursor)
 		}
 	} else {
-		if c.cursor != MouseCursorNotDefined {
-			c.Window().SetMouseCursor(MouseCursorArrow)
+		if c.cursor != nuimouse.MouseCursorNotDefined {
+			c.Window().SetMouseCursor(nuimouse.MouseCursorArrow)
 		}
 	}
 	c.hover = hover
 }
 
-func (c *Control) MouseCursor() MouseCursor {
+func (c *Control) MouseCursor() nuimouse.MouseCursor {
 	return c.cursor
 }
 
@@ -632,8 +633,8 @@ func (c *Control) Hover() bool {
 }
 
 func (c *Control) ClearHover() {
-	if c.cursor != MouseCursorNotDefined {
-		c.Window().SetMouseCursor(MouseCursorArrow)
+	if c.cursor != nuimouse.MouseCursorNotDefined {
+		c.Window().SetMouseCursor(nuimouse.MouseCursorArrow)
 	}
 	c.hover = false
 }
@@ -865,7 +866,7 @@ func (c *Control) ProcessMouseClick(event *MouseClickEvent) {
 	if !me.Ignore {
 		contextMenuFound := false
 
-		if event.Button == MouseButtonRight {
+		if event.Button == nuimouse.MouseButtonRight {
 			wX, wY := c.RectClientAreaOnWindow()
 			if c.ContextMenu() != nil {
 				c.ContextMenu().ShowMenu(wX+me.X-c.ScrollOffsetX(), wY+me.Y-c.ScrollOffsetY())
@@ -1383,7 +1384,7 @@ func (c *Control) redraw() {
 	c.needToRedraw = true
 }
 
-func (c *Control) SetMouseCursor(cursor MouseCursor) {
+func (c *Control) SetMouseCursor(cursor nuimouse.MouseCursor) {
 	c.cursor = cursor
 }
 

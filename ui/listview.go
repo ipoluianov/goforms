@@ -4,9 +4,10 @@ import (
 	"image/color"
 	"math"
 
-	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/ipoluianov/goforms/utils/canvas"
 	"github.com/ipoluianov/goforms/utils/uiproperties"
+	"github.com/ipoluianov/nui/nuikey"
+	"github.com/ipoluianov/nui/nuimouse"
 )
 
 type ListView struct {
@@ -390,7 +391,7 @@ func (c *ListView) SetCurrentRow(row int, byMouse bool) {
 		if c.Window().KeyModifiers().Shift {
 			needToClearSelection = true
 		} else {
-			if c.Window().KeyModifiers().Control {
+			if c.Window().KeyModifiers().Ctrl {
 				needToClearSelection = false
 				c.lastClickedRowIndex = row
 			} else {
@@ -405,7 +406,7 @@ func (c *ListView) SetCurrentRow(row int, byMouse bool) {
 			}
 		}
 
-		if c.Window().KeyModifiers().Control {
+		if c.Window().KeyModifiers().Ctrl {
 			c.currentItem.selected = !c.currentItem.selected
 		} else {
 			c.currentItem.selected = true
@@ -426,7 +427,7 @@ func (c *ListView) SetCurrentRow(row int, byMouse bool) {
 		if c.Window().KeyModifiers().Shift {
 			needToClearSelection = true
 		} else {
-			if c.Window().KeyModifiers().Control {
+			if c.Window().KeyModifiers().Ctrl {
 				needToClearSelection = true
 				c.lastClickedRowIndex = row
 			} else {
@@ -473,19 +474,19 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 		}
 	}
 
-	if event.Key == glfw.KeyA && event.Modifiers.Control {
+	if event.Key == nuikey.KeyA && event.Modifiers.Ctrl {
 		c.listView.SelectAllItems()
 		return true
 	}
 
-	if event.Key == glfw.KeyEscape {
+	if event.Key == nuikey.KeyEsc {
 		c.listView.showing = true
 		c.listView.showingProgress = 0
 		c.listView.showingTime.StartTimer()
 		return true
 	}
 
-	if event.Key == glfw.KeyUp {
+	if event.Key == nuikey.KeyArrowUp {
 		if selectedItemDisplayIndex > 0 {
 			c.listView.SetCurrentRow(c.listView.displayedItems[selectedItemDisplayIndex-1].item.row, false)
 			c.listView.EnsureVisibleItem(c.listView.currentItem.row)
@@ -493,7 +494,7 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 		return true
 	}
 
-	if event.Key == glfw.KeyDown {
+	if event.Key == nuikey.KeyArrowDown {
 		if selectedItemDisplayIndex < len(c.listView.displayedItems)-1 {
 			c.listView.SetCurrentRow(c.listView.displayedItems[selectedItemDisplayIndex+1].item.row, false)
 			c.listView.EnsureVisibleItem(c.listView.currentItem.row)
@@ -501,7 +502,7 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 		return true
 	}
 
-	if event.Key == glfw.KeyHome {
+	if event.Key == nuikey.KeyHome {
 		if len(c.listView.displayedItems) > 0 {
 			c.listView.SetCurrentRow(0, false)
 			c.listView.EnsureVisibleItem(0)
@@ -509,7 +510,7 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 		return true
 	}
 
-	if event.Key == glfw.KeyEnd {
+	if event.Key == nuikey.KeyEnd {
 		if len(c.listView.displayedItems) > 0 {
 			c.listView.SetCurrentRow(len(c.listView.items)-1, false)
 			c.listView.EnsureVisibleItem(len(c.listView.items) - 1)
@@ -517,7 +518,7 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 		return true
 	}
 
-	if event.Key == glfw.KeyPageUp {
+	if event.Key == nuikey.KeyPageUp {
 		if len(c.listView.displayedItems) > 0 {
 			if c.listView.currentItem != nil {
 				row := c.listView.currentItem.row
@@ -532,7 +533,7 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 		return true
 	}
 
-	if event.Key == glfw.KeyPageDown {
+	if event.Key == nuikey.KeyPageDown {
 		if len(c.listView.displayedItems) > 0 {
 			if c.listView.currentItem != nil {
 				row := c.listView.currentItem.row
@@ -626,9 +627,9 @@ func (c *ListViewHeader) MouseMove(event *MouseMoveEvent) {
 
 	if event.Y < c.listView.itemHeight {
 		if c.findColumnRightBorder(event.X, event.Y) >= 0 {
-			c.Window().SetMouseCursor(MouseCursorResizeHor)
+			c.Window().SetMouseCursor(nuimouse.MouseCursorResizeHor)
 		} else {
-			c.Window().SetMouseCursor(MouseCursorArrow)
+			c.Window().SetMouseCursor(nuimouse.MouseCursorArrow)
 		}
 	}
 }
@@ -644,7 +645,7 @@ func (c *ListViewHeader) findColumnRightBorder(x, y int) int {
 }
 
 func (c *ListViewHeader) MouseLeave() {
-	c.Window().SetMouseCursor(MouseCursorArrow)
+	c.Window().SetMouseCursor(nuimouse.MouseCursorArrow)
 }
 
 func (c *ListView) updateItemHeight() {

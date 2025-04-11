@@ -4,8 +4,9 @@ import (
 	"image"
 	"image/color"
 
-	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/ipoluianov/goforms/utils/canvas"
+	"github.com/ipoluianov/nui/nuikey"
+	"github.com/ipoluianov/nui/nuimouse"
 )
 
 type Button struct {
@@ -46,7 +47,7 @@ func NewButton(parent Widget, text string, onPress func(event *Event)) *Button {
 	var c Button
 	c.InitControl(parent, &c)
 	c.SetStatistics("btn_" + text)
-	c.SetMouseCursor(MouseCursorPointer)
+	c.SetMouseCursor(nuimouse.MouseCursorPointer)
 
 	c.text = text
 	c.img = nil
@@ -305,7 +306,7 @@ func (c *Button) SetTextVAlign(textVAlign canvas.VAlign) {
 }
 
 func (c *Button) KeyDown(event *KeyDownEvent) bool {
-	if event.Key == glfw.KeySpace {
+	if event.Key == nuikey.KeySpace {
 		return c.Press()
 	}
 	return false

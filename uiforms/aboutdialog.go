@@ -56,8 +56,8 @@ func (f *AboutDialog) SetText(text string) {
 }
 
 func ShowAboutDialog(parent ui.Window, title string, text string) {
-	var form AboutDialog
+	/*var form AboutDialog
 	form.SetTitle(title)
 	form.SetText(text)
-	ui.StartModalForm(parent, &form)
+	ui.StartModalForm(parent, &form)*/
 }

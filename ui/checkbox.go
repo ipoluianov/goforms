@@ -5,6 +5,7 @@ import (
 
 	"github.com/ipoluianov/goforms/uiresources"
 	"github.com/ipoluianov/goforms/utils/canvas"
+	"github.com/ipoluianov/nui/nuimouse"
 )
 
 type CheckBox struct {
@@ -43,7 +44,7 @@ func (c *CheckBox) InitControl(parent Widget, w Widget) {
 	c.AddWidgetOnGrid(c.imgBox, 0, 0)
 	c.txtText = NewTextBlock(c, c.text)
 	c.txtText.TextHAlign = canvas.HAlignLeft
-	c.txtText.SetMouseCursor(MouseCursorPointer)
+	c.txtText.SetMouseCursor(nuimouse.MouseCursorPointer)
 	c.AddWidgetOnGrid(c.txtText, 1, 0)
 	c.updateImage()
 }
@@ -78,11 +79,11 @@ func (c *CheckBox) updateImage() {
 	if c.checked {
 		c.imgBox.SetImage(uiresources.ResImgCol(checkbox_checked, c.ForeColor()))
 		c.imgBox.SetScaling(ImageBoxScaleAdjustImageKeepAspectRatio)
-		c.imgBox.SetMouseCursor(MouseCursorPointer)
+		c.imgBox.SetMouseCursor(nuimouse.MouseCursorPointer)
 	} else {
 		c.imgBox.SetImage(uiresources.ResImgCol(checkbox_unchecked, c.ForeColor()))
 		c.imgBox.SetScaling(ImageBoxScaleAdjustImageKeepAspectRatio)
-		c.imgBox.SetMouseCursor(MouseCursorPointer)
+		c.imgBox.SetMouseCursor(nuimouse.MouseCursorPointer)
 	}
 }
 

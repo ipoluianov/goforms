@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/ipoluianov/goforms/uiresources"
+	"github.com/ipoluianov/nui/nuikey"
 )
 
 type SpinBox struct {
@@ -173,15 +173,15 @@ func (c *SpinBox) onTextChanged(txtBox *TextBox, oldValue string, newValue strin
 }
 
 func (c *SpinBox) onPreTxtKeyDown(event *KeyDownEvent) {
-	if event.Key == glfw.KeyUp {
+	if event.Key == nuikey.KeyArrowUp {
 		c.upClick(nil)
 		event.Ignore = true
 	}
-	if event.Key == glfw.KeyDown {
+	if event.Key == nuikey.KeyArrowDown {
 		c.downClick(nil)
 		event.Ignore = true
 	}
-	if event.Key == glfw.KeyEnter {
+	if event.Key == nuikey.KeyEnter {
 		c.txt.SelectAllText()
 		event.Ignore = true
 	}

@@ -1,6 +1,6 @@
 Control 
 {
-	fontFamily: Roboto;
+	fontFamily: RobotoMono;
 	fontSize: 16;
 	backgroundColor:#303030;
 	foregroundColor:#DDD;

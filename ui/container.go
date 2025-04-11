@@ -98,6 +98,7 @@ func (c *Container) AddWidgetOnGrid(w Widget, x int, y int) {
 	c.Controls = append(c.Controls, w)
 	w.SetWindow(c.ownWindow)
 	w.SetParent(c)
+
 	//p.Window().UpdateLayout()
 	c.SetStatistics("panel_" + c.Name())
 }

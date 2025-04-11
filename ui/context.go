@@ -1,10 +1,11 @@
 package ui
 
 import (
+	"image"
 	"image/color"
 
+	//"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/golang-collections/collections/stack"
-	"github.com/ipoluianov/goforms/utils/opengl/gl11/gl"
 )
 
 type ClipSettings struct {
@@ -42,6 +43,18 @@ func NewDrawContext(windowWidth, windowHeight int) *DrawContextGL {
 	return &c
 }
 
+func NewDrawContextForRGBA(rgba *image.RGBA) *DrawContextGL {
+	var c DrawContextGL
+	c.windowWidth = rgba.Rect.Dx()
+	c.windowHeight = rgba.Rect.Dy()
+	c.currentClipSettings.x = 0
+	c.currentClipSettings.y = 0
+	c.currentClipSettings.width = rgba.Rect.Dx()
+	c.currentClipSettings.height = rgba.Rect.Dy()
+	c.setViewport()
+	return &c
+}
+
 func (c *DrawContextGL) SetColor(col color.Color) {
 	c.currentColor = col
 }
@@ -64,7 +77,7 @@ func (c *DrawContextGL) Clip(x, y, width, height int) {
 }
 
 func (c *DrawContextGL) setViewport() {
-	gl.Viewport(int32(c.currentClipSettings.x), int32(c.windowHeight-c.currentClipSettings.y-c.currentClipSettings.height), int32(c.currentClipSettings.width), int32(c.currentClipSettings.height))
+	//gl.Viewport(int32(c.currentClipSettings.x), int32(c.windowHeight-c.currentClipSettings.y-c.currentClipSettings.height), int32(c.currentClipSettings.width), int32(c.currentClipSettings.height))
 }
 
 func (c *DrawContextGL) UnClip() {

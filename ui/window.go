@@ -1,14 +1,18 @@
 package ui
 
 import (
-	"github.com/go-gl/glfw/v3.3/glfw"
+	"image"
+
+	"github.com/ipoluianov/nui/nui"
+	"github.com/ipoluianov/nui/nuikey"
+	"github.com/ipoluianov/nui/nuimouse"
 )
 
 type Window interface {
 	LoopUI()
 
 	Show()
-	Draw() bool
+	Draw(rgba *image.RGBA) bool
 
 	OnInit()
 	OnClose() bool
@@ -21,20 +25,20 @@ type Window interface {
 	// mouse
 	ProcessMouseMove(x, y int)
 	ProcessMouseWheel(delta int)
-	ProcessMouseDown(button MouseButton)
-	ProcessMouseUp(button MouseButton)
-	ProcessClick(x, y int, button MouseButton)
+	ProcessMouseDown(button nuimouse.MouseButton)
+	ProcessMouseUp(button nuimouse.MouseButton)
+	ProcessClick(x, y int, button nuimouse.MouseButton)
 	// keyboard
 	ProcessCharInput(ch rune)
 	ProcessKeyModifiers(shift bool, control bool, alt bool)
-	ProcessKeyDown(key glfw.Key)
-	ProcessKeyUp(key glfw.Key)
+	ProcessKeyDown(key nuikey.Key)
+	ProcessKeyUp(key nuikey.Key)
 	// window
 	ProcessWindowResize(width, height int)
 	ProcessWindowMove(x, y int)
 	ProcessFocus()
 
-	KeyModifiers() KeyModifiers
+	KeyModifiers() nuikey.KeyModifiers
 
 	// title
 	Title() string
@@ -93,9 +97,9 @@ type Window interface {
 
 	UpdateLayout()
 
-	SetWindow(w *glfw.Window)
-	Window() *glfw.Window
+	SetWindow(w nui.Window)
+	Window() nui.Window
 
-	SetMouseCursor(cur MouseCursor)
+	SetMouseCursor(cur nuimouse.MouseCursor)
 	CentralWidget() Widget
 }

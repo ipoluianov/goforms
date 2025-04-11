@@ -60,8 +60,8 @@ func (f *MessageBox) SetText(text string) {
 }
 
 func ShowMessageBox(parent ui.Window, title string, text string) {
-	var form MessageBox
+	/*var form MessageBox
 	form.SetTitle(title)
 	form.SetText(text)
-	ui.StartModalForm(parent, &form)
+	ui.StartModalForm(parent, &form)*/
 }

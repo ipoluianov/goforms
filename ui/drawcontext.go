@@ -40,5 +40,5 @@ type DrawContext interface {
 
 	State() canvas.CanvasDirectState
 
-	Finish()
+	Finish(rgba *image.RGBA)
 }

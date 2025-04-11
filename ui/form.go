@@ -11,15 +11,18 @@ import (
 	"sort"
 	"time"
 
-	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/ipoluianov/goforms/utils"
 	"github.com/ipoluianov/goforms/utils/canvas"
+	"github.com/ipoluianov/nui/nui"
+	"github.com/ipoluianov/nui/nuikey"
+	"github.com/ipoluianov/nui/nuimouse"
 	"golang.org/x/image/colornames"
 )
 
 var nextFormId int
 var windows []Window
-var windowByGLFWWindow map[*glfw.Window]Window
+
+var windowByGLFWWindow map[nui.Window]Window
 
 const (
 	DefaultWindowWidth  = 640
@@ -37,13 +40,13 @@ func NewForm() *Form {
 }
 
 func UnInitUI() {
-	glfw.Terminate()
+	//glfw.Terminate()
 }
 
 func init() {
 	nextFormId = 1
 	windows = make([]Window, 0)
-	windowByGLFWWindow = make(map[*glfw.Window]Window)
+	windowByGLFWWindow = make(map[nui.Window]Window)
 }
 
 type Form struct {
@@ -52,7 +55,7 @@ type Form struct {
 	disposed bool
 	inited   bool
 
-	window *glfw.Window
+	window nui.Window
 
 	userPanel     *Panel
 	menu          Menu
@@ -78,7 +81,7 @@ type Form struct {
 	lastDrawTime time.Time
 	needToUpdate bool
 
-	keyModifiers KeyModifiers
+	keyModifiers nuikey.KeyModifiers
 
 	//drawTime     []float64
 	dialogResult bool
@@ -216,6 +219,9 @@ func (c *Form) ShowMaximazed() bool {
 func (c *Form) UpdateWindow(source string) {
 	c.needToUpdate = true
 	c.lastUpdateSource = source
+	if c.window != nil {
+		c.window.Update()
+	}
 }
 
 func (c *Form) Accept() {
@@ -231,7 +237,7 @@ func (c *Form) Reject() {
 func (c *Form) SetIcon(img image.Image) {
 	images := make([]image.Image, 0)
 	images = append(images, img)
-	c.window.SetIcon(images)
+	//c.window.SetAppIcon(images[0])
 }
 
 func (c *Form) AcceptButton(ev *Event) {
@@ -249,19 +255,16 @@ func (c *Form) DialogResult() bool {
 func init() {
 }
 
-func (c *Form) Window() *glfw.Window {
+func (c *Form) Window() nui.Window {
 	return c.window
 }
 
-func (c *Form) Draw() bool {
+func (c *Form) Draw(rgba *image.RGBA) bool {
 
 	if c.window == nil {
 		return false
 	}
 	if c.disposed {
-		return false
-	}
-	if !c.needToUpdate {
 		return false
 	}
 
@@ -272,34 +275,31 @@ func (c *Form) Draw() bool {
 		avgDrawTimeMs += c.drawTimes[i].Milliseconds()
 	}
 	avgDrawTimeMs = avgDrawTimeMs / int64(c.drawTimesCount)*/
-	drawPeriodTime := 50 * time.Millisecond
+	//drawPeriodTime := 50 * time.Millisecond
 	//drawPeriodTime := time.Duration(avgDrawTimeMs*2) * time.Millisecond
 	//fmt.Println("Form draw avg:", avgDrawTimeMs, "drawPeriod:", drawPeriodTime)
 
-	if UseOpenGL33 {
+	/*if UseOpenGL33 {
 		drawPeriodTime = 100 * time.Millisecond
-	}
+	}*/
 
-	if time.Since(c.lastDrawTime) < drawPeriodTime {
+	/*if time.Since(c.lastDrawTime) < drawPeriodTime {
 		return false
-	}
+	}*/
 
 	c.lastDrawTime = time.Now()
 
 	t1 := time.Now()
 	c.realUpdateLayout()
 
-	key := fmt.Sprint("W:", c.Width(), " H:", c.Height())
+	/*key := fmt.Sprint("W:", c.Width(), " H:", c.Height())
 	if c.currentCanvasKey != key {
-		if UseOpenGL33 {
-			c.currentCanvas = NewDrawContextOpenGL(c.window)
-		} else {
-			c.currentCanvas = NewDrawContextSW(c.window)
-		}
+		c.currentCanvas = NewDrawContextSW(c.window)
 		//fmt.Println("New DrawContext:", key)
 		c.currentCanvasKey = key
-	}
-	ctx := c.currentCanvas
+	}*/
+	//ctx := c.currentCanvas
+	ctx := NewDrawContextSWRGBA(c.window, rgba)
 
 	ctx.Init()
 
@@ -321,9 +321,8 @@ func (c *Form) Draw() bool {
 		//ctx.DrawText(0, 0, c.Width(), c.Height(), c.String())
 	}
 
-	ctx.Finish()
+	ctx.Finish(rgba)
 
-	c.window.SwapBuffers()
 	t2 := time.Now()
 
 	drawTime := t2.Sub(t1)
@@ -424,7 +423,7 @@ func (c *Form) updatePanelInnerSize() {
 		return
 	}
 
-	width, height := c.Window().GetSize()
+	width, height := c.Window().Size()
 
 	minWidth := c.userPanel.MinWidth()
 	minHeight := c.userPanel.MinHeight()
@@ -471,11 +470,11 @@ func (c *Form) ProcessWindowResize(width, height int) {
 }
 
 func (c *Form) Move(x, y int) {
-	c.window.SetPos(x, y)
+	c.window.Move(x, y)
 }
 
 func (c *Form) Resize(width, height int) {
-	c.window.SetSize(width, height)
+	c.window.Resize(width, height)
 	//if f.id == 0 {
 	c.ProcessWindowResize(width, height)
 	//}
@@ -525,20 +524,20 @@ func StartMainForm(window Window) {
 	window.LoopUI()
 }
 
-func (c *Form) SetWindow(w *glfw.Window) {
+func (c *Form) SetWindow(w nui.Window) {
 	c.window = w
 }
 
 var MainForm Window
 
-func getWindowByGLFWWindow(w *glfw.Window) Window {
+func getWindowByGLFWWindow(w nui.Window) Window {
 	if window, ok := windowByGLFWWindow[w]; ok {
 		return window
 	}
 	return nil
 }
 
-func OnMouseButtonCallback(w *glfw.Window, button glfw.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
+/*func OnMouseButtonCallback(w nui.Window, button nuimouse.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
 	window := getWindowByGLFWWindow(w)
 	if window == nil {
 		return
@@ -546,33 +545,32 @@ func OnMouseButtonCallback(w *glfw.Window, button glfw.MouseButton, action glfw.
 
 	switch action {
 	case glfw.Release:
-		if button == glfw.MouseButtonLeft {
-			window.ProcessMouseUp(MouseButtonLeft)
+		if button == nuimouse.MouseButtonLeft {
+			window.ProcessMouseUp(nuimouse.MouseButtonLeft)
 		}
-		if button == glfw.MouseButtonRight {
-			window.ProcessMouseUp(MouseButtonRight)
+		if button == nuimouse.MouseButtonRight {
+			window.ProcessMouseUp(nuimouse.MouseButtonRight)
 		}
 	case glfw.Press:
-		if button == glfw.MouseButtonLeft {
-			window.ProcessMouseDown(MouseButtonLeft)
+		if button == nuimouse.MouseButtonLeft {
+			window.ProcessMouseDown(nuimouse.MouseButtonLeft)
 		}
-		if button == glfw.MouseButtonRight {
-			window.ProcessMouseDown(MouseButtonRight)
+		if button == nuimouse.MouseButtonRight {
+			window.ProcessMouseDown(nuimouse.MouseButtonRight)
 		}
 	}
-}
+}*/
 
-func OnWindowSizeCallback(w *glfw.Window, width int, height int) {
+func OnWindowSizeCallback(w nui.Window, width int, height int) {
 	window := getWindowByGLFWWindow(w)
-	//fmt.Println("OnWindowSizeCallback: ", window.Id())
 	if window == nil {
 		return
 	}
 	window.ProcessWindowResize(width, height)
-	window.Draw()
+	//window.Draw()
 }
 
-func OnWindowClose(w *glfw.Window) {
+func OnWindowClose(w nui.Window) {
 	window := getWindowByGLFWWindow(w)
 	if window == nil {
 		fmt.Println("WRONG WINDOW!!!!!!!!!!!!!!!")
@@ -583,39 +581,25 @@ func OnWindowClose(w *glfw.Window) {
 	}
 }
 
-func OnWindowKeyCallback(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
-	window := getWindowByGLFWWindow(w)
-	if window == nil {
-		return
-	}
-	window.ProcessKeyModifiers((mods&glfw.ModShift) != 0, (mods&glfw.ModControl) != 0, (mods&glfw.ModAlt) != 0)
-	if action == glfw.Press || action == glfw.Repeat {
-		window.ProcessKeyDown(key)
-	}
-	if action == glfw.Release {
-		window.ProcessKeyUp(key)
-	}
-}
-
-func OnWindowCursorPosCallback(w *glfw.Window, xpos float64, ypos float64) {
+func OnWindowCursorPosCallback(w nui.Window, xpos float64, ypos float64) {
 	window := getWindowByGLFWWindow(w)
 	if window == nil {
 		return
 	}
 	window.ProcessMouseMove(int(xpos), int(ypos))
-	window.Draw()
+	//window.Draw()
 }
 
-func OnWindowCharCallback(w *glfw.Window, char rune) {
+func OnWindowCharCallback(w nui.Window, char rune) {
 	window := getWindowByGLFWWindow(w)
 	if window == nil {
 		return
 	}
 	window.ProcessCharInput(char)
-	window.Draw()
+	//window.Draw()
 }
 
-func OnWindowFocusCallback(w *glfw.Window, focused bool) {
+func OnWindowFocusCallback(w nui.Window, focused bool) {
 	window := getWindowByGLFWWindow(w)
 	if window == nil {
 		return
@@ -625,11 +609,11 @@ func OnWindowFocusCallback(w *glfw.Window, focused bool) {
 
 func (c *Form) ProcessFocus() {
 	if c.childModal != nil {
-		c.childModal.Window().Focus()
+		//c.childModal.Window().Focus()
 	}
 }
 
-func OnWindowScrollCallback(w *glfw.Window, xoff float64, yoff float64) {
+func OnWindowScrollCallback(w nui.Window, xoff float64, yoff float64) {
 	window := getWindowByGLFWWindow(w)
 	if window == nil {
 		return
@@ -638,35 +622,124 @@ func OnWindowScrollCallback(w *glfw.Window, xoff float64, yoff float64) {
 }
 
 func CreateForm(form Window) {
-	glfw.WindowHint(glfw.Visible, glfw.False)
-	window, err := glfw.CreateWindow(1, 1, "Empty Window", nil, nil)
+	nuiWindow := nui.CreateWindow("UI", 800, 600, true)
 
-	if err != nil {
-		panic(err)
-	}
-	form.SetWindow(window)
-	window.MakeContextCurrent()
+	form.SetWindow(nuiWindow)
 	form.SetId(nextFormId)
 	nextFormId++
 
+	nuiWindow.OnMouseEnter(func() {
+		window := getWindowByGLFWWindow(nuiWindow)
+		if window == nil {
+			return
+		}
+	})
+
+	nuiWindow.OnMouseLeave(func() {
+		window := getWindowByGLFWWindow(nuiWindow)
+		if window == nil {
+			return
+		}
+	})
+
+	//window.OnResize(OnWindowSizeCallback)
+	//window.OnCloseRequest(OnWindowClose)
+
+	nuiWindow.OnResize(func(width, height int) {
+		window := getWindowByGLFWWindow(nuiWindow)
+		if window == nil {
+			return
+		}
+		window.ProcessWindowResize(width, height)
+	})
+
+	nuiWindow.OnPaint(func(rgba *image.RGBA) {
+		window := getWindowByGLFWWindow(nuiWindow)
+		if window == nil {
+			return
+		}
+
+		window.Draw(rgba)
+		fmt.Println("OnPaint", time.Now().Format("02-01-2006 15-04-05.999"), nuiWindow.DrawTimeUs()/1000)
+
+		// save rgba to png file on disk
+		/*file, _ := os.Create("d:\\screenshot.png")
+		defer file.Close()
+		png.Encode(file, rgba)*/
+	})
+
+	nuiWindow.OnTimer(func() {
+		form.MainTimer()
+		//form.UpdateWindow("")
+	})
+
+	nuiWindow.OnKeyDown(func(keyCode nuikey.Key, mods nuikey.KeyModifiers) {
+		window := getWindowByGLFWWindow(nuiWindow)
+		if window == nil {
+			return
+		}
+		window.ProcessKeyModifiers(mods.Shift, mods.Ctrl, mods.Alt)
+		window.ProcessKeyDown(keyCode)
+	})
+	nuiWindow.OnKeyUp(func(keyCode nuikey.Key, mods nuikey.KeyModifiers) {
+		window := getWindowByGLFWWindow(nuiWindow)
+		if window == nil {
+			return
+		}
+		window.ProcessKeyModifiers(mods.Shift, mods.Ctrl, mods.Alt)
+		window.ProcessKeyUp(keyCode)
+	})
+
+	nuiWindow.OnChar(func(ch rune) {
+		window := getWindowByGLFWWindow(nuiWindow)
+		if window == nil {
+			return
+		}
+		window.ProcessCharInput(ch)
+	})
+
+	nuiWindow.OnMouseMove(func(xpos int, ypos int) {
+		window := getWindowByGLFWWindow(nuiWindow)
+		if window == nil {
+			return
+		}
+		window.ProcessMouseMove(int(xpos), int(ypos))
+		//window.Draw()
+	})
+
+	nuiWindow.OnMouseButtonDown(func(button nuimouse.MouseButton, x int, y int) {
+		window := getWindowByGLFWWindow(nuiWindow)
+		if window == nil {
+			return
+		}
+		window.ProcessMouseDown(button)
+	})
+
+	nuiWindow.OnMouseButtonUp(func(button nuimouse.MouseButton, x int, y int) {
+		window := getWindowByGLFWWindow(nuiWindow)
+		if window == nil {
+			return
+		}
+		window.ProcessMouseUp(button)
+	})
+
+	/*nuiWindow.OnMouseButtonDown(OnMouseButtonCallback)
+	nuiWindow.OnMouseButtonUp(OnMouseButtonCallback)
+	nuiWindow.OnMouseButtonDblClick(OnMouseButtonCallback)*/
+
 	//mainForm = form
 
-	// Initialize Glow (go function bindings)
-	if UseOpenGL33 {
-		InitOpenGL33()
-	}
-
-	window.SetSizeCallback(OnWindowSizeCallback)
+	/*window.SetSizeCallback(OnWindowSizeCallback)
 	window.SetCloseCallback(OnWindowClose)
 	window.SetCursorPosCallback(OnWindowCursorPosCallback)
 	window.SetMouseButtonCallback(OnMouseButtonCallback)
 	window.SetKeyCallback(OnWindowKeyCallback)
 	window.SetCharCallback(OnWindowCharCallback)
 	window.SetFocusCallback(OnWindowFocusCallback)
-	window.SetScrollCallback(OnWindowScrollCallback)
+	window.SetScrollCallback(OnWindowScrollCallback)*/
 
 	windows = append(windows, form)
-	windowByGLFWWindow[window] = form
+	windowByGLFWWindow[nuiWindow] = form
 
 	form.Init()
 
@@ -678,11 +751,11 @@ func CreateForm(form Window) {
 
 	form.OnInit()
 
-	monitor := glfw.GetPrimaryMonitor()
+	/*monitor := glfw.GetPrimaryMonitor()
 	_, _, screenW, screenH := monitor.GetWorkarea()
-	wW, wH := window.GetSize()
-	window.SetPos((screenW-wW)/2, (screenH-wH)/2)
-	window.Show()
+	wW, wH := window.Size()
+	window.SetPos((screenW-wW)/2, (screenH-wH)/2)*/
+	nuiWindow.Show()
 	form.UpdateLayout()
 }
 
@@ -702,7 +775,7 @@ func (c *Form) CreateModalForm(window Window) {
 }*/
 
 func (c *Form) Maximize() {
-	c.window.Maximize()
+	c.window.MaximizeWindow()
 }
 
 func StartModalForm(parent Window, window Window) {
@@ -728,11 +801,11 @@ func (c *Form) Title() string {
 	return c.title
 }
 
-func (c *Form) KeyModifiers() KeyModifiers {
+func (c *Form) KeyModifiers() nuikey.KeyModifiers {
 	return c.keyModifiers
 }
 
-func (c *Form) ProcessClick(x, y int, button MouseButton) {
+func (c *Form) ProcessClick(x, y int, button nuimouse.MouseButton) {
 	//fmt.Println("onClick: X:", x, " Y:", y)
 
 	var event MouseClickEvent
@@ -756,16 +829,16 @@ func (c *Form) ProcessCharInput(ch rune) {
 	}
 }
 
-func (c *Form) ProcessKeyDown(key glfw.Key) {
+func (c *Form) ProcessKeyDown(key nuikey.Key) {
 
-	if key == glfw.KeyF12 {
+	if key == nuikey.KeyF12 {
 		c.activatedServiceMenu = true
 		c.UpdateWindow("Service")
 		return
 	}
 
 	if c.activatedServiceMenu {
-		if key == glfw.KeyF1 {
+		if key == nuikey.KeyF1 {
 			ServiceDrawBorders = !ServiceDrawBorders
 		}
 		c.activatedServiceMenu = false
@@ -785,13 +858,13 @@ func (c *Form) ProcessKeyDown(key glfw.Key) {
 		}
 
 		if !processed {
-			if key == glfw.KeyKPEnter || key == glfw.KeyEnter || key == glfw.KeyTab {
-				if (key == glfw.KeyKPEnter || key == glfw.KeyEnter) && !c.focusWidget.AcceptsReturn() {
+			if key == nuikey.KeyEnter || key == nuikey.KeyTab {
+				if (key == nuikey.KeyEnter) && !c.focusWidget.AcceptsReturn() {
 					if c.ProcessReturnDown() {
 						processed = true
 					}
 				}
-				if key == glfw.KeyTab && !c.focusWidget.AcceptsTab() {
+				if key == nuikey.KeyTab && !c.focusWidget.AcceptsTab() {
 					c.ProcessTabDown()
 					processed = true
 				}
@@ -809,36 +882,36 @@ func (c *Form) ProcessKeyDown(key glfw.Key) {
 		}
 		//f.UpdateWindow("Form")
 	} else {
-		if key == glfw.KeyEnter {
+		if key == nuikey.KeyEnter {
 			c.ProcessReturnDown()
 		}
-		if key == glfw.KeyTab {
+		if key == nuikey.KeyTab {
 			c.ProcessTabDown()
 		}
 	}
 
-	if key == glfw.KeyEscape {
+	if key == nuikey.KeyEsc {
 		if c.rejectButton != nil {
 			c.rejectButton.Press()
 		}
 	}
 
-	if key == glfw.KeyF11 {
+	if key == nuikey.KeyF11 {
 		//application.DumpMemoryMap()
 		runtime.GC()
 		debug.FreeOSMemory()
 	}
 }
 
-func (c *Form) ProcessKeyUp(key glfw.Key) {
+func (c *Form) ProcessKeyUp(key nuikey.Key) {
 	if c.focusWidget != nil {
 		processed := false
-		if key == glfw.KeyEnter || key == glfw.KeyTab {
-			if key == glfw.KeyEnter && !c.focusWidget.AcceptsReturn() {
+		if key == nuikey.KeyEnter || key == nuikey.KeyTab {
+			if key == nuikey.KeyEnter && !c.focusWidget.AcceptsReturn() {
 				c.ProcessReturnUp()
 				processed = true
 			}
-			if key == glfw.KeyTab && !c.focusWidget.AcceptsTab() {
+			if key == nuikey.KeyTab && !c.focusWidget.AcceptsTab() {
 				c.ProcessTabUp()
 				processed = true
 			}
@@ -928,7 +1001,7 @@ func (c *Form) ProcessMouseMove(x, y int) {
 	}
 
 	if c.hoverWidget != nil {
-		if c.hoverWidget.MouseCursor() != MouseCursorNotDefined {
+		if c.hoverWidget.MouseCursor() != nuimouse.MouseCursorNotDefined {
 			c.SetMouseCursor(c.hoverWidget.MouseCursor())
 		}
 	}
@@ -936,7 +1009,7 @@ func (c *Form) ProcessMouseMove(x, y int) {
 	c.UpdateWindow("Form - mouse move")
 }
 
-func (c *Form) ProcessMouseDown(button MouseButton) {
+func (c *Form) ProcessMouseDown(button nuimouse.MouseButton) {
 
 	x := c.lastMouseMovePos.X
 	y := c.lastMouseMovePos.Y
@@ -961,7 +1034,7 @@ func (c *Form) ProcessMouseDown(button MouseButton) {
 	c.updateHoverWidget(x, y)
 }
 
-func (c *Form) ProcessMouseUp(button MouseButton) {
+func (c *Form) ProcessMouseUp(button nuimouse.MouseButton) {
 	x := c.lastMouseMovePos.X
 	y := c.lastMouseMovePos.Y
 
@@ -1103,7 +1176,7 @@ func (c *Form) ProcessReturnUp() {
 }
 
 func (c *Form) ProcessKeyModifiers(shift bool, control bool, alt bool) {
-	c.keyModifiers = KeyModifiers{Shift: shift, Control: control, Alt: alt}
+	c.keyModifiers = nuikey.KeyModifiers{Shift: shift, Ctrl: control, Alt: alt}
 }
 
 /*func (f * Form) onMouseDown(x, y int) {
@@ -1118,8 +1191,7 @@ func (f * Form) onClick(x, y int) {
 }*/
 
 func (c *Form) Close() {
-	c.window.Hide()
-	c.window.Destroy()
+	c.window.Close()
 
 	delete(windowByGLFWWindow, c.window)
 
@@ -1301,25 +1373,9 @@ func (c *Form) UpdateLayout() {
 
 func (c *Form) realUpdateLayout() {
 	if c.needUpdateLayout {
-		if c.Window().GetAttrib(glfw.Visible) != 0 {
-			c.Panel().SetSize(c.Width(), c.Height())
-			c.Panel().ClearLayoutCache()
-			c.Panel().UpdateLayout()
-
-			/*minW := c.Panel().MinWidth()
-			minH := c.Panel().MinHeight()
-			maxW := 2000
-			maxH := 2000
-
-			if minW > maxW {
-				minW = maxW - 1
-			}
-			if minH > maxH {
-				minH = maxH - 1
-			}*/
-
-			//c.Window().SetSizeLimits(minW, minH, maxW, maxH)
-		}
+		c.Panel().SetSize(c.Width(), c.Height())
+		c.Panel().ClearLayoutCache()
+		c.Panel().UpdateLayout()
 		c.needUpdateLayout = false
 
 		x := c.lastMouseMovePos.X
@@ -1335,7 +1391,9 @@ func (c *Form) timerMemoryDump() {
 }
 
 func (c *Form) LoopUI_OpenGL() {
-	for {
+	c.window.EventLoop()
+
+	/*for {
 		if len(windows) < 1 {
 			break
 		}
@@ -1347,11 +1405,11 @@ func (c *Form) LoopUI_OpenGL() {
 			window.MainTimer()
 			window.Draw()
 		}
-	}
+	}*/
 }
 
-func (c *Form) SetMouseCursor(cur MouseCursor) {
-	var cursor *glfw.Cursor
+func (c *Form) SetMouseCursor(cur nuimouse.MouseCursor) {
+	/*var cursor *glfw.Cursor
 	cursor = nil
 	switch cur {
 	case MouseCursorArrow:
@@ -1367,7 +1425,7 @@ func (c *Form) SetMouseCursor(cur MouseCursor) {
 	}
 	if cursor != nil {
 		c.window.SetCursor(cursor)
-	}
+	}*/
 }
 
 func (c *Form) CentralWidget() Widget {

@@ -70,6 +70,23 @@ func NewCanvas(width int, height int) *CanvasDirect {
 	return &canvas
 }
 
+func NewCanvasRGBA(rgba *image.RGBA) *CanvasDirect {
+	var canvas CanvasDirect
+
+	width := rgba.Rect.Dx()
+	height := rgba.Rect.Dy()
+
+	canvas.image = rgba
+	//canvas.image = image.NewRGBA(image.Rect(0, 0, 10, 10))
+	canvas.state.ClipX = 0
+	canvas.state.ClipY = 0
+	canvas.state.ClipWidth = 10000000
+	canvas.state.ClipHeight = 10000000
+	canvas.Obj.InitObj("CanvasDirect", fmt.Sprint("W:", width, " H:", height))
+	runtime.SetFinalizer(&canvas, finalizerCanvas)
+	return &canvas
+}
+
 func NewCanvasWindow(width int, height int) *CanvasDirect {
 	var canvas CanvasDirect
 	//canvas.image = image.NewRGBA(image.Rect(0, 0, width, height))

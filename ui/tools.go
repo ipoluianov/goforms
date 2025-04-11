@@ -4,8 +4,10 @@ import (
 	"bytes"
 	"image"
 	"image/color"
+	"time"
 
-	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/ipoluianov/nui/nuikey"
+	"github.com/ipoluianov/nui/nuimouse"
 )
 
 type FormTimer struct {
@@ -22,6 +24,12 @@ type CoordinateTranslator interface {
 
 func (c *FormTimer) StartTimer() {
 	c.Enabled = true
+}
+
+func (c *FormTimer) RestartTimer() {
+	c.Enabled = true
+	nowMSec := time.Now().UnixNano() / 1000000
+	c.LastElapsedDTMSec = nowMSec
 }
 
 func (c *FormTimer) StopTimer() {
@@ -57,22 +65,10 @@ func (c *UserDataContainer) Dispose() {
 	c.userDataContainer = nil
 }
 
-type MouseButton int
-
-const MouseButtonLeft MouseButton = 0x01
-const MouseButtonMiddle MouseButton = 0x02
-const MouseButtonRight MouseButton = 0x04
-
-type KeyModifiers struct {
-	Shift   bool
-	Control bool
-	Alt     bool
-}
-
 type Event struct {
 	UserDataContainer
 	Sender    interface{}
-	Modifiers KeyModifiers
+	Modifiers nuikey.KeyModifiers
 	Ignore    bool
 }
 
@@ -122,7 +118,7 @@ type MouseMoveEvent struct {
 
 type MouseDownEvent struct {
 	MouseEvent
-	Button MouseButton
+	Button nuimouse.MouseButton
 }
 
 func NewEvent(sender interface{}) *Event {
@@ -132,7 +128,7 @@ func NewEvent(sender interface{}) *Event {
 	return &event
 }
 
-func NewMouseDownEvent(x, y int, button MouseButton, modifiers KeyModifiers) *MouseDownEvent {
+func NewMouseDownEvent(x, y int, button nuimouse.MouseButton, modifiers nuikey.KeyModifiers) *MouseDownEvent {
 	var event MouseDownEvent
 	event.InitDataContainer()
 	event.Modifiers = modifiers
@@ -142,7 +138,7 @@ func NewMouseDownEvent(x, y int, button MouseButton, modifiers KeyModifiers) *Mo
 	return &event
 }
 
-func NewMouseDropEvent(x, y int, button MouseButton, modifiers KeyModifiers, droppingObject interface{}) *MouseDropEvent {
+func NewMouseDropEvent(x, y int, button nuimouse.MouseButton, modifiers nuikey.KeyModifiers, droppingObject interface{}) *MouseDropEvent {
 	var event MouseDropEvent
 	event.InitDataContainer()
 	event.Modifiers = modifiers
@@ -153,7 +149,7 @@ func NewMouseDropEvent(x, y int, button MouseButton, modifiers KeyModifiers, dro
 	return &event
 }
 
-func NewMouseValidateDropEvent(x, y int, button MouseButton, modifiers KeyModifiers, droppingObject interface{}) *MouseValidateDropEvent {
+func NewMouseValidateDropEvent(x, y int, button nuimouse.MouseButton, modifiers nuikey.KeyModifiers, droppingObject interface{}) *MouseValidateDropEvent {
 	var event MouseValidateDropEvent
 	event.InitDataContainer()
 	event.Modifiers = modifiers
@@ -166,40 +162,40 @@ func NewMouseValidateDropEvent(x, y int, button MouseButton, modifiers KeyModifi
 
 type MouseUpEvent struct {
 	MouseEvent
-	Button MouseButton
+	Button nuimouse.MouseButton
 }
 
 type MouseDropEvent struct {
 	MouseEvent
-	Button         MouseButton
+	Button         nuimouse.MouseButton
 	DroppingObject interface{}
 }
 
 type MouseValidateDropEvent struct {
 	MouseEvent
-	Button         MouseButton
+	Button         nuimouse.MouseButton
 	DroppingObject interface{}
 	AllowDrop      bool
 }
 
 type MouseClickEvent struct {
 	MouseEvent
-	Button MouseButton
+	Button nuimouse.MouseButton
 }
 
 type MouseDblClickEvent struct {
 	MouseEvent
-	Button MouseButton
+	Button nuimouse.MouseButton
 }
 
 type KeyDownEvent struct {
 	Event
-	Key glfw.Key
+	Key nuikey.Key
 }
 
 type KeyUpEvent struct {
 	Event
-	Key glfw.Key
+	Key nuikey.Key
 }
 
 type KeyCharEvent struct {
