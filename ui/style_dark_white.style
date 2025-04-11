@@ -1,7 +1,7 @@
 Control 
 {
 	fontFamily: RobotoMono;
-	fontSize: 16;
+	fontSize: 14;
 	backgroundColor:#303030;
 	foregroundColor:#DDD;
 	inactiveColor:#444;

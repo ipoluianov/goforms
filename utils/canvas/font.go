@@ -32,12 +32,16 @@ var fontRoboto []byte
 //go:embed "fonts/RobotoMono_Regular.ttf"
 var fontRobotoMono []byte
 
+//go:embed "fonts/inter.ttf"
+var fontInter []byte
+
 func init() {
 	_ = embed.FS.Open
 
 	globalFonts = make(map[string]*FontInfo)
 	addFont("roboto", fontRoboto)
-	addFont("robotomono", fontRobotoMono)
+	//addFont("robotomono", fontRobotoMono)
+	addFont("robotomono", fontInter)
 }
 
 func addFont(name string, data []byte) {
