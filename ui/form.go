@@ -660,7 +660,7 @@ func CreateForm(form Window) {
 		}
 
 		window.Draw(rgba)
-		fmt.Println("OnPaint", time.Now().Format("02-01-2006 15-04-05.999"), nuiWindow.DrawTimeUs()/1000)
+		//fmt.Println("OnPaint", time.Now().Format("02-01-2006 15-04-05.999"), nuiWindow.DrawTimeUs()/1000)
 
 		// save rgba to png file on disk
 		/*file, _ := os.Create("d:\\screenshot.png")
