@@ -5,6 +5,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/atotto/clipboard"
 	"github.com/ipoluianov/goforms/utils/canvas"
 	"github.com/ipoluianov/goforms/utils/uiproperties"
 	"github.com/ipoluianov/nui/nuikey"
@@ -304,23 +305,27 @@ func (c *LineEdit) KeyChar(event *KeyCharEvent) {
 }
 
 func (c *LineEdit) cutSelected() {
-	/*glfw.SetClipboardString(c.SelectedText())
+	clipboard.WriteAll(c.SelectedText())
 	if !c.readonly {
 		c.modifyText(textboxModifyCommandDelete, nuikey.KeyModifiers{}, nil)
-	}*/
+	}
 }
 
 func (c *LineEdit) copySelected() {
-	//glfw.SetClipboardString(c.SelectedText())
+	clipboard.WriteAll(c.SelectedText())
 }
 
 func (c *LineEdit) paste() {
-	/*str := glfw.GetClipboardString()
+	str, err := clipboard.ReadAll()
+	if err != nil {
+		return
+	}
+
 	c.modifyText(textboxModifyCommandInsertString, nuikey.KeyModifiers{
 		Shift: false,
 		Ctrl:  true,
 		Alt:   false,
-	}, str)*/
+	}, str)
 }
 
 func (c *LineEdit) KeyDown(event *KeyDownEvent) bool {
@@ -337,6 +342,7 @@ func (c *LineEdit) KeyDown(event *KeyDownEvent) bool {
 	}
 
 	if event.Modifiers.Ctrl && event.Key == nuikey.KeyV {
+		c.paste()
 		/*str := glfw.GetClipboardString()
 		c.modifyText(textboxModifyCommandInsertString, event.Modifiers, str)*/
 		return true
