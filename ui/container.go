@@ -413,8 +413,6 @@ func (c *Container) MouseDown(event *MouseDownEvent) {
 		return
 	}
 
-	//fmt.Println("MouseDown ", c.widget.FullPath())
-
 	for _, w := range c.Widgets() {
 		if event.X > w.X() && event.X < w.X()+w.Width() && event.Y > w.Y() && event.Y < w.Y()+w.Height() && w.IsVisible() {
 			w.ProcessMouseDown(event)
@@ -575,7 +573,6 @@ func (c *Container) CloseTopPopup() {
 	if len(c.PopupWidgets) == 0 {
 		return
 	}
-	//fmt.Println("Close popup")
 	c.PopupWidgets[len(c.PopupWidgets)-1].ClosePopup()
 	c.PopupWidgets[len(c.PopupWidgets)-1].Dispose()
 	c.PopupWidgets = c.PopupWidgets[:len(c.PopupWidgets)-1]

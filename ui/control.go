@@ -708,8 +708,6 @@ func (c *Control) ProcessMouseDown(event *MouseDownEvent) {
 		c.verticalScrollMovingMousePos = me.Y
 		c.verticalScrollMovingOriginal = c.scrollOffsetY
 
-		//fmt.Println("VSCROLL INIT: ", me.Y, c.scrollOffsetY)
-
 		processed = true
 		me.SetUserData("processedWidget", c)
 	}

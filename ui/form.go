@@ -268,37 +268,11 @@ func (c *Form) Draw(rgba *image.RGBA) bool {
 		return false
 	}
 
-	//fmt.Println("Form Draw", time.Now().Format("02-01-2006 15-04-05.999"))
-
-	/*avgDrawTimeMs := int64(0)
-	for i := 0; i < c.drawTimesCount; i++ {
-		avgDrawTimeMs += c.drawTimes[i].Milliseconds()
-	}
-	avgDrawTimeMs = avgDrawTimeMs / int64(c.drawTimesCount)*/
-	//drawPeriodTime := 50 * time.Millisecond
-	//drawPeriodTime := time.Duration(avgDrawTimeMs*2) * time.Millisecond
-	//fmt.Println("Form draw avg:", avgDrawTimeMs, "drawPeriod:", drawPeriodTime)
-
-	/*if UseOpenGL33 {
-		drawPeriodTime = 100 * time.Millisecond
-	}*/
-
-	/*if time.Since(c.lastDrawTime) < drawPeriodTime {
-		return false
-	}*/
-
 	c.lastDrawTime = time.Now()
 
 	t1 := time.Now()
 	c.realUpdateLayout()
 
-	/*key := fmt.Sprint("W:", c.Width(), " H:", c.Height())
-	if c.currentCanvasKey != key {
-		c.currentCanvas = NewDrawContextSW(c.window)
-		//fmt.Println("New DrawContext:", key)
-		c.currentCanvasKey = key
-	}*/
-	//ctx := c.currentCanvas
 	ctx := NewDrawContextSWRGBA(c.window, rgba)
 
 	ctx.Init()
@@ -489,9 +463,6 @@ func (c *Form) Height() int {
 }
 
 func (c *Form) OnInit() {
-	//c.SetTitle("UI test application")
-	//c.Resize(640, 480)
-	//fmt.Println("Default OnInit")
 }
 
 func (c *Form) SetTitle(title string) {
@@ -573,7 +544,6 @@ func OnWindowSizeCallback(w nui.Window, width int, height int) {
 func OnWindowClose(w nui.Window) {
 	window := getWindowByGLFWWindow(w)
 	if window == nil {
-		fmt.Println("WRONG WINDOW!!!!!!!!!!!!!!!")
 		return
 	}
 	if window.OnClose() {
@@ -660,12 +630,6 @@ func CreateForm(form Window) {
 		}
 
 		window.Draw(rgba)
-		//fmt.Println("OnPaint", time.Now().Format("02-01-2006 15-04-05.999"), nuiWindow.DrawTimeUs()/1000)
-
-		// save rgba to png file on disk
-		/*file, _ := os.Create("d:\\screenshot.png")
-		defer file.Close()
-		png.Encode(file, rgba)*/
 	})
 
 	nuiWindow.OnTimer(func() {
@@ -806,7 +770,6 @@ func (c *Form) KeyModifiers() nuikey.KeyModifiers {
 }
 
 func (c *Form) ProcessClick(x, y int, button nuimouse.MouseButton) {
-	//fmt.Println("onClick: X:", x, " Y:", y)
 
 	var event MouseClickEvent
 	event.X = x
@@ -814,8 +777,6 @@ func (c *Form) ProcessClick(x, y int, button nuimouse.MouseButton) {
 	event.Modifiers = c.keyModifiers
 	event.Button = button
 	c.userPanel.ProcessMouseClick(&event)
-
-	//f.UpdateWindow("Form")
 }
 
 func (c *Form) ProcessCharInput(ch rune) {
@@ -930,7 +891,6 @@ func (c *Form) ProcessKeyUp(key nuikey.Key) {
 func (c *Form) ProcessMouseWheel(delta int) {
 	x := c.lastMouseMovePos.X
 	y := c.lastMouseMovePos.Y
-	//fmt.Println("processMouseWheel x:", x, " y:", y, "delta: ", delta)
 	var event MouseWheelEvent
 	event.Modifiers = c.keyModifiers
 	event.X = x
@@ -971,9 +931,6 @@ func (c *Form) updateHoverWidget(x, y int) {
 }
 
 func (c *Form) ProcessMouseMove(x, y int) {
-
-	//fmt.Println("Form::MouseMove X:", x, " Y: ", y)
-
 	if math.Abs(float64(c.lastMouseMovePos.X-x)) > 0 || math.Abs(float64(c.lastMouseMovePos.Y-y)) > 0 {
 		c.lastMouseMoveTime = time.Now()
 		c.toolTipControlProcessed = false
@@ -1157,8 +1114,6 @@ func (c *Form) FocusedWidget() Widget {
 func (c *Form) ProcessWindowMove(x, y int) {
 	c.position.X = x
 	c.position.Y = y
-
-	//fmt.Println("New window pos: ", x, " - " , y)
 }
 
 func (c *Form) ProcessReturnDown() bool {
@@ -1205,8 +1160,6 @@ func (c *Form) Close() {
 
 	if windowIndex > -1 {
 		windows = append(windows[:windowIndex], windows[windowIndex+1:]...)
-	} else {
-		fmt.Println("WINDOW NOT FOUND!")
 	}
 }
 

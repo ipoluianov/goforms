@@ -140,7 +140,6 @@ func (c *ComboBox) ClosePopup() {
 }
 
 func (c *ComboBox) KeyDown(event *KeyDownEvent) bool {
-	//fmt.Println(event)
 	if event.Key == nuikey.KeySpace {
 		c.SetCurrentItemIndex(0)
 		return true

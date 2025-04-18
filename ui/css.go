@@ -45,7 +45,6 @@ func (c *CSS) Parse(cssText string) {
 		if token.Type == scanner.TokenEOF || token.Type == scanner.TokenError {
 			break
 		}
-		//fmt.Println(token)
 
 		if inSelectors {
 			if token.Type == scanner.TokenIdent || token.Type == scanner.TokenHash || (token.Type == scanner.TokenChar && token.Value == ":") {

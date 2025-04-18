@@ -449,7 +449,6 @@ func (c *TextBox) MouseMove(event *MouseMoveEvent) {
 		c.moveCursorNearPoint(event.X, event.Y, event.Modifiers)
 	}
 	c.Update("TextBox")
-	//fmt.Println("onMouseMove: ", event.X, " ", event.Y)
 }
 
 func (c *TextBox) moveCursorNearPoint(x, y int, modifiers nuikey.KeyModifiers) {
@@ -716,7 +715,6 @@ func (c *TextBox) modifyText(cmd textboxModifyCommand, modifiers nuikey.KeyModif
 			right := string(out[curPosX:])
 			lines[curPosY] = left + string(data.(rune)) + right
 			curPosX += 1
-			//fmt.Println("MOD: ", lines[curPosY])
 		}
 	case textboxModifyCommandInsertReturn:
 		{

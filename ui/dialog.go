@@ -122,7 +122,6 @@ func (c *dialogHeader) MouseDown(event *MouseDownEvent) {
 	c.lastMouseDownDialogX, c.lastMouseDownDialogY = c.dialog.RectClientAreaOnWindow()
 	c.lastMouseDownDialogX -= c.dialog.LeftBorderWidth()
 	c.lastMouseDownDialogY -= c.dialog.TopBorderWidth()
-	//fmt.Println("Dialog Mouse Down: ", ev.X, ev.Y, c.lastMouseDownDialogX, c.lastMouseDownDialogY)
 }
 
 func (c *dialogHeader) MouseMove(event *MouseMoveEvent) {
@@ -142,7 +141,6 @@ func (c *dialogHeader) MouseMove(event *MouseMoveEvent) {
 		deltaY := ev.Y - c.lastMouseDownY
 		c.dialog.SetX(c.lastMouseDownDialogX + deltaX)
 		c.dialog.SetY(c.lastMouseDownDialogY + deltaY)
-		//fmt.Println("Dialog Mouse Move: ", deltaX, deltaY, c.lastMouseDownDialogX, c.lastMouseDownDialogY)
 	}
 }
 

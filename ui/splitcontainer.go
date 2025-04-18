@@ -133,7 +133,6 @@ func (c *SplitContainer) Draw(ctx DrawContext) {
 
 func (c *SplitContainer) MouseDown(event *MouseDownEvent) {
 	c.Update("SplitContainer")
-	//fmt.Println("MouseDown split ", c.widget.FullPath())
 
 	diff := math.Abs(float64(event.X - c.position))
 
