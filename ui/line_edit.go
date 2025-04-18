@@ -41,14 +41,14 @@ type LineEdit struct {
 	onValidateNeeded func(oldValue string, newValue string) bool
 }
 
-type lineeditModifyCommand int
+/*type lineeditModifyCommand int
 
 const lineeditModifyCommandInsertChar textboxModifyCommand = 0
 const lineeditModifyCommandInsertString textboxModifyCommand = 1
 const lineeditModifyCommandInsertReturn textboxModifyCommand = 2
 const lineeditModifyCommandBackspace textboxModifyCommand = 3
 const lineeditModifyCommandDelete textboxModifyCommand = 4
-const lineeditModifyCommandSetText textboxModifyCommand = 5
+const lineeditModifyCommandSetText textboxModifyCommand = 5*/
 
 type LineEditSelection struct {
 	X1, Y1, X2, Y2 int
@@ -198,8 +198,7 @@ func (c *LineEdit) Draw(ctx DrawContext) {
 
 	oneLineHeight := c.OneLineHeight()
 
-	var yStaticOffset int
-	yStaticOffset = c.ClientHeight()/2 - oneLineHeight/2
+	yStaticOffset := c.ClientHeight()/2 - oneLineHeight/2
 
 	// Selection
 	if len(c.selectedLines()) > 0 {
@@ -225,9 +224,9 @@ func (c *LineEdit) Draw(ctx DrawContext) {
 				}
 			}
 
-			rectY := selY * oneLineHeight
+			//rectY := selY * oneLineHeight
 
-			rectY = yStaticOffset
+			rectY := yStaticOffset
 
 			ctx.SetColor(c.selectionBackground.Color())
 			ctx.FillRect(selXBegin, rectY, selXWidth, oneLineHeight)
@@ -379,10 +378,7 @@ func (c *LineEdit) KeyDown(event *KeyDownEvent) bool {
 	}
 
 	if event.Key == nuikey.KeyEnter {
-		if c.readonly {
-			return false
-		}
-		return true
+		return !c.readonly
 	}
 
 	if event.Key == nuikey.KeyEnd {

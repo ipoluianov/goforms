@@ -105,8 +105,8 @@ type Form struct {
 
 	activatedServiceMenu bool
 
-	currentCanvas    DrawContext
-	currentCanvasKey string
+	//currentCanvas    DrawContext
+	//currentCanvasKey string
 
 	popupWindow Widget
 
@@ -235,8 +235,8 @@ func (c *Form) Reject() {
 }
 
 func (c *Form) SetIcon(img image.Image) {
-	images := make([]image.Image, 0)
-	images = append(images, img)
+	//images := make([]image.Image, 0)
+	//images = append(images, img)
 	//c.window.SetAppIcon(images[0])
 }
 

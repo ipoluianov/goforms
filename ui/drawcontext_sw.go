@@ -8,10 +8,7 @@ import (
 	"github.com/ipoluianov/nui/nui"
 )
 
-var texturesMap map[int]*image.RGBA
-
 func init() {
-	texturesMap = make(map[int]*image.RGBA)
 }
 
 type DrawContextSW struct {
@@ -84,14 +81,14 @@ func (c *DrawContextSW) setViewport() {
 	//gl.Viewport(int32(c.CurrentClipSettings.x), int32(c.WindowHeight-c.CurrentClipSettings.y-c.CurrentClipSettings.height), int32(c.CurrentClipSettings.width)*int32(c.WindowWidthScale), int32(c.CurrentClipSettings.height*int(c.WindowHeightScale)))
 }
 
-func (c *DrawContextSW) xyTo01(x, y int) (float32, float32) {
+/*func (c *DrawContextSW) xyTo01(x, y int) (float32, float32) {
 	dx := 2 / float64(c.CurrentClipSettings.width)
 	dy := 2 / float64(c.CurrentClipSettings.height)
 	x1d := float32(dx*float64(x)) - 1
 	y1d := float32(dy*float64(y)) - 1
 	y1d = -y1d // OpenGL coordinates are inverted by Y
 	return x1d, y1d
-}
+}*/
 
 func (c *DrawContextSW) DrawRect(x, y, width, height int) {
 	c.cnv.DrawRect(x, y, width, height, c.CurrentColor, c.StrokeWidth)
