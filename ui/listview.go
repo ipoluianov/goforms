@@ -496,7 +496,7 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 	}
 
 	if event.Key == nuikey.KeyEnter {
-		c.EditCurrentCell()
+		c.EditCurrentCell("")
 		return true
 	}
 
@@ -1007,17 +1007,27 @@ func (c *ListViewContent) MouseClick(event *MouseClickEvent) {
 	c.Update("ListView")
 }
 
-func (c *ListViewContent) EditCurrentCell() {
+func (c *ListViewContent) KeyChar(event *KeyCharEvent) {
+	str := string(event.Ch)
+	c.EditCurrentCell(str)
+}
+
+func (c *ListViewContent) EditCurrentCell(enteredText string) {
+	c.Window().IgnoreUpdates()
+
 	initText := c.listView.currentItem.Value(c.listView.currentItemColumn)
+	if len(enteredText) > 0 {
+		initText = enteredText
+	}
+
 	posX, posY := c.RectClientAreaOnWindow()
 	posX += c.listView.calcColumnXOffset(c.listView.currentItemColumn) - c.listView.content.scrollOffsetX
 	posY += c.listView.currentItem.row*c.listView.itemHeight - c.listView.content.scrollOffsetY
-	//posY := c.listView.currentItem.row*c.listView.itemHeight + c.listView.header.Height()
 
 	columnWidth := c.listView.columns[c.listView.currentItemColumn].width
 	rowHeight := c.listView.itemHeight
 
-	c.listView.popupLineEdit = NewPopupLineEdit(c, initText, columnWidth, rowHeight)
+	c.listView.popupLineEdit = NewPopupLineEdit(c, initText, len(enteredText) == 0, columnWidth, rowHeight)
 	c.listView.popupLineEdit.ShowPopupLineEdit(posX, posY)
 	c.listView.popupLineEdit.CloseEvent = func() {
 		if c.listView.popupLineEdit.enterPressed {
@@ -1028,13 +1038,13 @@ func (c *ListViewContent) EditCurrentCell() {
 		c.listView.Update("ListView")
 		c.Focus()
 	}
+	c.Window().UnIgnoreUpdates()
 	c.Update("ListView")
-
 }
 
 func (c *ListViewContent) MouseDblClick(event *MouseDblClickEvent) {
 	if c.listView.currentItem != nil {
-		c.EditCurrentCell()
+		c.EditCurrentCell("")
 	}
 	c.Update("ListView")
 }

@@ -76,6 +76,7 @@ func NewLineEdit(parent Widget) *LineEdit {
 	b.updateInnerSize()
 
 	menu := NewPopupMenu(&b)
+	menu.BeginUpdate()
 	menu.AddItem("Cut", func(event *Event) {
 		b.cutSelected()
 	}, nil, "")
@@ -93,6 +94,7 @@ func NewLineEdit(parent Widget) *LineEdit {
 	menu.AddItem("Select All", func(event *Event) {
 		b.SelectAllText()
 	}, nil, "")
+	menu.EndUpdate()
 	b.SetContextMenu(menu)
 
 	return &b
@@ -508,6 +510,10 @@ func (c *LineEdit) selectedLines() []int {
 		}
 	}
 	return result
+}
+
+func (c *LineEdit) MoveCursorToEnd() {
+	c.moveCursor(0xFFFFFFFF, 0, nuikey.KeyModifiers{}, false)
 }
 
 func (c *LineEdit) moveCursor(posX int, posY int, modifiers nuikey.KeyModifiers, allowSelection bool) {

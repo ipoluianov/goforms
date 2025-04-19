@@ -39,6 +39,9 @@ type Window interface {
 	ProcessWindowMove(x, y int)
 	ProcessFocus()
 
+	IgnoreUpdates()
+	UnIgnoreUpdates()
+
 	KeyModifiers() nuikey.KeyModifiers
 
 	// title

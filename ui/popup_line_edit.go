@@ -9,14 +9,16 @@ type PopupLineEdit struct {
 	initText     string
 	width        int
 	height       int
+	selectAll    bool
 	CloseEvent   func()
 }
 
-func NewPopupLineEdit(parent Widget, initText string, width int, height int) *PopupLineEdit {
+func NewPopupLineEdit(parent Widget, initText string, selectAll bool, width int, height int) *PopupLineEdit {
 	var c PopupLineEdit
 	c.initText = initText
 	c.width = width
 	c.height = height
+	c.selectAll = selectAll
 	c.SetAbsolutePositioning(true)
 	c.Panel.InitControl(parent.Window().CentralWidget(), &c)
 	c.SetName("PopupListEditPanel")
@@ -31,13 +33,18 @@ func (c *PopupLineEdit) Dispose() {
 }
 
 func (c *PopupLineEdit) ShowPopupLineEdit(x int, y int) {
+	c.BeginUpdate()
 	c.SetX(x)
 	c.SetY(y)
 	c.rebuildVisualElements()
 	c.Window().AppendPopup(c)
 	c.le.Focus()
-	c.le.SelectAllText()
-	c.Update("PopupLineEdit")
+	if c.selectAll {
+		c.le.SelectAllText()
+	} else {
+		c.le.MoveCursorToEnd()
+	}
+	c.EndUpdate()
 }
 
 func (c *PopupLineEdit) ClosePopup() {

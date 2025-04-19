@@ -118,6 +118,8 @@ type Form struct {
 	drawTimesIndex int
 	drawTimesCount int
 
+	ignoreUpdatesCounter int
+
 	OnKeyDown func(event *KeyDownEvent) bool
 }
 
@@ -216,7 +218,27 @@ func (c *Form) ShowMaximazed() bool {
 	return c.showMaximazed
 }
 
+func (c *Form) IgnoreUpdates() {
+	c.ignoreUpdatesCounter++
+}
+
+func (c *Form) UnIgnoreUpdates() {
+	c.ignoreUpdatesCounter--
+	if c.ignoreUpdatesCounter < 0 {
+		c.ignoreUpdatesCounter = 0
+	}
+	if c.ignoreUpdatesCounter == 0 {
+		c.UpdateWindow("UnIgnoreUpdates")
+	}
+}
+
 func (c *Form) UpdateWindow(source string) {
+	if c.ignoreUpdatesCounter > 0 {
+		return
+	}
+
+	dt := time.Now().Format("2006-01-02 15:04:05.999999999")
+	fmt.Println(dt, "UpdateWindow", source)
 	c.needToUpdate = true
 	c.lastUpdateSource = source
 	if c.window != nil {
@@ -695,11 +717,13 @@ func CreateForm(form Window) {
 		window.ProcessMouseDblClick(button)
 	})
 
-	/*nuiWindow.OnMouseButtonDown(OnMouseButtonCallback)
-	nuiWindow.OnMouseButtonUp(OnMouseButtonCallback)
-	nuiWindow.OnMouseButtonDblClick(OnMouseButtonCallback)*/
-
-	//mainForm = form
+	nuiWindow.OnMouseWheel(func(x int, y int) {
+		window := getWindowByGLFWWindow(nuiWindow)
+		if window == nil {
+			return
+		}
+		window.ProcessMouseWheel(y)
+	})
 
 	/*window.SetSizeCallback(OnWindowSizeCallback)
 	window.SetCloseCallback(OnWindowClose)
