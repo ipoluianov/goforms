@@ -1362,23 +1362,7 @@ func (c *Form) LoopUI_OpenGL() {
 }
 
 func (c *Form) SetMouseCursor(cur nuimouse.MouseCursor) {
-	/*var cursor *glfw.Cursor
-	cursor = nil
-	switch cur {
-	case MouseCursorArrow:
-		cursor = CursorArrow
-	case MouseCursorPointer:
-		cursor = CursorPointer
-	case MouseCursorResizeHor:
-		cursor = CursorResizeHor
-	case MouseCursorResizeVer:
-		cursor = CursorResizeVer
-	case MouseCursorIBeam:
-		cursor = CursorIBeam
-	}
-	if cursor != nil {
-		c.window.SetCursor(cursor)
-	}*/
+	c.window.SetMouseCursor(cur)
 }
 
 func (c *Form) CentralWidget() Widget {

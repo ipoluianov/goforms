@@ -32,6 +32,7 @@ type ListView struct {
 	OnSelectionChanged func()
 
 	selectionBackground *uiproperties.Property
+	selectionForeground *uiproperties.Property
 	gridColor           *uiproperties.Property
 
 	showing         bool
@@ -95,6 +96,7 @@ func (c *ListView) Construct() {
 	c.AllowDeselectItems = true
 	c.items = make([]*ListViewItem, 0)
 	c.selectionBackground = AddPropertyToWidget(c, "selectionBackground", uiproperties.PropertyTypeColor)
+	c.selectionForeground = AddPropertyToWidget(c, "selectionForeground", uiproperties.PropertyTypeColor)
 	c.gridColor = AddPropertyToWidget(c, "gridColor", uiproperties.PropertyTypeColor)
 	c.cellPadding = 0
 	c.panelPadding = 0
@@ -136,6 +138,7 @@ func (c *ListView) Construct() {
 			c.showing = false
 		}
 	})
+	InitDefaultStyle(c)
 	//c.showingTime.StartTimer()
 
 }
@@ -159,6 +162,8 @@ func (c *ListView) Dispose() {
 	c.OnSelectionChanged = nil
 	c.selectionBackground.Dispose()
 	c.selectionBackground = nil
+	c.selectionForeground.Dispose()
+	c.selectionForeground = nil
 }
 
 func (c *ListView) Draw(ctx DrawContext) {
@@ -831,6 +836,7 @@ func (c *ListViewContent) drawItem(ctx DrawContext, item *ListViewItem, y int, i
 			foreColor := c.ForeColor()
 			if item.selected {
 				backColor = c.listView.selectionBackground.Color()
+				foreColor = c.listView.selectionForeground.Color()
 				//foreColor = c.BackColor()
 			}
 

@@ -1,0 +1,130 @@
+Control 
+{
+	fontFamily: RobotoMono;
+	fontSize: 16;
+	backgroundColor:#F0F0F0;
+	foregroundColor:#333;
+	inactiveColor:#555;
+	accentColor:#ff8c00;
+
+	leftBorderColor: #777;
+	rightBorderColor: #777;
+	topBorderColor: #777;
+	bottomBorderColor: #777;
+
+	selectionBackground: #0078D7;
+
+	verticalScrollVisible: true;
+
+	leftBorderWidth: 0;
+	rightBorderWidth: 0;
+	topBorderWidth: 0;
+	bottomBorderWidth: 0;
+}
+
+Control:disabled
+{
+	foregroundColor:#555;
+}
+
+Panel, HSpacer, VSpacer, TextBlock, ImageBox, Container, CheckBox
+{
+	backgroundColor:#00FFFFFF;
+}
+
+Dialog {
+	backgroundColor:#FF101010;
+}
+
+TimeChart {
+	color0: #ff8c00;
+	color1: #ff2000;
+	color2: #8cff00;
+	color3: #005566;
+	color4: #440000;
+}
+
+Button, TextBox, ListView, TreeView, ProgressBar, ComboBox, TimeChart
+{
+	leftBorderWidth: 1;
+	rightBorderWidth: 1;
+	topBorderWidth: 1;
+	bottomBorderWidth: 1;
+	barColor: #800;
+}
+
+Button:hover 
+{
+	backgroundColor:#CCC;
+}
+
+Button:focus 
+{
+	backgroundColor:#F0F0F0;
+}
+
+TextBlock:disabled
+{
+	foregroundColor:#555;
+}
+
+Button:disabled
+{
+	backgroundColor:#F0F0F0;
+	foregroundColor:#555;
+}
+
+Button:clicked 
+{
+	backgroundColor:#777;
+}
+
+ListViewHeader
+{
+	foregroundColor: #333333;
+	backgroundColor: #F0F0F0;
+	leftBorderWidth: 0;
+	rightBorderWidth: 0;
+	topBorderWidth: 0;
+	bottomBorderWidth: 1;
+	bottomBorderColor: #444444;
+}
+
+ListViewContent
+{
+}
+
+ListView {
+	gridColor: #333;
+	selectionBackground: #0078D7;
+	selectionForeground: #FFFFFF;
+}
+
+
+TreeViewHeader
+{
+	leftBorderWidth: 0;
+	rightBorderWidth: 0;
+	topBorderWidth: 0;
+	bottomBorderWidth: 1;
+}
+
+PopupMenu {
+	leftBorderColor: #777;
+	rightBorderColor: #777;
+	topBorderColor: #777;
+	bottomBorderColor: #777;
+	leftBorderWidth: 1;
+	rightBorderWidth: 1;
+	topBorderWidth: 1;
+	bottomBorderWidth: 1;
+}
+
+PopupMenuItem:hover {
+	backgroundColor:#444444;
+}
+
+ProgressBar
+{
+	barColor: #800;
+}
