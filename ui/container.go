@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"fmt"
 	"image/color"
 	"math"
 	"reflect"
@@ -395,6 +396,7 @@ func (c *Container) SetSize(width int, height int) {
 }
 
 func (c *Container) MouseDown(event *MouseDownEvent) {
+	fmt.Println("Container MouseDown", event.X, event.Y)
 	popupWidgetsBefore := len(c.PopupWidgets)
 
 	for len(c.PopupWidgets) > 0 {
@@ -421,6 +423,7 @@ func (c *Container) MouseDown(event *MouseDownEvent) {
 }
 
 func (c *Container) MouseUp(event *MouseUpEvent) {
+	fmt.Println("Container MouseUp", event.X, event.Y)
 	for i := len(c.PopupWidgets) - 1; i >= 0; i-- {
 		popupWidget := c.PopupWidgets[i]
 		w := popupWidget
@@ -450,6 +453,24 @@ func (c *Container) MouseClick(event *MouseClickEvent) {
 	for _, w := range c.Controls {
 		if event.X > w.X() && event.X < w.X()+w.Width() && event.Y > w.Y() && event.Y < w.Y()+w.Height() && w.IsVisible() {
 			w.ProcessMouseClick(event)
+			break
+		}
+	}
+}
+
+func (c *Container) MouseDblClick(event *MouseDblClickEvent) {
+	for i := len(c.PopupWidgets) - 1; i >= 0; i-- {
+		popupWidget := c.PopupWidgets[i]
+		w := popupWidget
+		if event.X > w.X() && event.X < w.X()+w.Width() && event.Y > w.Y() && event.Y < w.Y()+w.Height() && w.IsVisible() {
+			w.ProcessMouseDblClick(event)
+			return
+		}
+	}
+
+	for _, w := range c.Controls {
+		if event.X > w.X() && event.X < w.X()+w.Width() && event.Y > w.Y() && event.Y < w.Y()+w.Height() && w.IsVisible() {
+			w.ProcessMouseDblClick(event)
 			break
 		}
 	}

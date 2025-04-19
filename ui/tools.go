@@ -138,6 +138,16 @@ func NewMouseDownEvent(x, y int, button nuimouse.MouseButton, modifiers nuikey.K
 	return &event
 }
 
+func NewMouseDblClickEvent(x, y int, button nuimouse.MouseButton, modifiers nuikey.KeyModifiers) *MouseDblClickEvent {
+	var event MouseDblClickEvent
+	event.InitDataContainer()
+	event.Modifiers = modifiers
+	event.X = x
+	event.Y = y
+	event.Button = button
+	return &event
+}
+
 func NewMouseDropEvent(x, y int, button nuimouse.MouseButton, modifiers nuikey.KeyModifiers, droppingObject interface{}) *MouseDropEvent {
 	var event MouseDropEvent
 	event.InitDataContainer()

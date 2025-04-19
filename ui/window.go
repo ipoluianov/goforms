@@ -27,6 +27,7 @@ type Window interface {
 	ProcessMouseWheel(delta int)
 	ProcessMouseDown(button nuimouse.MouseButton)
 	ProcessMouseUp(button nuimouse.MouseButton)
+	ProcessMouseDblClick(button nuimouse.MouseButton)
 	ProcessClick(x, y int, button nuimouse.MouseButton)
 	// keyboard
 	ProcessCharInput(ch rune)

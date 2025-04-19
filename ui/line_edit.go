@@ -410,6 +410,7 @@ func (c *LineEdit) KeyUp(event *KeyUpEvent) {
 func (c *LineEdit) MouseDown(event *MouseDownEvent) {
 	if event.Button == nuimouse.MouseButtonLeft {
 		c.redraw()
+		fmt.Println("LineEdit MouseDown")
 		c.mouseButtonPressed = true
 		c.moveCursorNearPoint(event.X, event.Y, event.Modifiers)
 		c.selectionLeftX = c.cursorPosX
@@ -475,6 +476,7 @@ func (c *LineEdit) MouseUp(event *MouseUpEvent) {
 	c.dragingCursor = false
 	c.redraw()
 	c.mouseButtonPressed = false
+	fmt.Println("LineEdit MouseUp")
 	c.Update("TextBox")
 }
 

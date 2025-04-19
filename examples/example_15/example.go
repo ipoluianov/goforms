@@ -1,6 +1,10 @@
 package example15
 
-import "github.com/ipoluianov/goforms/ui"
+import (
+	"fmt"
+
+	"github.com/ipoluianov/goforms/ui"
+)
 
 type MainForm struct {
 	ui.Form
@@ -10,10 +14,20 @@ func (c *MainForm) OnInit() {
 	lv := c.Panel().AddListView()
 	lv.AddColumn("Name", 100)
 	lv.AddColumn("Size", 100)
+	lv.AddColumn("Size", 100)
+	lv.AddColumn("Size", 100)
+	lv.AddColumn("Size", 100)
+	lv.AddColumn("Size", 100)
+	lv.AddColumn("Size", 100)
+	lv.AddColumn("Size", 100)
+	lv.AddColumn("Size", 100)
+	lv.AddColumn("Size", 100)
 
-	lv.AddItem2("Item 1", "100")
-	lv.AddItem2("Item 2", "200")
-	lv.AddItem2("Item 3", "300")
+	for i := 0; i < 100; i++ {
+		lv.AddItem2("Item "+fmt.Sprint(i), "100")
+	}
+
+	lv.Focus()
 }
 
 func newMainForm() *MainForm {

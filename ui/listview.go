@@ -16,8 +16,11 @@ type ListView struct {
 	items               []*ListViewItem
 	displayedItems      []*displayedItem
 	currentItem         *ListViewItem
+	currentItemColumn   int
 	lastClickedRowIndex int
 	columns             []*ListViewColumn
+
+	selectionType int
 
 	itemHeight int
 	cache      *ImageCache
@@ -25,6 +28,8 @@ type ListView struct {
 	header        *ListViewHeader
 	content       *ListViewContent
 	headerVisible bool
+
+	popupLineEdit *PopupLineEdit
 
 	contentPadding int
 
@@ -104,6 +109,8 @@ func (c *ListView) Construct() {
 	c.itemHeight = 25
 	c.contentPadding = 3
 	c.headerVisible = true
+
+	c.selectionType = 1
 
 	c.header = NewListViewHeader(c, 0, 0, c.Width(), c.itemHeight)
 	c.header.listView = c
@@ -260,8 +267,8 @@ func (c *ListView) RemoveItems() {
 	c.Update("ListView")
 }
 
-func (c *ListView) SelectItem(rowIndex int) {
-	c.SetCurrentRow(rowIndex, false)
+func (c *ListView) SelectItem(rowIndex int, column int) {
+	c.SetCurrentRow(rowIndex, column, false)
 }
 
 func (c *ListView) SetColumnWidth(colIndex int, width int) {
@@ -378,8 +385,12 @@ func (c *ListView) UnselectAllItems() {
 	}
 }
 
-func (c *ListView) SetCurrentRow(row int, byMouse bool) {
+func (c *ListView) SetCurrentRow(row int, column int, byMouse bool) {
 	if row < 0 || row > len(c.items) {
+		return
+	}
+
+	if column < 0 || column >= len(c.columns) {
 		return
 	}
 
@@ -388,7 +399,7 @@ func (c *ListView) SetCurrentRow(row int, byMouse bool) {
 	}
 	c.removeCacheForRow(row)
 	c.currentItem = c.items[row]
-	c.currentItem = c.items[row]
+	c.currentItemColumn = column
 
 	needToClearSelection := false
 
@@ -484,16 +495,14 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 		return true
 	}
 
-	if event.Key == nuikey.KeyEsc {
-		c.listView.showing = true
-		c.listView.showingProgress = 0
-		c.listView.showingTime.StartTimer()
+	if event.Key == nuikey.KeyEnter {
+		c.EditCurrentCell()
 		return true
 	}
 
 	if event.Key == nuikey.KeyArrowUp {
 		if selectedItemDisplayIndex > 0 {
-			c.listView.SetCurrentRow(c.listView.displayedItems[selectedItemDisplayIndex-1].item.row, false)
+			c.listView.SetCurrentRow(c.listView.displayedItems[selectedItemDisplayIndex-1].item.row, c.listView.currentItemColumn, false)
 			c.listView.EnsureVisibleItem(c.listView.currentItem.row)
 		}
 		return true
@@ -501,15 +510,35 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 
 	if event.Key == nuikey.KeyArrowDown {
 		if selectedItemDisplayIndex < len(c.listView.displayedItems)-1 {
-			c.listView.SetCurrentRow(c.listView.displayedItems[selectedItemDisplayIndex+1].item.row, false)
+			c.listView.SetCurrentRow(c.listView.displayedItems[selectedItemDisplayIndex+1].item.row, c.listView.currentItemColumn, false)
 			c.listView.EnsureVisibleItem(c.listView.currentItem.row)
 		}
 		return true
 	}
 
+	if event.Key == nuikey.KeyArrowLeft {
+		col := c.listView.currentItemColumn - 1
+		if col < 0 {
+			col = 0
+		}
+		c.listView.SetCurrentRow(c.listView.displayedItems[selectedItemDisplayIndex].item.row, col, false)
+		c.listView.EnsureVisibleItem(c.listView.currentItem.row)
+		return true
+	}
+
+	if event.Key == nuikey.KeyArrowRight {
+		col := c.listView.currentItemColumn + 1
+		if col >= len(c.listView.columns) {
+			col = len(c.listView.columns) - 1
+		}
+		c.listView.SetCurrentRow(c.listView.displayedItems[selectedItemDisplayIndex].item.row, col, false)
+		c.listView.EnsureVisibleItem(c.listView.currentItem.row)
+		return true
+	}
+
 	if event.Key == nuikey.KeyHome {
 		if len(c.listView.displayedItems) > 0 {
-			c.listView.SetCurrentRow(0, false)
+			c.listView.SetCurrentRow(0, c.listView.currentItemColumn, false)
 			c.listView.EnsureVisibleItem(0)
 		}
 		return true
@@ -517,7 +546,7 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 
 	if event.Key == nuikey.KeyEnd {
 		if len(c.listView.displayedItems) > 0 {
-			c.listView.SetCurrentRow(len(c.listView.items)-1, false)
+			c.listView.SetCurrentRow(len(c.listView.items)-1, c.listView.currentItemColumn, false)
 			c.listView.EnsureVisibleItem(len(c.listView.items) - 1)
 		}
 		return true
@@ -531,7 +560,7 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 				if row < 0 {
 					row = 0
 				}
-				c.listView.SetCurrentRow(row, false)
+				c.listView.SetCurrentRow(row, c.listView.currentItemColumn, false)
 				c.listView.EnsureVisibleItem(row)
 			}
 		}
@@ -546,7 +575,7 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 				if row >= len(c.listView.items) {
 					row = len(c.listView.items) - 1
 				}
-				c.listView.SetCurrentRow(row, false)
+				c.listView.SetCurrentRow(row, c.listView.currentItemColumn, false)
 				c.listView.EnsureVisibleItem(row)
 			}
 		}
@@ -584,6 +613,16 @@ func (c *ListView) findDisplayItemByCoordinates(x int, y int) *displayedItem {
 		}
 	}
 	return nil
+}
+
+func (c *ListView) findDisplayColumnByCoordinates(x int, y int) (colIndex int) {
+	for index, column := range c.columns {
+		colRightBorder := c.calcColumnXOffset(index) + column.width
+		if x >= c.calcColumnXOffset(index) && x < colRightBorder {
+			return index
+		}
+	}
+	return -1
 }
 
 func NewListViewHeader(parent Widget, x int, y int, width int, height int) *ListViewHeader {
@@ -832,12 +871,22 @@ func (c *ListViewContent) drawItem(ctx DrawContext, item *ListViewItem, y int, i
 			cnv = canvas.NewCanvas(column.width, rowHeight)
 
 			value := item.values[index]
+
 			backColor := c.BackColor()
 			foreColor := c.ForeColor()
-			if item.selected {
-				backColor = c.listView.selectionBackground.Color()
-				foreColor = c.listView.selectionForeground.Color()
-				//foreColor = c.BackColor()
+
+			if c.listView.selectionType == 0 {
+				if item.selected {
+					backColor = c.listView.selectionBackground.Color()
+					foreColor = c.listView.selectionForeground.Color()
+				}
+			}
+
+			if c.listView.selectionType == 1 {
+				if item.selected && c.listView.currentItemColumn == index {
+					backColor = c.listView.selectionBackground.Color()
+					foreColor = c.listView.selectionForeground.Color()
+				}
 			}
 
 			cnv.FillRect(0, 0, column.width, rowHeight, backColor)
@@ -944,8 +993,10 @@ func (c *ListViewContent) MouseClick(event *MouseClickEvent) {
 		return
 	}
 
+	col := c.listView.findDisplayColumnByCoordinates(event.X, event.Y)
+
 	if event.X > dItem.currentX {
-		c.listView.SetCurrentRow(dItem.item.row, true)
+		c.listView.SetCurrentRow(dItem.item.row, col, true)
 		c.ScrollEnsureVisible(dItem.currentX, dItem.currentY)
 		c.ScrollEnsureVisible(dItem.currentX, dItem.currentY+c.listView.itemHeight)
 		if c.listView.OnItemClicked != nil {
@@ -953,6 +1004,38 @@ func (c *ListViewContent) MouseClick(event *MouseClickEvent) {
 		}
 	}
 
+	c.Update("ListView")
+}
+
+func (c *ListViewContent) EditCurrentCell() {
+	initText := c.listView.currentItem.Value(c.listView.currentItemColumn)
+	posX, posY := c.RectClientAreaOnWindow()
+	posX += c.listView.calcColumnXOffset(c.listView.currentItemColumn) - c.listView.content.scrollOffsetX
+	posY += c.listView.currentItem.row*c.listView.itemHeight - c.listView.content.scrollOffsetY
+	//posY := c.listView.currentItem.row*c.listView.itemHeight + c.listView.header.Height()
+
+	columnWidth := c.listView.columns[c.listView.currentItemColumn].width
+	rowHeight := c.listView.itemHeight
+
+	c.listView.popupLineEdit = NewPopupLineEdit(c, initText, columnWidth, rowHeight)
+	c.listView.popupLineEdit.ShowPopupLineEdit(posX, posY)
+	c.listView.popupLineEdit.CloseEvent = func() {
+		if c.listView.popupLineEdit.enterPressed {
+			txt := c.listView.popupLineEdit.Text()
+			c.listView.currentItem.SetValue(c.listView.currentItemColumn, txt)
+		}
+		c.listView.popupLineEdit = nil
+		c.listView.Update("ListView")
+		c.Focus()
+	}
+	c.Update("ListView")
+
+}
+
+func (c *ListViewContent) MouseDblClick(event *MouseDblClickEvent) {
+	if c.listView.currentItem != nil {
+		c.EditCurrentCell()
+	}
 	c.Update("ListView")
 }
 

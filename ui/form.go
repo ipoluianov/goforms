@@ -687,6 +687,14 @@ func CreateForm(form Window) {
 		window.ProcessMouseUp(button)
 	})
 
+	nuiWindow.OnMouseButtonDblClick(func(button nuimouse.MouseButton, x int, y int) {
+		window := getWindowByGLFWWindow(nuiWindow)
+		if window == nil {
+			return
+		}
+		window.ProcessMouseDblClick(button)
+	})
+
 	/*nuiWindow.OnMouseButtonDown(OnMouseButtonCallback)
 	nuiWindow.OnMouseButtonUp(OnMouseButtonCallback)
 	nuiWindow.OnMouseButtonDblClick(OnMouseButtonCallback)*/
@@ -992,6 +1000,7 @@ func (c *Form) ProcessMouseDown(button nuimouse.MouseButton) {
 }
 
 func (c *Form) ProcessMouseUp(button nuimouse.MouseButton) {
+	fmt.Println("ProcessMouseUp")
 	x := c.lastMouseMovePos.X
 	y := c.lastMouseMovePos.Y
 
@@ -1031,6 +1040,30 @@ func (c *Form) ProcessMouseUp(button nuimouse.MouseButton) {
 	}
 
 	c.lastMouseDownWidget = nil
+}
+
+func (c *Form) ProcessMouseDblClick(button nuimouse.MouseButton) {
+	x := c.lastMouseMovePos.X
+	y := c.lastMouseMovePos.Y
+
+	w := c.userPanel.ProcessFindWidgetUnderPointer(x, y)
+	c.SetFocusForWidget(w)
+
+	c.mouseDownLastPosX = x
+	c.mouseDownLastPosY = y
+
+	event := NewMouseDblClickEvent(x, y, button, c.keyModifiers)
+	c.userPanel.ProcessMouseDblClick(event)
+	if event.UserData("processedWidget") == nil {
+		c.lastMouseDownWidget = c.userPanel.ProcessFindWidgetUnderPointer(x, y)
+		_ = c.lastMouseDownWidget
+	} else {
+		c.lastMouseDownWidget = event.UserData("processedWidget").(Widget)
+	}
+
+	c.lastMouseMoveTime = time.Now()
+	c.toolTipControlProcessed = false
+	c.updateHoverWidget(x, y)
 }
 
 func (c *Form) findWidgetsUnderTabPlate(parentWidget Widget) []Widget {
@@ -1241,6 +1274,7 @@ func (c *Form) ShowTooltip(x, y int, text string) {
 }
 
 func (c *Form) SetFocusForWidget(w Widget) {
+	fmt.Println("SetFocusForWidget", w.Name())
 	if w != c.focusWidget {
 		if c.focusWidget != nil {
 			if c.focusWidget.HasFocus() {
