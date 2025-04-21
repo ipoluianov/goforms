@@ -1180,6 +1180,10 @@ func (c *Control) ScrollEnsureVisible(x1, y1 int) {
 	if x1 > c.scrollOffsetX+c.ClientWidth() {
 		c.scrollOffsetX = x1 - c.ClientWidth()
 	}
+
+	if c.onScrolled != nil {
+		c.onScrolled(c.scrollOffsetX, c.scrollOffsetY)
+	}
 }
 
 /*func drawCopyOver(dst *image.RGBA, src *image.RGBA, x int, y int) {

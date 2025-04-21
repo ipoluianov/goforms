@@ -11,10 +11,10 @@ type displayedItem struct {
 	currentY      int
 	currentWidth  int
 	currentHeight int
-	item          *ListViewItem
+	item          *ListViewRow
 }
 
-type ListViewItem struct {
+type ListViewRow struct {
 	UserDataContainer
 	row        int
 	unitedRows int
@@ -25,7 +25,7 @@ type ListViewItem struct {
 	foreColors map[int]color.Color
 }
 
-func (c *ListViewItem) SetValue(column int, text string) {
+func (c *ListViewRow) SetValue(column int, text string) {
 	for index, item := range c.listView.items {
 		if item == c {
 			c.listView.SetItemValue(index, column, text)
@@ -33,7 +33,7 @@ func (c *ListViewItem) SetValue(column int, text string) {
 	}
 }
 
-func (c *ListViewItem) SetForeColorForRow(color color.Color) {
+func (c *ListViewRow) SetForeColorForRow(color color.Color) {
 	for colIndex := 0; colIndex < len(c.listView.columns); colIndex++ {
 		if colorForCell, ok := c.foreColors[colIndex]; ok {
 			if colorForCell != color {
@@ -49,7 +49,7 @@ func (c *ListViewItem) SetForeColorForRow(color color.Color) {
 	}
 }
 
-func (c *ListViewItem) SetForeColorForCell(colIndex int, color color.Color) {
+func (c *ListViewRow) SetForeColorForCell(colIndex int, color color.Color) {
 	if colorForCell, ok := c.foreColors[colIndex]; ok {
 		if colorForCell != color {
 			c.foreColors[colIndex] = color
@@ -63,14 +63,14 @@ func (c *ListViewItem) SetForeColorForCell(colIndex int, color color.Color) {
 	}
 }
 
-func (c *ListViewItem) Value(column int) string {
+func (c *ListViewRow) Value(column int) string {
 	if v, ok := c.values[column]; ok {
 		return v
 	}
 	return ""
 }
 
-func (c *ListViewItem) draw(ctx DrawContext, y int, itemIndex int) int {
+func (c *ListViewRow) draw(ctx DrawContext, y int, itemIndex int) int {
 	yOffset := 0
 
 	rowHeight := c.listView.itemHeight
@@ -127,7 +127,7 @@ func (c *ListViewItem) draw(ctx DrawContext, y int, itemIndex int) int {
 			}
 
 			if c.listView.selectionType == 1 {
-				if c.selected && c.listView.currentItemColumn == columnIndex {
+				if c.selected && c.listView.currentColumn == columnIndex {
 					backColor = c.listView.selectionBackground.Color()
 					foreColor = c.listView.selectionForeground.Color()
 				}

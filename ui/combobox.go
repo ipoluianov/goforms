@@ -192,7 +192,7 @@ func (c *ComboBox) ShowPopupForm() {
 
 	c.popupWidget = container
 
-	lvItems.OnItemClicked = func(item *ListViewItem) {
+	lvItems.OnItemClicked = func(item *ListViewRow) {
 		c.SetCurrentItemIndex(item.row)
 		c.Window().CloseTopPopup()
 	}
