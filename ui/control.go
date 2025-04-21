@@ -481,12 +481,24 @@ func (c *Control) SetWidth(width int) {
 	delta := width - c.Width()
 	c.width.SetOwnValue(width)
 
+	if c.widget.ControlType() == "ListViewContent" {
+		fmt.Println("ListViewContent")
+	}
+
 	// Logic correct scrolling after resize
 	if c.leftBorderWidth != nil && c.rightBorderWidth != nil {
-		if c.Width()-c.LeftBorderWidth()-c.RightBorderWidth()+c.scrollOffsetX > c.InnerWidth() && delta > 0 {
+		width := c.Width()
+		leftBorderWidth := c.LeftBorderWidth()
+		rightBorderWidth := c.RightBorderWidth()
+		width = width - leftBorderWidth - rightBorderWidth
+		innerWidth := c.InnerWidth()
+		if width+c.scrollOffsetX > innerWidth && delta > 0 {
 			c.scrollOffsetX -= delta
 			if c.scrollOffsetX < 0 {
 				c.scrollOffsetX = 0
+			}
+			if c.onScrolled != nil {
+				c.onScrolled(c.scrollOffsetX, c.scrollOffsetY)
 			}
 		}
 	}
@@ -502,6 +514,9 @@ func (c *Control) SetHeight(height int) {
 			c.scrollOffsetY -= delta
 			if c.scrollOffsetY < 0 {
 				c.scrollOffsetY = 0
+			}
+			if c.onScrolled != nil {
+				c.onScrolled(c.scrollOffsetX, c.scrollOffsetY)
 			}
 		}
 	}
