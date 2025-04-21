@@ -6,7 +6,7 @@ import (
 	"github.com/ipoluianov/goforms/utils/canvas"
 )
 
-type displayedItem struct {
+type displayedItem1 struct {
 	currentX      int
 	currentY      int
 	currentWidth  int
@@ -78,13 +78,13 @@ func (c *ListViewRow) draw(ctx DrawContext, y int, itemIndex int) int {
 
 	visRect := c.listView.content.VisibleInnerRect()
 
-	var dItem displayedItem
+	/*var dItem displayedItem
 	dItem.currentX = 0
 	dItem.currentY = y
 	dItem.currentWidth = 100
 	dItem.currentHeight = c.listView.itemHeight
 	dItem.item = c
-	c.listView.displayedItems = append(c.listView.displayedItems, &dItem)
+	c.listView.displayedItems = append(c.listView.displayedItems, &dItem)*/
 
 	xOffset := 0
 	for columnIndex, column := range c.listView.columns {

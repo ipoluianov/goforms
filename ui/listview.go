@@ -11,8 +11,8 @@ import (
 type ListView struct {
 	Container
 
-	items               []*ListViewRow
-	displayedItems      []*displayedItem
+	items []*ListViewRow
+	//displayedItems      []*displayedItem
 	currentRow          *ListViewRow
 	currentColumn       int
 	lastClickedRowIndex int
@@ -117,7 +117,7 @@ func (c *ListView) Construct() {
 func (c *ListView) Dispose() {
 	c.Container.Dispose()
 	c.items = nil
-	c.displayedItems = nil
+	//c.displayedItems = nil
 	c.currentRow = nil
 	c.cache.Clear()
 	c.header.listView = nil
@@ -459,14 +459,14 @@ func (c *ListView) SetCurrentRow(row int, column int, byMouse bool) {
 }
 
 func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
-	selectedItemDisplayIndex := -1
+	/*selectedItemDisplayIndex := -1
 
 	for index, dItem := range c.listView.displayedItems {
 		if c.listView.currentRow == dItem.item {
 			selectedItemDisplayIndex = index
 			break
 		}
-	}
+	}*/
 
 	if event.Key == nuikey.KeyA && event.Modifiers.Ctrl {
 		c.listView.SelectAllItems()
@@ -479,43 +479,47 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 	}
 
 	if event.Key == nuikey.KeyArrowUp {
-		if selectedItemDisplayIndex > 0 {
-			c.listView.SetCurrentRow(c.listView.displayedItems[selectedItemDisplayIndex-1].item.row, c.listView.currentColumn, false)
+		if c.listView.currentRow != nil && c.listView.currentRow.row > 0 {
+			c.listView.SetCurrentRow(c.listView.currentRow.row-1, c.listView.currentColumn, false)
 			c.listView.EnsureVisibleCell(c.listView.currentRow.row, c.listView.currentColumn)
 		}
 		return true
 	}
 
 	if event.Key == nuikey.KeyArrowDown {
-		if selectedItemDisplayIndex < len(c.listView.displayedItems)-1 {
-			c.listView.SetCurrentRow(c.listView.displayedItems[selectedItemDisplayIndex+1].item.row, c.listView.currentColumn, false)
+		if c.listView.currentRow != nil && c.listView.currentRow.row < len(c.listView.items)-1 {
+			c.listView.SetCurrentRow(c.listView.currentRow.row+1, c.listView.currentColumn, false)
 			c.listView.EnsureVisibleCell(c.listView.currentRow.row, c.listView.currentColumn)
 		}
 		return true
 	}
 
 	if event.Key == nuikey.KeyArrowLeft {
-		col := c.listView.currentColumn - 1
-		if col < 0 {
-			col = 0
+		if c.listView.currentRow != nil && c.listView.currentColumn > 0 {
+			col := c.listView.currentColumn - 1
+			if col < 0 {
+				col = 0
+			}
+			c.listView.SetCurrentRow(c.listView.currentRow.row, col, false)
+			c.listView.EnsureVisibleCell(c.listView.currentRow.row, c.listView.currentColumn)
 		}
-		c.listView.SetCurrentRow(c.listView.displayedItems[selectedItemDisplayIndex].item.row, col, false)
-		c.listView.EnsureVisibleCell(c.listView.currentRow.row, c.listView.currentColumn)
 		return true
 	}
 
 	if event.Key == nuikey.KeyArrowRight {
-		col := c.listView.currentColumn + 1
-		if col >= len(c.listView.columns) {
-			col = len(c.listView.columns) - 1
+		if c.listView.currentRow != nil && c.listView.currentColumn < len(c.listView.columns)-1 {
+			col := c.listView.currentColumn + 1
+			if col >= len(c.listView.columns) {
+				col = len(c.listView.columns) - 1
+			}
+			c.listView.SetCurrentRow(c.listView.currentRow.row, col, false)
+			c.listView.EnsureVisibleCell(c.listView.currentRow.row, c.listView.currentColumn)
 		}
-		c.listView.SetCurrentRow(c.listView.displayedItems[selectedItemDisplayIndex].item.row, col, false)
-		c.listView.EnsureVisibleCell(c.listView.currentRow.row, c.listView.currentColumn)
 		return true
 	}
 
 	if event.Key == nuikey.KeyHome {
-		if len(c.listView.displayedItems) > 0 {
+		if len(c.listView.items) > 0 {
 			c.listView.SetCurrentRow(0, c.listView.currentColumn, false)
 			c.listView.EnsureVisibleCell(0, c.listView.currentColumn)
 		}
@@ -523,7 +527,7 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 	}
 
 	if event.Key == nuikey.KeyEnd {
-		if len(c.listView.displayedItems) > 0 {
+		if len(c.listView.items) > 0 {
 			c.listView.SetCurrentRow(len(c.listView.items)-1, c.listView.currentColumn, false)
 			c.listView.EnsureVisibleCell(len(c.listView.items)-1, c.listView.currentColumn)
 		}
@@ -531,31 +535,27 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 	}
 
 	if event.Key == nuikey.KeyPageUp {
-		if len(c.listView.displayedItems) > 0 {
-			if c.listView.currentRow != nil {
-				row := c.listView.currentRow.row
-				row -= c.Height() / c.listView.itemHeight
-				if row < 0 {
-					row = 0
-				}
-				c.listView.SetCurrentRow(row, c.listView.currentColumn, false)
-				c.listView.EnsureVisibleCell(row, c.listView.currentColumn)
+		if c.listView.currentRow != nil {
+			row := c.listView.currentRow.row
+			row += c.Height() / c.listView.itemHeight
+			if row >= len(c.listView.items) {
+				row = len(c.listView.items) - 1
 			}
+			c.listView.SetCurrentRow(row, c.listView.currentColumn, false)
+			c.listView.EnsureVisibleCell(row, c.listView.currentColumn)
 		}
 		return true
 	}
 
 	if event.Key == nuikey.KeyPageDown {
-		if len(c.listView.displayedItems) > 0 {
-			if c.listView.currentRow != nil {
-				row := c.listView.currentRow.row
-				row += c.Height() / c.listView.itemHeight
-				if row >= len(c.listView.items) {
-					row = len(c.listView.items) - 1
-				}
-				c.listView.SetCurrentRow(row, c.listView.currentColumn, false)
-				c.listView.EnsureVisibleCell(row, c.listView.currentColumn)
+		if c.listView.currentRow != nil {
+			row := c.listView.currentRow.row
+			row -= c.Height() / c.listView.itemHeight
+			if row < 0 {
+				row = 0
 			}
+			c.listView.SetCurrentRow(row, c.listView.currentColumn, false)
+			c.listView.EnsureVisibleCell(row, c.listView.currentColumn)
 		}
 		return true
 	}
@@ -584,7 +584,7 @@ func (c *ListView) removeCacheForRow(row int) {
 	}
 }
 
-func (c *ListView) findDisplayItemByCoordinates(x int, y int) *displayedItem {
+/*func (c *ListView) findDisplayItemByCoordinates(x int, y int) *displayedItem {
 	innerWidth := c.content.InnerWidth()
 	for _, dItem := range c.displayedItems {
 		if x >= 0 && x < innerWidth && y >= dItem.currentY && y < dItem.currentY+dItem.currentHeight {
@@ -592,7 +592,7 @@ func (c *ListView) findDisplayItemByCoordinates(x int, y int) *displayedItem {
 		}
 	}
 	return nil
-}
+}*/
 
 func (c *ListView) findDisplayColumnByCoordinates(x int) (colIndex int) {
 	for index, column := range c.columns {

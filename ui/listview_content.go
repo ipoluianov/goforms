@@ -14,7 +14,7 @@ func newListViewContent(parent Widget, x int, y int, width int, height int) *Lis
 
 func (c *ListViewContent) Draw(ctx DrawContext) {
 	yOffset := 0
-	c.listView.displayedItems = make([]*displayedItem, 0)
+	//c.listView.displayedItems = make([]*displayedItem, 0)
 
 	visRect := c.VisibleInnerRect()
 	beginIndex := visRect.Y/c.listView.itemHeight - 1
@@ -75,29 +75,67 @@ func (c *ListViewContent) calcTreeColumnSize() (int, int) {
 	return width, height
 }
 
+func (c *ListViewContent) findColumnByX(xCoordinates int) int {
+	xOffset := 0
+	for colIndex, column := range c.listView.columns {
+		if xCoordinates >= xOffset && xCoordinates <= xOffset+column.width {
+			return colIndex
+		}
+		xOffset += column.width
+	}
+	return -1
+}
+
+func (c *ListViewContent) findRowByY(yCoordinates int) int {
+	yOffset := 0
+	for rowIndex, _ := range c.listView.items {
+		if yCoordinates >= yOffset && yCoordinates <= yOffset+c.listView.itemHeight {
+			return rowIndex
+		}
+		yOffset += c.listView.itemHeight
+	}
+	return -1
+}
+
+func (c *ListViewContent) getRowByIndex(index int) *ListViewRow {
+	if index < 0 || index >= len(c.listView.items) {
+		return nil
+	}
+	return c.listView.items[index]
+}
+
+func (c *ListViewContent) getRowYOffset(index int) int {
+	if index < 0 || index >= len(c.listView.items) {
+		return -1
+	}
+	return c.listView.items[index].row * c.listView.itemHeight
+}
+
 func (c *ListViewContent) MouseClick(event *MouseClickEvent) {
-	dItem := c.listView.findDisplayItemByCoordinates(event.X, event.Y)
 	if c.listView.OnMouseDown != nil {
 		c.listView.OnMouseDown()
 	}
 
-	if dItem == nil {
+	clickedRow := c.findRowByY(event.Y)
+	clickedCol := c.findColumnByX(event.X)
+
+	if clickedCol == -1 || clickedRow == -1 {
 		if c.listView.AllowDeselectItems {
 			c.listView.ClearSelection()
 		}
 		return
 	}
 
-	col := c.listView.findDisplayColumnByCoordinates(event.X)
-	colOffset := c.listView.calcColumnXOffset(col)
+	colOffset := c.listView.calcColumnXOffset(clickedCol)
+	row := c.getRowByIndex(clickedRow)
 
-	if event.X > dItem.currentX {
-		c.listView.SetCurrentRow(dItem.item.row, col, true)
-		c.ScrollEnsureVisible(colOffset, dItem.currentY)
-		c.ScrollEnsureVisible(colOffset, dItem.currentY+c.listView.itemHeight)
-		if c.listView.OnItemClicked != nil {
-			c.listView.OnItemClicked(dItem.item)
-		}
+	rowYOffset := c.getRowYOffset(clickedRow)
+
+	c.listView.SetCurrentRow(clickedRow, clickedCol, true)
+	c.ScrollEnsureVisible(colOffset, rowYOffset)
+	c.ScrollEnsureVisible(colOffset, rowYOffset+c.listView.itemHeight)
+	if c.listView.OnItemClicked != nil {
+		c.listView.OnItemClicked(row)
 	}
 
 	c.Update("ListView")
