@@ -584,26 +584,6 @@ func (c *ListView) removeCacheForRow(row int) {
 	}
 }
 
-/*func (c *ListView) findDisplayItemByCoordinates(x int, y int) *displayedItem {
-	innerWidth := c.content.InnerWidth()
-	for _, dItem := range c.displayedItems {
-		if x >= 0 && x < innerWidth && y >= dItem.currentY && y < dItem.currentY+dItem.currentHeight {
-			return dItem
-		}
-	}
-	return nil
-}*/
-
-func (c *ListView) findDisplayColumnByCoordinates(x int) (colIndex int) {
-	for index, column := range c.columns {
-		colRightBorder := c.calcColumnXOffset(index) + column.width
-		if x >= c.calcColumnXOffset(index) && x < colRightBorder {
-			return index
-		}
-	}
-	return -1
-}
-
 func (c *ListView) updateItemHeight() {
 	_, fontHeight, _ := canvas.MeasureText(c.FontFamily(), c.FontSize(), false, false, "1Qg", false)
 	fontHeight += 2
