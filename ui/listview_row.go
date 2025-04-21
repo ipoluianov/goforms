@@ -19,7 +19,8 @@ type ListViewRow struct {
 	row        int
 	unitedRows int
 	unitedCols int
-	values     map[int]string
+	//values     map[int]string
+	cells      map[int]*listViewCell
 	selected   bool
 	listView   *ListView
 	foreColors map[int]color.Color
@@ -28,7 +29,7 @@ type ListViewRow struct {
 func (c *ListViewRow) SetValue(column int, text string) {
 	for index, item := range c.listView.items {
 		if item == c {
-			c.listView.SetItemValue(index, column, text)
+			c.listView.SetCellText(index, column, text)
 		}
 	}
 }
@@ -63,9 +64,9 @@ func (c *ListViewRow) SetForeColorForCell(colIndex int, color color.Color) {
 	}
 }
 
-func (c *ListViewRow) Value(column int) string {
-	if v, ok := c.values[column]; ok {
-		return v
+func (c *ListViewRow) CellText(column int) string {
+	if v, ok := c.cells[column]; ok {
+		return v.text
 	}
 	return ""
 }
@@ -114,7 +115,11 @@ func (c *ListViewRow) draw(ctx DrawContext, y int, itemIndex int) int {
 		if cnv == nil {
 			cnv = canvas.NewCanvas(column.width, rowHeight)
 
-			value := c.values[columnIndex]
+			//value := c.values[columnIndex]
+			var value string
+			if v, ok := c.cells[columnIndex]; ok {
+				value = v.text
+			}
 
 			backColor := c.listView.content.BackColor()
 			foreColor := c.listView.content.ForeColor()

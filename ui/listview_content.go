@@ -111,7 +111,7 @@ func (c *ListViewContent) KeyChar(event *KeyCharEvent) {
 func (c *ListViewContent) EditCurrentCell(enteredText string) {
 	c.Window().IgnoreUpdates()
 
-	initText := c.listView.currentRow.Value(c.listView.currentColumn)
+	initText := c.listView.currentRow.CellText(c.listView.currentColumn)
 	if len(enteredText) > 0 {
 		initText = enteredText
 	}

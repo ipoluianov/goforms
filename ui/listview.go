@@ -192,8 +192,8 @@ func (c *ListView) Focus() {
 func (c *ListView) AddItem(text string) *ListViewRow {
 	var item ListViewRow
 	item.row = len(c.items)
-	item.values = make(map[int]string)
-	item.values[0] = text
+	item.cells = make(map[int]*listViewCell)
+	item.cells[0] = newListViewCell(text)
 	item.listView = c
 	item.unitedRows = 1
 	item.unitedCols = 1
@@ -282,16 +282,32 @@ func (c *ListView) Item(rowIndex int) *ListViewRow {
 	return c.items[rowIndex]
 }
 
-func (c *ListView) SetItemValue(rowIndex int, columnIndex int, text string) {
+func (c *ListView) SetCellText(rowIndex int, columnIndex int, text string) {
 	if rowIndex < 0 || rowIndex >= len(c.items) {
 		return
 	}
 	item := c.items[rowIndex]
-	if item.values[columnIndex] != text {
+	if columnIndex < 0 || columnIndex >= len(c.columns) {
+		return
+	}
+	if item == nil {
+		return
+	}
+
+	if cell, ok := item.cells[columnIndex]; ok {
+		cell.text = text
+	} else {
+		item.cells[columnIndex] = newListViewCell(text)
+	}
+
+	c.cache.ClearXY(columnIndex, item.row)
+	c.Update("ListView")
+
+	/*if item.values[columnIndex] != text {
 		item.values[columnIndex] = text
 		c.cache.ClearXY(columnIndex, item.row)
 		c.Update("ListView")
-	}
+	}*/
 }
 
 func (c *ListView) calcColumnXOffset(columnIndex int) int {
