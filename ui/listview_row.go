@@ -114,58 +114,11 @@ func (c *ListViewRow) draw(ctx DrawContext, y int, itemIndex int) int {
 		cnv = c.listView.cache.GetXY(columnIndex, itemIndex)
 		if cnv == nil {
 			cnv = canvas.NewCanvas(column.width, rowHeight)
-
-			//value := c.values[columnIndex]
-			var value string
+			var cell *listViewCell
 			if v, ok := c.cells[columnIndex]; ok {
-				value = v.text
+				cell = v
 			}
-
-			backColor := c.listView.content.BackColor()
-			foreColor := c.listView.content.ForeColor()
-
-			if c.listView.selectionType == 0 {
-				if c.selected {
-					backColor = c.listView.selectionBackground.Color()
-					foreColor = c.listView.selectionForeground.Color()
-				}
-			}
-
-			if c.listView.selectionType == 1 {
-				if c.selected && c.listView.currentColumn == columnIndex {
-					backColor = c.listView.selectionBackground.Color()
-					foreColor = c.listView.selectionForeground.Color()
-				}
-			}
-
-			cnv.FillRect(0, 0, column.width, rowHeight, backColor)
-
-			col := foreColor
-			if colorForCell, ok := c.foreColors[columnIndex]; ok {
-				if colorForCell != nil {
-					col = colorForCell
-				}
-			}
-
-			cnv.DrawTextMultiline(c.listView.contentPadding, 0, column.width-c.listView.contentPadding*2, rowHeight, column.hAlign, canvas.VAlignCenter, value, col, c.listView.content.fontFamily.String(), c.listView.content.fontSize.Float64(), false)
-
-			// Draw borders
-			if itemIndex > 0 {
-				// Top border
-				cnv.DrawLine(0, 0, column.width, 0, 1, c.listView.gridColor.Color())
-			}
-			if itemIndex == len(c.listView.items)-1 {
-				// Bottom border
-				cnv.DrawLine(0, rowHeight-1, column.width, rowHeight-1, 1, c.listView.gridColor.Color())
-			}
-			if columnIndex > 0 {
-				// Left border
-				cnv.DrawLine(0, 0, 0, rowHeight, 1, c.listView.gridColor.Color())
-			}
-			if columnIndex == len(c.listView.columns)-1 {
-				// Right border
-				cnv.DrawLine(column.width-1, 0, column.width-1, rowHeight, 1, c.listView.gridColor.Color())
-			}
+			cell.draw(cnv, c.listView, itemIndex, columnIndex, column, c, rowHeight)
 		}
 
 		ctx.DrawImage(cellX, cellY, c.listView.content.Width(), c.listView.content.Height(), cnv.Image())
