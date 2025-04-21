@@ -93,10 +93,6 @@ func (c *ListViewHeader) Draw(ctx DrawContext) {
 	ctx.SetFontSize(c.FontSize())
 
 	for colIndex, column := range c.listView.columns {
-		/*if index > 0 {
-			ctx.DrawLine(xOffset, 0, xOffset, c.listView.itemHeight + c.listView.contentPadding * 2)
-		}*/
-
 		var cnv *canvas.CanvasDirect
 		cnv = c.listView.cache.GetXY(colIndex, -1)
 		if cnv == nil {
@@ -106,9 +102,7 @@ func (c *ListViewHeader) Draw(ctx DrawContext) {
 		}
 
 		clipX := xOffset + c.listView.contentPadding
-		//clipY := yOffset
 		clipW := column.width - c.listView.contentPadding*2
-		//clipH := c.listView.itemHeight
 
 		effectiveWidth := c.Width()
 

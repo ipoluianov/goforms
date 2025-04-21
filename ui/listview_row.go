@@ -6,20 +6,10 @@ import (
 	"github.com/ipoluianov/goforms/utils/canvas"
 )
 
-type displayedItem1 struct {
-	currentX      int
-	currentY      int
-	currentWidth  int
-	currentHeight int
-	item          *ListViewRow
-}
-
 type ListViewRow struct {
 	UserDataContainer
 	row        int
 	unitedRows int
-	unitedCols int
-	//values     map[int]string
 	cells      map[int]*listViewCell
 	selected   bool
 	listView   *ListView
@@ -78,20 +68,39 @@ func (c *ListViewRow) draw(ctx DrawContext, y int, itemIndex int) int {
 
 	visRect := c.listView.content.VisibleInnerRect()
 
-	/*var dItem displayedItem
-	dItem.currentX = 0
-	dItem.currentY = y
-	dItem.currentWidth = 100
-	dItem.currentHeight = c.listView.itemHeight
-	dItem.item = c
-	c.listView.displayedItems = append(c.listView.displayedItems, &dItem)*/
-
 	xOffset := 0
+	skipColumnsCounter := 0
 	for columnIndex, column := range c.listView.columns {
+		var cell *listViewCell
+		if v, ok := c.cells[columnIndex]; ok {
+			cell = v
+		}
+
+		if skipColumnsCounter > 0 {
+			skipColumnsCounter--
+			xOffset += column.width
+			continue
+		}
+
+		if cell != nil {
+			if cell.unitedCols > 1 {
+				skipColumnsCounter = cell.unitedCols - 1
+			}
+		}
+
 		cellX := xOffset
 		cellWidth := column.width
 		cellY := y
 		cellHeight := rowHeight
+
+		if cell != nil {
+			if cell.unitedCols > 1 {
+				cellWidth = 0
+				for i := 0; i < cell.unitedCols; i++ {
+					cellWidth += c.listView.columns[columnIndex+i].width
+				}
+			}
+		}
 
 		if cellX+cellWidth < visRect.X {
 			xOffset += column.width
@@ -113,12 +122,8 @@ func (c *ListViewRow) draw(ctx DrawContext, y int, itemIndex int) int {
 		var cnv *canvas.CanvasDirect
 		cnv = c.listView.cache.GetXY(columnIndex, itemIndex)
 		if cnv == nil {
-			cnv = canvas.NewCanvas(column.width, rowHeight)
-			var cell *listViewCell
-			if v, ok := c.cells[columnIndex]; ok {
-				cell = v
-			}
-			cell.draw(cnv, c.listView, itemIndex, columnIndex, column, c, rowHeight)
+			cnv = canvas.NewCanvas(cellWidth, rowHeight)
+			cell.draw(cnv, c.listView, itemIndex, columnIndex, cellWidth, column, c, rowHeight)
 		}
 
 		ctx.DrawImage(cellX, cellY, c.listView.content.Width(), c.listView.content.Height(), cnv.Image())

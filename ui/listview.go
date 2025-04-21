@@ -5,14 +5,12 @@ import (
 
 	"github.com/ipoluianov/goforms/utils/canvas"
 	"github.com/ipoluianov/goforms/utils/uiproperties"
-	"github.com/ipoluianov/nui/nuikey"
 )
 
 type ListView struct {
 	Container
 
-	items []*ListViewRow
-	//displayedItems      []*displayedItem
+	items               []*ListViewRow
 	currentRow          *ListViewRow
 	currentColumn       int
 	lastClickedRowIndex int
@@ -89,7 +87,6 @@ func (c *ListView) Construct() {
 
 	c.content.onScrolled = func(hScrollPos int, vScrollPos int) {
 		c.header.scrollOffsetX = hScrollPos
-		//c.header.scrollOffsetY = vScrollPos
 	}
 
 	c.content.horizontalScrollVisible.SetOwnValue(true)
@@ -102,7 +99,6 @@ func (c *ListView) Construct() {
 	c.showingTime = c.Window().NewTimer(10, func() {
 		if !c.showing {
 			c.showingTime.StopTimer()
-			//c.showingTime = nil
 		}
 		c.showingProgress += 0.01
 		if c.showingProgress > 1 {
@@ -110,14 +106,11 @@ func (c *ListView) Construct() {
 		}
 	})
 	InitDefaultStyle(c)
-	//c.showingTime.StartTimer()
-
 }
 
 func (c *ListView) Dispose() {
 	c.Container.Dispose()
 	c.items = nil
-	//c.displayedItems = nil
 	c.currentRow = nil
 	c.cache.Clear()
 	c.header.listView = nil
@@ -196,7 +189,6 @@ func (c *ListView) AddItem(text string) *ListViewRow {
 	item.cells[0] = newListViewCell(text)
 	item.listView = c
 	item.unitedRows = 1
-	item.unitedCols = 1
 	item.foreColors = make(map[int]color.Color)
 	c.items = append(c.items, &item)
 
@@ -226,6 +218,26 @@ func (c *ListView) RemoveItems() {
 	c.cache.Clear()
 	c.content.updateInnerSize()
 	c.content.ScrollEnsureVisible(0, 0)
+	c.Update("ListView")
+}
+
+func (c *ListView) UniteCells(row int, col int, unitedRows int, unitedCols int) {
+	if row < 0 || row >= len(c.items) {
+		return
+	}
+	if col < 0 || col >= len(c.columns) {
+		return
+	}
+
+	item := c.items[row]
+	if item == nil {
+		return
+	}
+
+	item.unitedRows = unitedRows
+	item.cells[col].unitedCols = unitedCols
+
+	c.cache.Clear()
 	c.Update("ListView")
 }
 
@@ -372,6 +384,11 @@ func (c *ListView) SetCurrentRow(row int, column int, byMouse bool) {
 		return
 	}
 
+	column = c.content.getCellColumnIndexAfterUniting(row, column)
+	if column < 0 || column >= len(c.columns) {
+		return
+	}
+
 	if c.currentRow != nil {
 		c.removeCacheForRow(c.currentRow.row)
 	}
@@ -456,111 +473,6 @@ func (c *ListView) SetCurrentRow(row int, column int, byMouse bool) {
 	if c.OnSelectionChanged != nil {
 		c.OnSelectionChanged()
 	}
-}
-
-func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
-	/*selectedItemDisplayIndex := -1
-
-	for index, dItem := range c.listView.displayedItems {
-		if c.listView.currentRow == dItem.item {
-			selectedItemDisplayIndex = index
-			break
-		}
-	}*/
-
-	if event.Key == nuikey.KeyA && event.Modifiers.Ctrl {
-		c.listView.SelectAllItems()
-		return true
-	}
-
-	if event.Key == nuikey.KeyEnter {
-		c.EditCurrentCell("")
-		return true
-	}
-
-	if event.Key == nuikey.KeyArrowUp {
-		if c.listView.currentRow != nil && c.listView.currentRow.row > 0 {
-			c.listView.SetCurrentRow(c.listView.currentRow.row-1, c.listView.currentColumn, false)
-			c.listView.EnsureVisibleCell(c.listView.currentRow.row, c.listView.currentColumn)
-		}
-		return true
-	}
-
-	if event.Key == nuikey.KeyArrowDown {
-		if c.listView.currentRow != nil && c.listView.currentRow.row < len(c.listView.items)-1 {
-			c.listView.SetCurrentRow(c.listView.currentRow.row+1, c.listView.currentColumn, false)
-			c.listView.EnsureVisibleCell(c.listView.currentRow.row, c.listView.currentColumn)
-		}
-		return true
-	}
-
-	if event.Key == nuikey.KeyArrowLeft {
-		if c.listView.currentRow != nil && c.listView.currentColumn > 0 {
-			col := c.listView.currentColumn - 1
-			if col < 0 {
-				col = 0
-			}
-			c.listView.SetCurrentRow(c.listView.currentRow.row, col, false)
-			c.listView.EnsureVisibleCell(c.listView.currentRow.row, c.listView.currentColumn)
-		}
-		return true
-	}
-
-	if event.Key == nuikey.KeyArrowRight {
-		if c.listView.currentRow != nil && c.listView.currentColumn < len(c.listView.columns)-1 {
-			col := c.listView.currentColumn + 1
-			if col >= len(c.listView.columns) {
-				col = len(c.listView.columns) - 1
-			}
-			c.listView.SetCurrentRow(c.listView.currentRow.row, col, false)
-			c.listView.EnsureVisibleCell(c.listView.currentRow.row, c.listView.currentColumn)
-		}
-		return true
-	}
-
-	if event.Key == nuikey.KeyHome {
-		if len(c.listView.items) > 0 {
-			c.listView.SetCurrentRow(0, c.listView.currentColumn, false)
-			c.listView.EnsureVisibleCell(0, c.listView.currentColumn)
-		}
-		return true
-	}
-
-	if event.Key == nuikey.KeyEnd {
-		if len(c.listView.items) > 0 {
-			c.listView.SetCurrentRow(len(c.listView.items)-1, c.listView.currentColumn, false)
-			c.listView.EnsureVisibleCell(len(c.listView.items)-1, c.listView.currentColumn)
-		}
-		return true
-	}
-
-	if event.Key == nuikey.KeyPageUp {
-		if c.listView.currentRow != nil {
-			row := c.listView.currentRow.row
-			row += c.Height() / c.listView.itemHeight
-			if row >= len(c.listView.items) {
-				row = len(c.listView.items) - 1
-			}
-			c.listView.SetCurrentRow(row, c.listView.currentColumn, false)
-			c.listView.EnsureVisibleCell(row, c.listView.currentColumn)
-		}
-		return true
-	}
-
-	if event.Key == nuikey.KeyPageDown {
-		if c.listView.currentRow != nil {
-			row := c.listView.currentRow.row
-			row -= c.Height() / c.listView.itemHeight
-			if row < 0 {
-				row = 0
-			}
-			c.listView.SetCurrentRow(row, c.listView.currentColumn, false)
-			c.listView.EnsureVisibleCell(row, c.listView.currentColumn)
-		}
-		return true
-	}
-
-	return false
 }
 
 func (c *ListView) SelectedItem() *ListViewRow {

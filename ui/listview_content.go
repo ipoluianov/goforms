@@ -1,5 +1,7 @@
 package ui
 
+import "github.com/ipoluianov/nui/nuikey"
+
 type ListViewContent struct {
 	Control
 
@@ -111,6 +113,143 @@ func (c *ListViewContent) getRowYOffset(index int) int {
 	return c.listView.items[index].row * c.listView.itemHeight
 }
 
+func (c *ListViewContent) getCell(rowIndex int, colIndex int) *listViewCell {
+	if rowIndex < 0 || rowIndex >= len(c.listView.items) {
+		return nil
+	}
+	if colIndex < 0 || colIndex >= len(c.listView.columns) {
+		return nil
+	}
+	row := c.listView.items[rowIndex]
+	if cell, ok := row.cells[colIndex]; ok {
+		return cell
+	}
+	return nil
+}
+
+func (c *ListViewContent) getCellColumnIndexAfterUniting(rowIndex int, colIndex int) int {
+	if rowIndex < 0 || rowIndex >= len(c.listView.items) {
+		return -1
+	}
+	if colIndex < 0 || colIndex >= len(c.listView.columns) {
+		return -1
+	}
+	if colIndex == 0 {
+		return 0
+	}
+	row := c.listView.items[rowIndex]
+	for col := colIndex - 1; col >= 0; col-- {
+		if cell, ok := row.cells[col]; ok {
+			if col+cell.unitedCols > colIndex {
+				colIndex = col
+				break
+			}
+		}
+	}
+
+	return colIndex
+}
+
+func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
+	if event.Key == nuikey.KeyA && event.Modifiers.Ctrl {
+		c.listView.SelectAllItems()
+		return true
+	}
+
+	if event.Key == nuikey.KeyEnter {
+		c.EditCurrentCell("")
+		return true
+	}
+
+	if event.Key == nuikey.KeyArrowUp {
+		if c.listView.currentRow != nil && c.listView.currentRow.row > 0 {
+			c.listView.SetCurrentRow(c.listView.currentRow.row-1, c.listView.currentColumn, false)
+			c.listView.EnsureVisibleCell(c.listView.currentRow.row, c.listView.currentColumn)
+		}
+		return true
+	}
+
+	if event.Key == nuikey.KeyArrowDown {
+		if c.listView.currentRow != nil && c.listView.currentRow.row < len(c.listView.items)-1 {
+			c.listView.SetCurrentRow(c.listView.currentRow.row+1, c.listView.currentColumn, false)
+			c.listView.EnsureVisibleCell(c.listView.currentRow.row, c.listView.currentColumn)
+		}
+		return true
+	}
+
+	if event.Key == nuikey.KeyArrowLeft {
+		if c.listView.currentRow != nil && c.listView.currentColumn > 0 {
+			col := c.listView.currentColumn - 1
+			if col < 0 {
+				col = 0
+			}
+			c.listView.SetCurrentRow(c.listView.currentRow.row, col, false)
+			c.listView.EnsureVisibleCell(c.listView.currentRow.row, c.listView.currentColumn)
+		}
+		return true
+	}
+
+	if event.Key == nuikey.KeyArrowRight {
+		if c.listView.currentRow != nil && c.listView.currentColumn < len(c.listView.columns)-1 {
+			col := c.listView.currentColumn + 1
+			currentCell := c.getCell(c.listView.currentRow.row, c.listView.currentColumn)
+			if currentCell != nil && currentCell.unitedCols > 1 {
+				col += currentCell.unitedCols - 1
+			}
+			if col >= len(c.listView.columns) {
+				col = len(c.listView.columns) - 1
+			}
+			c.listView.SetCurrentRow(c.listView.currentRow.row, col, false)
+			c.listView.EnsureVisibleCell(c.listView.currentRow.row, c.listView.currentColumn)
+		}
+		return true
+	}
+
+	if event.Key == nuikey.KeyHome {
+		if len(c.listView.items) > 0 {
+			c.listView.SetCurrentRow(0, c.listView.currentColumn, false)
+			c.listView.EnsureVisibleCell(0, c.listView.currentColumn)
+		}
+		return true
+	}
+
+	if event.Key == nuikey.KeyEnd {
+		if len(c.listView.items) > 0 {
+			c.listView.SetCurrentRow(len(c.listView.items)-1, c.listView.currentColumn, false)
+			c.listView.EnsureVisibleCell(len(c.listView.items)-1, c.listView.currentColumn)
+		}
+		return true
+	}
+
+	if event.Key == nuikey.KeyPageUp {
+		if c.listView.currentRow != nil {
+			row := c.listView.currentRow.row
+			row += c.Height() / c.listView.itemHeight
+			if row >= len(c.listView.items) {
+				row = len(c.listView.items) - 1
+			}
+			c.listView.SetCurrentRow(row, c.listView.currentColumn, false)
+			c.listView.EnsureVisibleCell(row, c.listView.currentColumn)
+		}
+		return true
+	}
+
+	if event.Key == nuikey.KeyPageDown {
+		if c.listView.currentRow != nil {
+			row := c.listView.currentRow.row
+			row -= c.Height() / c.listView.itemHeight
+			if row < 0 {
+				row = 0
+			}
+			c.listView.SetCurrentRow(row, c.listView.currentColumn, false)
+			c.listView.EnsureVisibleCell(row, c.listView.currentColumn)
+		}
+		return true
+	}
+
+	return false
+}
+
 func (c *ListViewContent) MouseClick(event *MouseClickEvent) {
 	if c.listView.OnMouseDown != nil {
 		c.listView.OnMouseDown()
@@ -159,6 +298,15 @@ func (c *ListViewContent) EditCurrentCell(enteredText string) {
 	posY += c.listView.currentRow.row*c.listView.itemHeight - c.listView.content.scrollOffsetY
 
 	columnWidth := c.listView.columns[c.listView.currentColumn].width
+	cell := c.getCell(c.listView.currentRow.row, c.listView.currentColumn)
+	if cell != nil {
+		if cell.unitedCols > 1 {
+			for i := 0; i < cell.unitedCols-1; i++ {
+				columnWidth += c.listView.columns[c.listView.currentColumn+i].width
+			}
+		}
+	}
+
 	rowHeight := c.listView.itemHeight
 
 	c.listView.popupLineEdit = NewPopupLineEdit(c, initText, len(enteredText) == 0, columnWidth, rowHeight)
