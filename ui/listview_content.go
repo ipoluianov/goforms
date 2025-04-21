@@ -40,24 +40,11 @@ func (c *ListViewContent) Draw(ctx DrawContext) {
 		}
 	}
 
-	//c.drawGrid(ctx)
 	c.updateInnerSize()
 }
 
 func (c *ListViewContent) ControlType() string {
 	return "ListViewContent"
-}
-
-func (c *ListViewContent) drawGrid(ctx DrawContext) {
-	xOffset := 0
-
-	ctx.SetColor(c.listView.gridColor.Color())
-	ctx.SetStrokeWidth(1)
-
-	for _, column := range c.listView.columns {
-		xOffset += column.width
-		ctx.DrawLine(xOffset, c.scrollOffsetY, xOffset, c.Height()+c.scrollOffsetY)
-	}
 }
 
 func (c *ListViewContent) updateInnerSize() {
@@ -102,11 +89,12 @@ func (c *ListViewContent) MouseClick(event *MouseClickEvent) {
 	}
 
 	col := c.listView.findDisplayColumnByCoordinates(event.X)
+	colOffset := c.listView.calcColumnXOffset(col)
 
 	if event.X > dItem.currentX {
 		c.listView.SetCurrentRow(dItem.item.row, col, true)
-		c.ScrollEnsureVisible(dItem.currentX, dItem.currentY)
-		c.ScrollEnsureVisible(dItem.currentX, dItem.currentY+c.listView.itemHeight)
+		c.ScrollEnsureVisible(colOffset, dItem.currentY)
+		c.ScrollEnsureVisible(colOffset, dItem.currentY+c.listView.itemHeight)
 		if c.listView.OnItemClicked != nil {
 			c.listView.OnItemClicked(dItem.item)
 		}

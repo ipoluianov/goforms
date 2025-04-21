@@ -569,8 +569,9 @@ func (c *ListView) removeCacheForRow(row int) {
 }
 
 func (c *ListView) findDisplayItemByCoordinates(x int, y int) *displayedItem {
+	innerWidth := c.content.InnerWidth()
 	for _, dItem := range c.displayedItems {
-		if x >= 0 && x < c.InnerWidth() && y >= dItem.currentY && y < dItem.currentY+dItem.currentHeight {
+		if x >= 0 && x < innerWidth && y >= dItem.currentY && y < dItem.currentY+dItem.currentHeight {
 			return dItem
 		}
 	}
