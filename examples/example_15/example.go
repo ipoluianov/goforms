@@ -23,7 +23,7 @@ func (c *MainForm) OnInit() {
 	lv.AddColumn("Size", 100)
 	lv.AddColumn("Size", 100)
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 20; i++ {
 		lv.AddItem2("Item "+fmt.Sprint(i), "100")
 	}
 
