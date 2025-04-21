@@ -73,28 +73,9 @@ func (c *ListViewItem) Value(column int) string {
 func (c *ListViewItem) draw(ctx DrawContext, y int, itemIndex int) int {
 	yOffset := 0
 
-	//rowX := 0
-	//rowWidth := c.InnerWidth()
-	//rowY := y
 	rowHeight := c.listView.itemHeight
 
 	visRect := c.listView.content.VisibleInnerRect()
-	/*if rowX+rowWidth < visRect.X {
-		yOffset += rowHeight
-		return yOffset
-	}
-	if rowY+rowHeight < visRect.Y {
-		yOffset += rowHeight
-		return yOffset
-	}
-	if rowX > visRect.X+visRect.Width {
-		yOffset += rowHeight
-		return yOffset
-	}
-	if rowY > visRect.Y+visRect.Height {
-		yOffset += rowHeight
-		return yOffset
-	}*/
 
 	var dItem displayedItem
 	dItem.currentX = 0
@@ -154,10 +135,6 @@ func (c *ListViewItem) draw(ctx DrawContext, y int, itemIndex int) int {
 
 			cnv.FillRect(0, 0, column.width, rowHeight, backColor)
 
-			/*if c.listView.currentItem == item {
-				cnv.DrawRect(0, 0, column.width, rowHeight, c.ForeColor(), 1)
-			}*/
-
 			col := foreColor
 			if colorForCell, ok := c.foreColors[columnIndex]; ok {
 				if colorForCell != nil {
@@ -165,11 +142,9 @@ func (c *ListViewItem) draw(ctx DrawContext, y int, itemIndex int) int {
 				}
 			}
 
-			//cnv.DrawText(c.listView.contentPadding, 0, value, c.fontFamily.String(), c.fontSize.Float64(), col)
 			cnv.DrawTextMultiline(c.listView.contentPadding, 0, column.width-c.listView.contentPadding*2, rowHeight, column.hAlign, canvas.VAlignCenter, value, col, c.listView.content.fontFamily.String(), c.listView.content.fontSize.Float64(), false)
 
 			// Draw borders
-
 			if itemIndex > 0 {
 				// Top border
 				cnv.DrawLine(0, 0, column.width, 0, 1, c.listView.gridColor.Color())
@@ -178,21 +153,14 @@ func (c *ListViewItem) draw(ctx DrawContext, y int, itemIndex int) int {
 				// Bottom border
 				cnv.DrawLine(0, rowHeight-1, column.width, rowHeight-1, 1, c.listView.gridColor.Color())
 			}
-
 			if columnIndex > 0 {
 				// Left border
 				cnv.DrawLine(0, 0, 0, rowHeight, 1, c.listView.gridColor.Color())
 			}
-
 			if columnIndex == len(c.listView.columns)-1 {
 				// Right border
 				cnv.DrawLine(column.width-1, 0, column.width-1, rowHeight, 1, c.listView.gridColor.Color())
 			}
-
-			//cnv.DrawLine(0, rowHeight-1, column.width, rowHeight-1, 1, c.listView.gridColor.Color())
-			//cnv.DrawLine(column.width-1, 0, column.width-1, rowHeight-1, 1, c.listView.gridColor.Color())
-			//cnv.DrawLine(0, 0, 0, rowHeight, 1, c.listView.gridColor.Color())
-			//cnv.DrawLine(column.width, 0, column.width, rowHeight, 1, c.listView.gridColor.Color())
 		}
 
 		ctx.DrawImage(cellX, cellY, c.listView.content.Width(), c.listView.content.Height(), cnv.Image())
