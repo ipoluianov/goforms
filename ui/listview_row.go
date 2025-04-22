@@ -9,7 +9,6 @@ import (
 type ListViewRow struct {
 	UserDataContainer
 	row        int
-	unitedRows int
 	cells      map[int]*listViewCell
 	selected   bool
 	listView   *ListView
@@ -69,38 +68,16 @@ func (c *ListViewRow) draw(ctx DrawContext, y int, itemIndex int) int {
 	visRect := c.listView.content.VisibleInnerRect()
 
 	xOffset := 0
-	skipColumnsCounter := 0
 	for columnIndex, column := range c.listView.columns {
 		var cell *listViewCell
 		if v, ok := c.cells[columnIndex]; ok {
 			cell = v
 		}
 
-		if skipColumnsCounter > 0 {
-			skipColumnsCounter--
-			xOffset += column.width
-			continue
-		}
-
-		if cell != nil {
-			if cell.unitedCols > 1 {
-				skipColumnsCounter = cell.unitedCols - 1
-			}
-		}
-
 		cellX := xOffset
 		cellWidth := column.width
 		cellY := y
 		cellHeight := rowHeight
-
-		if cell != nil {
-			if cell.unitedCols > 1 {
-				cellWidth = 0
-				for i := 0; i < cell.unitedCols; i++ {
-					cellWidth += c.listView.columns[columnIndex+i].width
-				}
-			}
-		}
 
 		if cellX+cellWidth < visRect.X {
 			xOffset += column.width

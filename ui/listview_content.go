@@ -1,11 +1,20 @@
 package ui
 
-import "github.com/ipoluianov/nui/nuikey"
+import (
+	"github.com/ipoluianov/goforms/utils/canvas"
+	"github.com/ipoluianov/nui/nuikey"
+)
 
 type ListViewContent struct {
 	Control
 
 	listView *ListView
+}
+
+type ListViewCustomDraw struct {
+	Row    int
+	Column int
+	OnDraw func(cnv *canvas.CanvasDirect)
 }
 
 func newListViewContent(parent Widget, x int, y int, width int, height int) *ListViewContent {
@@ -127,29 +136,6 @@ func (c *ListViewContent) getCell(rowIndex int, colIndex int) *listViewCell {
 	return nil
 }
 
-func (c *ListViewContent) getCellColumnIndexAfterUniting(rowIndex int, colIndex int) int {
-	if rowIndex < 0 || rowIndex >= len(c.listView.items) {
-		return -1
-	}
-	if colIndex < 0 || colIndex >= len(c.listView.columns) {
-		return -1
-	}
-	if colIndex == 0 {
-		return 0
-	}
-	row := c.listView.items[rowIndex]
-	for col := colIndex - 1; col >= 0; col-- {
-		if cell, ok := row.cells[col]; ok {
-			if col+cell.unitedCols > colIndex {
-				colIndex = col
-				break
-			}
-		}
-	}
-
-	return colIndex
-}
-
 func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 	if event.Key == nuikey.KeyA && event.Modifiers.Ctrl {
 		c.listView.SelectAllItems()
@@ -192,10 +178,6 @@ func (c *ListViewContent) KeyDown(event *KeyDownEvent) bool {
 	if event.Key == nuikey.KeyArrowRight {
 		if c.listView.currentRow != nil && c.listView.currentColumn < len(c.listView.columns)-1 {
 			col := c.listView.currentColumn + 1
-			currentCell := c.getCell(c.listView.currentRow.row, c.listView.currentColumn)
-			if currentCell != nil && currentCell.unitedCols > 1 {
-				col += currentCell.unitedCols - 1
-			}
 			if col >= len(c.listView.columns) {
 				col = len(c.listView.columns) - 1
 			}
@@ -298,14 +280,6 @@ func (c *ListViewContent) EditCurrentCell(enteredText string) {
 	posY += c.listView.currentRow.row*c.listView.itemHeight - c.listView.content.scrollOffsetY
 
 	columnWidth := c.listView.columns[c.listView.currentColumn].width
-	cell := c.getCell(c.listView.currentRow.row, c.listView.currentColumn)
-	if cell != nil {
-		if cell.unitedCols > 1 {
-			for i := 0; i < cell.unitedCols-1; i++ {
-				columnWidth += c.listView.columns[c.listView.currentColumn+i].width
-			}
-		}
-	}
 
 	rowHeight := c.listView.itemHeight
 

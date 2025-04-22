@@ -27,7 +27,7 @@ func (c *MainForm) OnInit() {
 		lv.AddItem3("Item "+fmt.Sprint(i), "100", "---------")
 	}
 
-	lv.UniteCells(1, 0, 1, 2)
+	lv.UniteCells(1, 0, 2, 2)
 
 	lv.Focus()
 }

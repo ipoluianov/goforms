@@ -188,7 +188,6 @@ func (c *ListView) AddItem(text string) *ListViewRow {
 	item.cells = make(map[int]*listViewCell)
 	item.cells[0] = newListViewCell(text)
 	item.listView = c
-	item.unitedRows = 1
 	item.foreColors = make(map[int]color.Color)
 	c.items = append(c.items, &item)
 
@@ -233,9 +232,6 @@ func (c *ListView) UniteCells(row int, col int, unitedRows int, unitedCols int) 
 	if item == nil {
 		return
 	}
-
-	item.unitedRows = unitedRows
-	item.cells[col].unitedCols = unitedCols
 
 	c.cache.Clear()
 	c.Update("ListView")
@@ -380,11 +376,6 @@ func (c *ListView) SetCurrentRow(row int, column int, byMouse bool) {
 		return
 	}
 
-	if column < 0 || column >= len(c.columns) {
-		return
-	}
-
-	column = c.content.getCellColumnIndexAfterUniting(row, column)
 	if column < 0 || column >= len(c.columns) {
 		return
 	}

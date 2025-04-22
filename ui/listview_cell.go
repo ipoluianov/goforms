@@ -3,8 +3,7 @@ package ui
 import "github.com/ipoluianov/goforms/utils/canvas"
 
 type listViewCell struct {
-	text       string
-	unitedCols int
+	text string
 }
 
 func newListViewCell(text string) *listViewCell {
